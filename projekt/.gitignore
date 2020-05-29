@@ -4,6 +4,6 @@
 # Description : Local gitignore file for Visual Studio project
 ################################################################################
 
-#.vs/
+.vs/
 bin/
 obj/
