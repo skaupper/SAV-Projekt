@@ -1,4 +1,6 @@
-﻿using System;
+﻿using CoronaTracker.ViewModels;
+using CoronaTracker.Views;
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
@@ -13,5 +15,20 @@ namespace CoronaTracker
     /// </summary>
     public partial class App : Application
     {
+        protected override void OnStartup(StartupEventArgs e)
+        {
+            // on startup set up the View model and the coresponding main window.
+            base.OnStartup(e);
+
+            // create all necessary views
+            MainView mainView = new MainView();
+
+            // create all necessary viewmodels with coresponding links to other viewmodels if needed
+            MainViewModel mainViewModel = new MainViewModel();
+
+            //Set the data context to the view model, which handels the bindings and show the application window
+            mainView.DataContext = mainViewModel;
+            mainView.Show();
+        }
     }
 }
