@@ -5,10 +5,30 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:CoronaTracker.Views"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
-    <Grid>
-	    <TextBlock Text="This is the World Map Page" 
-	               FontWeight="Bold" FontSize="18"
-	               HorizontalAlignment="Center" VerticalAlignment="Center" />
-    </Grid>
+             d:DesignHeight="650" d:DesignWidth="850">
+    <DockPanel>
+        <TextBlock DockPanel.Dock="Top" Margin="15, 5, 15, 5" Text="Detailed Statistics:"/>
+
+        <ListView 
+            DockPanel.Dock="Top"
+            Margin="15, 0, 15, 5"
+	        ItemsSource="{Binding ListOfCustomers}" 
+	        SelectedItem="{Binding Path=SelectedCustomer}"
+	        ScrollViewer.HorizontalScrollBarVisibility="Auto"
+	        ScrollViewer.VerticalScrollBarVisibility="Hidden"
+            Height="80">
+            <ListView.View>
+		        <GridView>
+			        <GridViewColumn Width="138" Header="Selection" DisplayMemberBinding="{Binding Selection}"/>
+                    <GridViewColumn Width="138" Header="Infected" DisplayMemberBinding="{Binding Infected}"/>
+                    <GridViewColumn Width="138" Header="Deaths" DisplayMemberBinding="{Binding Deaths}"/>
+                    <GridViewColumn Width="138" Header="Recovered" DisplayMemberBinding="{Binding Recovered}"/>
+                    <GridViewColumn Width="138" Header="New Cases" DisplayMemberBinding="{Binding NewCases}"/>
+                    <GridViewColumn Width="138" Header="New Deaths" DisplayMemberBinding="{Binding NewDeaths}"/>
+		        </GridView>
+	        </ListView.View>
+        </ListView>
+
+        <Rectangle Margin="15, 5, 15, 15" Fill="Pink"/>
+    </DockPanel>
 </UserControl>
