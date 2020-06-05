@@ -5,11 +5,22 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Chart_DevPrj"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
-    <Grid MouseRightButtonUp="Grid_MouseRightButtonUp" MouseLeftButtonUp="Grid_MouseLeftButtonUp">
-        <local:ChartArea x:Name="Chart" DataSets="{Binding DataSets}" 
-                                        ScaleY="{Binding YScale}" 
-                                        UsedChartType="{Binding UsedChartType}" 
-                         TitleX="X" TitleY="Y"></local:ChartArea>
-    </Grid>
+        Title="MainWindow" Height="600" Width="1000">
+    <StackPanel MouseRightButtonUp="Grid_MouseRightButtonUp" MouseLeftButtonUp="Grid_MouseLeftButtonUp">
+        <Expander Header="BasicChartArea">
+            <Grid  Height="300">
+                <local:BasicChartArea x:Name="Chart" DataSets="{Binding DataSets}" 
+                                                ScaleX="{Binding YScale}" 
+                                                UsedChartType="{Binding UsedChartType}" 
+                                 TitleX="X" TitleY="{Binding YTitle}"></local:BasicChartArea>
+            </Grid>
+        </Expander>
+        <Expander Header="BasicGeoMap">
+            <Grid Height="500">
+                <local:BasicGeoMap
+                    HeatMap="{Binding HeatMap}"
+                    ></local:BasicGeoMap>
+            </Grid>
+        </Expander>
+    </StackPanel>
 </Window>

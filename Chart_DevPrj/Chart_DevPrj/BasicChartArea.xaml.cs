@@ -44,7 +44,7 @@ namespace Chart_DevPrj
     /// <summary>
     /// Interaktionslogik für UserControl1.xaml
     /// </summary>
-    public partial class ChartArea : UserControl, INotifyPropertyChanged
+    public partial class BasicChartArea : UserControl, INotifyPropertyChanged
     {
 
         #region Events
@@ -82,43 +82,43 @@ namespace Chart_DevPrj
         public static readonly DependencyProperty DataSetsProperty =
             DependencyProperty.Register(
                 "DataSets", typeof(DataSetsType),
-                typeof(ChartArea),
+                typeof(BasicChartArea),
                 new PropertyMetadata(null, Static_DataSets_Changed)
             );
 
         public static readonly DependencyProperty UsedChartTypeProperty =
             DependencyProperty.Register(
                 "UsedChartType", typeof(ChartType),
-                typeof(ChartArea),
+                typeof(BasicChartArea),
                 new PropertyMetadata(ChartType.Lines, Static_ChartType_Changed)
             );
 
         public static readonly DependencyProperty ScaleXProperty =
             DependencyProperty.Register(
                 "ScaleX", typeof(AxisScale),
-                typeof(ChartArea),
-                new PropertyMetadata(AxisScale.Linear, Static_AxisScale_Changed)
+                typeof(BasicChartArea),
+                new PropertyMetadata(AxisScale.Linear, Static_AxisX_Changed)
             );
 
         public static readonly DependencyProperty ScaleYProperty =
             DependencyProperty.Register(
                 "ScaleY", typeof(AxisScale),
-                typeof(ChartArea),
-                new PropertyMetadata(AxisScale.Linear, Static_AxisScale_Changed)
+                typeof(BasicChartArea),
+                new PropertyMetadata(AxisScale.Linear, Static_AxisY_Changed)
             );
 
         public static readonly DependencyProperty TitleXProperty =
             DependencyProperty.Register(
                 "TitleX", typeof(string),
-                typeof(ChartArea),
-                new PropertyMetadata("X")
+                typeof(BasicChartArea),
+                new PropertyMetadata("X", Static_AxisX_Changed)
             );
 
         public static readonly DependencyProperty TitleYProperty =
             DependencyProperty.Register(
                 "TitleY", typeof(string),
-                typeof(ChartArea),
-                new PropertyMetadata("Y")
+                typeof(BasicChartArea),
+                new PropertyMetadata("Y", Static_AxisY_Changed)
             );
 
 
@@ -156,13 +156,8 @@ namespace Chart_DevPrj
 
 
 
+        #region Internal Properties
 
-
-
-
-        /// <summary>
-        /// Internal properties. Should not be used from the outside!
-        /// </summary>
         public SeriesCollection SeriesCollection
         {
             get => seriesCollection;
@@ -219,19 +214,21 @@ namespace Chart_DevPrj
 
         #endregion
 
+        #endregion
+
 
         #region Static Callbacks
 
         private static void Static_ChartType_Changed(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            var chartArea = d as ChartArea;
+            var chartArea = d as BasicChartArea;
             chartArea.ChartType_Changed(d, e);
         }
 
 
         private static void Static_DataSets_Changed(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            var chartArea = d as ChartArea;
+            var chartArea = d as BasicChartArea;
 
             if (e.OldValue != null)
             {
@@ -248,10 +245,16 @@ namespace Chart_DevPrj
             chartArea.CallUpdateDataSets();
         }
 
-        private static void Static_AxisScale_Changed(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        private static void Static_AxisX_Changed(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            var chartArea = d as ChartArea;
-            chartArea.AxisScale_Changed(d, e);
+            var chartArea = d as BasicChartArea;
+            chartArea.AxisXScale_Changed(d, e);
+        }
+
+        private static void Static_AxisY_Changed(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            var chartArea = d as BasicChartArea;
+            chartArea.AxisYScale_Changed(d, e);
         }
 
         #endregion
@@ -269,9 +272,14 @@ namespace Chart_DevPrj
             CallUpdateDataSets();
         }
 
-        private void AxisScale_Changed(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        private void AxisXScale_Changed(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            CallCreateAllAxes();
+            CallCreateAxisX();
+        }
+
+        private void AxisYScale_Changed(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            CallCreateAxisY();
         }
 
         #endregion
@@ -279,7 +287,7 @@ namespace Chart_DevPrj
 
         #region Public Methods
 
-        public ChartArea()
+        public BasicChartArea()
         {
             updatingChartEvent = new AutoResetEvent(true);
             mapper = new CartesianMapper<ObservablePoint>();
@@ -290,7 +298,7 @@ namespace Chart_DevPrj
 
             InitializeComponent();
 
-            //Chart.DisableAnimations = true;
+            Loaded += (s, e) => CallCreateAllAxes();
         }
 
 
@@ -312,6 +320,20 @@ namespace Chart_DevPrj
             UpdatingChart = false;
         }
 
+        public void CallCreateAxisX()
+        {
+            UpdatingChart = true;
+            CreateAxis(AxisX, ScaleX, TitleX);
+            UpdatingChart = false;
+        }
+
+        public void CallCreateAxisY()
+        {
+            UpdatingChart = true;
+            CreateAxis(AxisY, ScaleY, TitleY);
+            UpdatingChart = false;
+        }
+
         #endregion
 
 
@@ -327,14 +349,25 @@ namespace Chart_DevPrj
         {
             Axis ax = null;
 
+
             // Create the axis depending on the choses scale
             switch (scale)
             {
                 case AxisScale.Linear:
                     ax = new Axis();
-
-                    // Take points 1:1 as they are
-                    mapper.X(p => p.X).Y(p => p.Y);
+                    // Per default take points 1:1 as they are
+                    if (coll == AxisY)
+                    {
+                        mapper.Y(p => p.Y);
+                    }
+                    else if (coll == AxisX)
+                    {
+                        mapper.X(p => p.X);
+                    }
+                    else
+                    {
+                        Debug.Fail("Unknown axis given");
+                    }
                     break;
 
                 case AxisScale.Logarithmic:
@@ -345,11 +378,23 @@ namespace Chart_DevPrj
                         MinValue = 0
                     };
 
-                    // The Y values are plotted as the log => the labels therefore need to be Base^value.
-                    mapper.X(p => p.X).Y(p => (p.Y > 0) ? Math.Log(p.Y, LogBase) : 0);
+                    // The values are plotted as the log => the labels therefore need to be Base^value.
                     logAx.LabelFormatter = value => Math.Pow(LogBase, value).ToString("N");
-
                     ax = logAx;
+
+
+                    if (coll == AxisY)
+                    {
+                        mapper.Y(p => (p.Y > 0) ? Math.Log(p.Y, LogBase) : 0);
+                    }
+                    else if (coll == AxisX)
+                    {
+                        mapper.X(p => (p.X > 0) ? Math.Log(p.X, LogBase) : 0);
+                    }
+                    else
+                    {
+                        Debug.Fail("Unknown axis given");
+                    }
                     break;
 
                 default:

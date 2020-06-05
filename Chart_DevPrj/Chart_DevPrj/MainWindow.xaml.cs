@@ -22,7 +22,12 @@ namespace Chart_DevPrj
     /// </summary>
     public partial class MainWindow : Window, INotifyPropertyChanged
     {
+        #region Events
+
         public event PropertyChangedEventHandler PropertyChanged;
+
+        #endregion
+
 
 
         BindingList<ObservableCollection<DataElement>> dataSets;
@@ -36,6 +41,17 @@ namespace Chart_DevPrj
             }
         }
 
+        BindingList<HeatMapElement> heatMap;
+        public BindingList<HeatMapElement> HeatMap
+        {
+            get => heatMap;
+            set
+            {
+                heatMap = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("HeatMap"));
+            }
+        }
+
 
         AxisScale yScale;
         public AxisScale YScale
@@ -45,6 +61,17 @@ namespace Chart_DevPrj
             {
                 yScale = value;
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("YScale"));
+            }
+        }
+
+        string yTitle;
+        public string YTitle
+        {
+            get => yTitle;
+            set
+            {
+                yTitle = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("YTitle"));
             }
         }
 
@@ -67,24 +94,35 @@ namespace Chart_DevPrj
             DataContext = this;
 
 
+
+            YTitle = "Y";
+
             DataSets = new BindingList<ObservableCollection<DataElement>>{
                 new ObservableCollection<DataElement>()
                 {
                     new DataElement
                     {
-                        X=0,
+                        X=1,
                         Y=2
                     },
                     new DataElement
                     {
-                        X=2,
+                        X=10,
                         Y=4
                     },
                     new DataElement
                     {
-                        X=3,
+                        X=100,
                         Y=40
                     }
+                }
+            };
+
+            HeatMap = new BindingList<HeatMapElement>{
+                new HeatMapElement
+                {
+                    Country = "US",
+                    Value = 10
                 }
             };
         }
@@ -94,7 +132,6 @@ namespace Chart_DevPrj
 
         private void Grid_MouseRightButtonUp(object sender, MouseButtonEventArgs e)
         {
-            /*
             if (YScale == AxisScale.Linear)
             {
                 YScale = AxisScale.Logarithmic;
@@ -103,14 +140,23 @@ namespace Chart_DevPrj
             {
                 YScale = AxisScale.Linear;
             }
-            */
+
+            YTitle += "T";
 
             DataSets[0].Add(new DataElement { X = nextX++, Y = rand.Next(0, 100) });
+
+
+
+            HeatMap.Add(new HeatMapElement
+            {
+                Country = "DE",
+                Value = 100
+            });
         }
 
         private void Grid_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
-            switch(UsedChartType)
+            switch (UsedChartType)
             {
                 case ChartType.Bars:
                     UsedChartType = ChartType.Lines;
