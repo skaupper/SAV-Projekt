@@ -29,26 +29,43 @@ namespace projekt
         {
             InitializeComponent();
 
+            ResponseRaw = "(currently not in use)";
+
             DataContext = this;
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        private void CallAPI()
+        private void UseDataLoader()
         {
             DataLoader dl = new DataLoader();
+            try
+            {
+                dl.LoadAllData(DataLoader.Source.API);
+                ResponseList = dl.GetAllCountryCurrentData();
+            }
+            catch (FieldAccessException faex)
+            {
+                // TODO: Handle exception (need to load data first)
+                MessageBox.Show("FieldAccessException: \n" + faex.Message);
+            }
+            catch (ArgumentException argex)
+            {
+                // TODO: Handle exception (maybe an implementation error?)
+                MessageBox.Show("ArgumentException: \n" + argex.Message);
+            }
+            catch (Exception ex)
+            {
+                // TODO: Handle exception (need to load data first)
+                MessageBox.Show("Unhandled exception: \n" + ex.Message);
+            }
 
-            string url = "https://api.thevirustracker.com/free-api?countryTotals=ALL";
-
-            ResponseRaw = dl.GetDataRaw(url);
-            ResponseList = dl.DownloadFromAPI(url);
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("ResponseRaw"));
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("ResponseList"));
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            CallAPI();
+            UseDataLoader();
         }
     }
 }
