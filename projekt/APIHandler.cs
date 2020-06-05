@@ -32,7 +32,7 @@ namespace projekt
             {
                 // TODO: Remove this temporary MessageBox (debug only)
                 MessageBox.Show(
-                    "The server response inclues a warning.\n\nAttemting to fix the response.",
+                    "The server response includes a warning.\n\nAttempting to fix the response.",
                     "Warning", MessageBoxButton.OK, MessageBoxImage.Warning);
 
                 json = AttemptJSONWarningFix(response.Content);
@@ -52,6 +52,7 @@ namespace projekt
             return data;
         }
 
+        /* This function attempts to fix the JSON string, by removing the prepended warning message */
         private string AttemptJSONWarningFix(string warningJson)
         {
             // Find the opening curly bracket '{' of the actual JSON structure
