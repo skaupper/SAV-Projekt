@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 
@@ -12,12 +13,15 @@ namespace projekt
 {
     public class APIHandler
     {
-
         public const string API_URL_CurrentCountryData = "https://api.thevirustracker.com/free-api?countryTotals=ALL";
 
-        public List<CountryData> LoadCurrentCountryData()
+        public async Task<List<CountryData>> LoadCurrentCountryDataAsync()
         {
             var client = new RestClient(API_URL_CurrentCountryData);
+
+            // TODO: REMOVE THIS!!!!
+            // Simulate a long download duration...
+            Thread.Sleep(5000);
 
             /* NOTE: The API sometimes answers with two "Warning" strings, 
              *       as a prefix, ahead of the JSON string. In this case,
@@ -25,7 +29,10 @@ namespace projekt
              *       However, if this fix attempt fails, an exception is thrown. 
              *       The user could then fall back to load a local file in this case. 
              */
-            var response = client.Execute(new RestRequest());
+            var task = client.ExecuteAsync(new RestRequest());
+            var response = await task;
+
+            //var response  = client.Execute(new RestRequest());
 
             string json;
             if (response.Content.Contains("Warning"))

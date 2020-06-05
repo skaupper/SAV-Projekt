@@ -21,7 +21,7 @@ namespace projekt
             //dataStore = new DataStore();
         }
 
-        public void LoadAllData(Source source, string filename = "")
+        public async Task LoadAllDataAsync(Source source, string filename = "")
         {
             dataStore = new DataStore();
 
@@ -29,7 +29,9 @@ namespace projekt
             {
                 case Source.API:
                     try
-                    { dataStore.currentCountryData = apiHandler.LoadCurrentCountryData(); }
+                    {
+                        dataStore.currentCountryData = await apiHandler.LoadCurrentCountryDataAsync();
+                    }
                     catch (Exception e)
                     { throw e; }
                     break;

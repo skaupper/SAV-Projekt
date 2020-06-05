@@ -43,7 +43,7 @@ namespace projekt
         {
             try
             {
-                dataLoader.LoadAllData(DataLoader.Source.API);
+                dataLoader.LoadAllDataAsync(DataLoader.Source.API);
                 ResponseList = dataLoader.GetAllCountryCurrentData();
             }
             catch (FieldAccessException faex)
@@ -65,7 +65,7 @@ namespace projekt
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("ResponseList"));
         }
 
-        private void LoadLocalButton_Click(object sender, RoutedEventArgs e)
+        private async void LoadLocalButton_Click(object sender, RoutedEventArgs e)
         {
             // TODO: Catch and handle exception(s)
 
@@ -75,11 +75,8 @@ namespace projekt
 
             if (ofd.ShowDialog() == true)
             {
-                dataLoader.LoadAllData(DataLoader.Source.LOCALFILE, ofd.FileName);
-                ResponseList = dataLoader.GetAllCountryCurrentData();
+                await dataLoader.LoadAllDataAsync(DataLoader.Source.LOCALFILE, ofd.FileName);
             }
-
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("ResponseList"));
         }
 
         private void SaveButton_Click(object sender, RoutedEventArgs e)
@@ -100,6 +97,12 @@ namespace projekt
             ResponseList.Clear();
             ResponseList = null;
 
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("ResponseList"));
+        }
+
+        private void UpdateViewButton_Click(object sender, RoutedEventArgs e)
+        {
+            ResponseList = dataLoader.GetAllCountryCurrentData();
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("ResponseList"));
         }
     }
