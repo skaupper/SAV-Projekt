@@ -41,7 +41,7 @@ namespace projekt
             string url = "https://api.thevirustracker.com/free-api?countryTotals=ALL";
 
             ResponseRaw = dl.GetDataRaw(url);
-            ResponseList = dl.GetDataDeserialized(url);
+            ResponseList = dl.DownloadFromAPI(url);
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("ResponseRaw"));
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("ResponseList"));
         }

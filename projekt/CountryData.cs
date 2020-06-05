@@ -17,7 +17,7 @@ namespace projekt
 
         [JsonProperty("code")]
         public string Code { get; set; }
-
+        
         [JsonProperty("source")]
         public string Source { get; set; }
 
