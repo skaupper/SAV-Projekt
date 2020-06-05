@@ -6,22 +6,25 @@ namespace projekt
 {
     public class FileHandler
     {
-        public List<CountryData> LoadCurrentCountryData()
+        public DataStore LoadData(string filename)
         {
-            string json = File.ReadAllText("../../localJSON/response_full.json");
+            /* NOTE: Assuming, the filename is correct (e.g. picked via a OpenFileDialog) */
+            string json = File.ReadAllText(filename);
 
             /* NOTE: At this point, we can assume that the JSON string is sane, 
              *       because the file was saved, using the DataStore.Serialize() method.
              */
-            List<CountryData> data = ApiJsonParser.CurrentCountryData(json);
+            DataStore dataStore = DataStore.Deserialize(json);
 
-            return data;
+
+            return dataStore;
         }
 
         public void SaveData(DataStore dataStore, string filename)
         {
             /* NOTE: Assuming, the filename is correct (e.g. picked via a SaveFileDialog) */
-            File.WriteAllText(filename, dataStore.Serialize());
+            string json = dataStore.Serialize();
+            File.WriteAllText(filename, json);
         }
     }
 }

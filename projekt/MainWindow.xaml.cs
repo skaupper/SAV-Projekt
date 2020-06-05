@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Win32;
+using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.ComponentModel;
@@ -24,25 +25,26 @@ namespace projekt
     {
         public string ResponseRaw { get; private set; }
         public List<CountryData> ResponseList { get; private set; }
+        DataLoader dataLoader;
 
         public MainWindow()
         {
             InitializeComponent();
 
             ResponseRaw = "(currently not in use)";
+            dataLoader = new DataLoader();
 
             DataContext = this;
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        private void UseDataLoader()
+        private void LoadAPIButton_Click(object sender, RoutedEventArgs e)
         {
-            DataLoader dl = new DataLoader();
             try
             {
-                dl.LoadAllData(DataLoader.Source.API);
-                ResponseList = dl.GetAllCountryCurrentData();
+                dataLoader.LoadAllData(DataLoader.Source.API);
+                ResponseList = dataLoader.GetAllCountryCurrentData();
             }
             catch (FieldAccessException faex)
             {
@@ -63,9 +65,42 @@ namespace projekt
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("ResponseList"));
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private void LoadLocalButton_Click(object sender, RoutedEventArgs e)
         {
-            UseDataLoader();
+            // TODO: Catch and handle exception(s)
+
+            OpenFileDialog ofd = new OpenFileDialog();
+            ofd.InitialDirectory = Environment.CurrentDirectory;
+            ofd.Filter = "JSON file (*.json)|*.json";
+
+            if (ofd.ShowDialog() == true)
+            {
+                dataLoader.LoadAllData(DataLoader.Source.LOCALFILE, ofd.FileName);
+                ResponseList = dataLoader.GetAllCountryCurrentData();
+            }
+
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("ResponseList"));
+        }
+
+        private void SaveButton_Click(object sender, RoutedEventArgs e)
+        {
+            SaveFileDialog sfd = new SaveFileDialog();
+            sfd.InitialDirectory = Environment.CurrentDirectory;
+            sfd.Filter = "JSON file (*.json)|*.json";
+
+            if (sfd.ShowDialog() == true)
+            {
+                // TODO: catch exception(s)
+                dataLoader.SaveAllData(sfd.FileName);
+            }
+        }
+
+        private void ResetButton_Click(object sender, RoutedEventArgs e)
+        {
+            ResponseList.Clear();
+            ResponseList = null;
+
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("ResponseList"));
         }
     }
 }

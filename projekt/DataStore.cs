@@ -5,7 +5,7 @@ namespace projekt
 {
     public class DataStore
     {
-        public List<CountryData> currentCountryData;
+        public List<CountryData> currentCountryData { get; set; }
 
 
 

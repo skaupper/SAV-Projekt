@@ -21,7 +21,7 @@ namespace projekt
             //dataStore = new DataStore();
         }
 
-        public void LoadAllData(Source source)
+        public void LoadAllData(Source source, string filename = "")
         {
             dataStore = new DataStore();
 
@@ -35,7 +35,7 @@ namespace projekt
                     break;
                 case Source.LOCALFILE:
                     try
-                    { dataStore.currentCountryData = fileHandler.LoadCurrentCountryData(); }
+                    { dataStore = fileHandler.LoadData(filename); }
                     catch (Exception e)
                     { throw e; }
                     break;
@@ -49,9 +49,17 @@ namespace projekt
         public void SaveAllData(string filename)
         {
             try
-            { fileHandler.SaveData(dataStore, filename); }
+            {
+                if (dataStore == null)
+                    throw new FieldAccessException(
+                        "Data cannot be saved, since it was not loaded yet.\n" +
+                        "Please call DataLoader.LoadAllData() first.");
+                fileHandler.SaveData(dataStore, filename);
+            }
             catch (Exception e)
-            { throw e; }
+            {
+                throw e;
+            }
         }
 
         //-- Query downloaded data --//

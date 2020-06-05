@@ -14,7 +14,12 @@
             <RowDefinition Height="0.7*"></RowDefinition>
             <RowDefinition Height="10*"></RowDefinition>
         </Grid.RowDefinitions>
-        <Button Grid.Row="0" Height="30" Width="80" Click="Button_Click">Load Data</Button>
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+            <Button Name="LoadAPIButton" Grid.Row="0" Height="30" Width="80" Margin="8" Click="LoadAPIButton_Click">Load API</Button>
+            <Button Name="LoadLocalButton" Grid.Row="0" Height="30" Width="80" Margin="8" Click="LoadLocalButton_Click">Load Local</Button>
+            <Button Name="SaveButton" Grid.Row="0" Height="30" Width="80" Margin="8" Click="SaveButton_Click">Save Data</Button>
+            <Button Name="ResetButton" Grid.Row="0" Height="30" Width="80" Margin="8" Click="ResetButton_Click">Reset Data</Button>
+        </StackPanel>
         <Label Grid.Row="1">Raw JSON text:</Label>
         <TextBox Grid.Row="2" Margin="5" Text="{Binding Path=ResponseRaw, Mode=OneWay}"></TextBox>
         <Label Grid.Row="3">Formatted in an awesome ListView (haha..)</Label>
