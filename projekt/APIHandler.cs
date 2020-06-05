@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 
@@ -18,10 +17,6 @@ namespace projekt
         public async Task<List<CountryData>> LoadCurrentCountryDataAsync()
         {
             var client = new RestClient(API_URL_CurrentCountryData);
-
-            // TODO: REMOVE THIS!!!!
-            // Simulate a long download duration...
-            Thread.Sleep(5000);
 
             /* NOTE: The API sometimes answers with two "Warning" strings, 
              *       as a prefix, ahead of the JSON string. In this case,
@@ -53,8 +48,8 @@ namespace projekt
                 json = response.Content;
             }
 
-            /* NOTE: At this point, we can assume that the JSON string is sane, and parse it. */            
-            List<CountryData> data = ApiJsonParser.CurrentCountryData(json);
+            /* NOTE: At this point, we can assume that the JSON string is sane, and parse it. */
+            List<CountryData> data = await ApiJsonParser.CurrentCountryData(json);
 
             return data;
         }

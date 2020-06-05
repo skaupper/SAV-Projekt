@@ -31,6 +31,7 @@ namespace projekt
                     try
                     {
                         dataStore.currentCountryData = await apiHandler.LoadCurrentCountryDataAsync();
+                        // TODO: get other data here
                     }
                     catch (Exception e)
                     { throw e; }

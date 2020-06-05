@@ -39,12 +39,11 @@ namespace projekt
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        private void LoadAPIButton_Click(object sender, RoutedEventArgs e)
+        private async void LoadAPIButton_Click(object sender, RoutedEventArgs e)
         {
             try
             {
-                dataLoader.LoadAllDataAsync(DataLoader.Source.API);
-                ResponseList = dataLoader.GetAllCountryCurrentData();
+                await dataLoader.LoadAllDataAsync(DataLoader.Source.API);
             }
             catch (FieldAccessException faex)
             {
@@ -92,17 +91,17 @@ namespace projekt
             }
         }
 
+        private void UpdateViewButton_Click(object sender, RoutedEventArgs e)
+        {
+            ResponseList = dataLoader.GetAllCountryCurrentData();
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("ResponseList"));
+        }
+
         private void ResetButton_Click(object sender, RoutedEventArgs e)
         {
             ResponseList.Clear();
             ResponseList = null;
 
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("ResponseList"));
-        }
-
-        private void UpdateViewButton_Click(object sender, RoutedEventArgs e)
-        {
-            ResponseList = dataLoader.GetAllCountryCurrentData();
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("ResponseList"));
         }
     }
