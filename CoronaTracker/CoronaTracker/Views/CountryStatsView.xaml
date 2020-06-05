@@ -30,8 +30,6 @@
         <Rectangle DockPanel.Dock="Top" Fill="DeepPink" Margin="15, 5, 15, 5" Height="70"/>
 
         <TextBlock DockPanel.Dock="Top" Margin="15, 5, 15, 0" Text="Overall Distribution:"/>
-        <Rectangle DockPanel.Dock="Top" Fill="Pink" Margin="15, 5, 15, 15">
-
-        </Rectangle>
+        <Rectangle DockPanel.Dock="Top" Fill="Pink" Margin="15, 5, 15, 15"/>
     </DockPanel>
 </UserControl>

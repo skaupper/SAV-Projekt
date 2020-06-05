@@ -6,9 +6,95 @@
              xmlns:local="clr-namespace:CoronaTracker.Views"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <Grid>
-	    <TextBlock Text="This is the Country Comparison Page" 
-	               FontWeight="Bold" FontSize="18"
-	               HorizontalAlignment="Center" VerticalAlignment="Center" />
-    </Grid>
+    <DockPanel>
+        <Grid DockPanel.Dock="Top" Margin="15, 5, 15, 0">
+		    <Grid.ColumnDefinitions>
+			    <ColumnDefinition Width="2*"></ColumnDefinition>
+			    <ColumnDefinition Width="2*"></ColumnDefinition>
+			    <ColumnDefinition Width="3*"></ColumnDefinition>
+
+		    </Grid.ColumnDefinitions>
+
+		    <Grid.RowDefinitions>
+			    <RowDefinition Height="2*"></RowDefinition>
+			    <RowDefinition Height="1*"></RowDefinition>
+		    </Grid.RowDefinitions>
+
+	        <ListView 
+		        Grid.Row="0"
+				Grid.Column="0"
+				Grid.RowSpan="3"
+		        Height="100"
+		        Margin="0, 5, 0, 5"
+		        ItemsSource="{Binding CountryList}" 
+		        SelectedItem="{Binding SelectedCountry}"
+		        ScrollViewer.HorizontalScrollBarVisibility="Hidden"
+		        ScrollViewer.VerticalScrollBarVisibility="Auto">
+		        <ListView.View>
+			        <GridView>
+				        <GridViewColumn Width="auto" Header="Selection" DisplayMemberBinding="{Binding CountryName}"/>
+			        </GridView>
+		        </ListView.View>
+	        </ListView>
+
+            <DockPanel Grid.Row="0" Grid.Column="1" Margin="10, 5, 10, 0">
+	            <TextBlock 
+		            DockPanel.Dock="Top" 
+		            HorizontalAlignment="Left"
+		            Text="Comparison Attribute:"/>
+	            <ComboBox 
+		            DockPanel.Dock="Top" 
+		            Margin="0, 5, 5, 5"/>
+            </DockPanel>
+
+            <DockPanel Grid.Row="0" Grid.Column="2" Margin="10, 5, 5, 0">
+                <DockPanel DockPanel.Dock="Left">
+	                <TextBlock 
+		                DockPanel.Dock="Top" 
+		                Text="From Date:"/>
+	                <DatePicker 
+		                HorizontalAlignment="Left"
+		                VerticalAlignment="Center"
+		                IsEnabled="True"
+		                Width="150"
+		                SelectedDate="{Binding dataTemplateBirthday}" 
+		                BorderThickness="1"/>
+                </DockPanel>
+                <DockPanel DockPanel.Dock="Left" Margin="10, 0, 0, 0">
+		            <TextBlock 
+			            DockPanel.Dock="Top" 
+						HorizontalAlignment="Left"
+			            Text="From Date:"/>
+		            <DatePicker 
+			            HorizontalAlignment="Left"
+			            VerticalAlignment="Center"
+			            IsEnabled="True"
+			            Width="150"
+			            SelectedDate="{Binding dataTemplateBirthday}" 
+			            BorderThickness="1"/>
+	            </DockPanel>
+            </DockPanel>
+
+            <DockPanel Grid.Column="2" Grid.Row="1" Margin="10, 5, 5, 0">
+	            <TextBlock 
+		            DockPanel.Dock="Left" 
+		            Text="Scale:" 
+		            Margin="0, 5, 0, 5"
+		            VerticalAlignment="Center"/>
+                <RadioButton 
+	                DockPanel.Dock="Left" 
+	                VerticalAlignment="Center" 
+	                Margin="5, 5, 0, 5"/>
+	            <TextBlock 
+		            DockPanel.Dock="Left" 
+		            Text="Linear" 
+		            VerticalAlignment="Center" 
+		            Margin="5, 5, 0, 5"/>
+            </DockPanel>
+
+
+        </Grid>
+
+	    <Rectangle DockPanel.Dock="Top" Fill="Pink" Margin="15, 5, 15, 15"/>
+    </DockPanel>
 </UserControl>
