@@ -71,8 +71,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="CountryData.cs" />
-    <Compile Include="DataDownloader.cs" />
-    <Compile Include="DataStructure.cs" />
+    <Compile Include="DataLoader.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>

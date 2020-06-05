@@ -7,10 +7,11 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace projekt
 {
-    public class DataDownloader
+    public class DataLoader
     {
         public string GetDataRaw(string url)
         {
@@ -26,11 +27,17 @@ namespace projekt
             var client = new RestClient(url);
 
             /* NOTE: The API sometimes answers with two "warning" strings, 
-             *       as a prefix, ahead of the JSON string. Therefore,
-             *       the JSON string is invalid and cannot be parsed.
+             *       as a prefix, ahead of the JSON string. In this case,
+             *       the response cannot be parsed directly.
+             *       We could implement a fix for this warning message. However, 
+             *       for now, falling back to the local file in this case. 
              */
             var response = client.Execute(new RestRequest());
 
+            if (response.Content.Contains("Warning"))
+            {
+                MessageBox.Show("The server response inclues an error.")
+            }
             /* TODO: Implement fallback logic for local file, in case JSON fix attempt,
              *       and/or API request failed.
              */

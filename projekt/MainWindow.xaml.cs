@@ -36,7 +36,7 @@ namespace projekt
 
         private void CallAPI()
         {
-            DataDownloader dl = new DataDownloader();
+            DataLoader dl = new DataLoader();
 
             string url = "https://api.thevirustracker.com/free-api?countryTotals=ALL";
 
