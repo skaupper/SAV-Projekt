@@ -41,6 +41,11 @@ namespace projekt
 
         private async void LoadAPIButton_Click(object sender, RoutedEventArgs e)
         {
+            /* TODO: 
+             *   Replace this ClickHandler with a Command 
+             *   (see SAV2 Uebung07 WPFClient.EvaluationViewModel)
+             *   --> automatically disables the button, while loading data
+             */
             try
             {
                 await dataLoader.LoadAllDataAsync(DataLoader.Source.API);
