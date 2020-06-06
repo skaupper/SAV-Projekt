@@ -10,5 +10,12 @@ namespace CoronaTracker.ViewModels
     class CountryComparisonViewModel : NotifyBase, IPageViewModel
     {
         public string Name { get { return "Country Comparision"; } }
+
+        #region external Methods
+        public void SetupPage()
+        {
+
+        }
+        #endregion external Methods
     }
 }
