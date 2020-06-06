@@ -133,5 +133,11 @@
   <ItemGroup>
     <Folder Include="Models\" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\projekt\projekt.csproj">
+      <Project>{329E4665-8573-4554-950D-20F6D0111D3D}</Project>
+      <Name>projekt</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
