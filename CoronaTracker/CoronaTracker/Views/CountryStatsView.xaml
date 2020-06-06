@@ -19,7 +19,20 @@
 		    </Grid.RowDefinitions>
 
             <TextBlock Grid.Row="0" Grid.Column="0" Text="Select Country:" Margin="0, 5, 5, 0"/>
-            <ComboBox Grid.Row="1" Grid.Column="0" Margin="0, 5, 5, 5"/>
+
+            <!-- Get rid of Combobox lag with big lists: https://stackoverflow.com/questions/8198645/wpf-combobox-performance-problems-by-binding-a-large-collections -->
+            <ComboBox 
+	            Grid.Row="1" 
+	            Grid.Column="0" 
+	            Margin="0, 5, 5, 5"
+	            ItemsSource="{Binding cbCountryNames}"
+	            SelectedItem="{Binding cbSelectedCountry}">
+                <ComboBox.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <VirtualizingStackPanel/>
+                    </ItemsPanelTemplate>
+                </ComboBox.ItemsPanel>
+            </ComboBox>
 
             <TextBlock Grid.Row="0" Grid.Column="1" Text="Scale:" Margin="15, 5, 0, 0"/>
             <RadioButton Grid.Row="1" Grid.Column="1" VerticalAlignment="Center" Margin="15, 0, 0, 0"/>
