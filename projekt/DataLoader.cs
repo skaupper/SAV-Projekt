@@ -91,5 +91,21 @@ namespace projekt
 
             return dataStore.currentCountryData;
         }
+
+        public List<string> GetAllCountrieNames()
+        {
+            if (dataStore == null)
+                throw new FieldAccessException(
+                    "Data cannot be accessed, since it was not loaded yet.\n" +
+                    "Please call DataLoader.LoadAllData() first.");
+
+            List<string> retList = new List<string>();
+            foreach (CountryData country in dataStore.currentCountryData)
+            {
+                retList.Add(country.Title);
+            }
+
+            return retList;
+        }
     }
 }
