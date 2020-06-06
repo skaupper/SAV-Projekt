@@ -6,9 +6,19 @@
              xmlns:local="clr-namespace:CoronaTracker.Views"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <Grid>
-	    <TextBlock Text="This is the Home Page" 
-	               FontWeight="Bold" FontSize="18"
-	               HorizontalAlignment="Center" VerticalAlignment="Center" />
-    </Grid>
+    <DockPanel>
+        <Button 
+	        DockPanel.Dock="Top"
+	        Content="Load Dataset from Web"
+	        Command="{Binding btnLoadFromWeb}"/>
+        <Button 
+	        DockPanel.Dock="Top"
+	        Content="Load Dataset local"
+	        Command="{Binding btnLoadLocal}"/>
+        <Button 
+	        DockPanel.Dock="Top"
+	        Content="Save Dataset"
+	        Command="{Binding btnSaveDataset}"/>
+        <Rectangle />
+    </DockPanel>
 </UserControl>
