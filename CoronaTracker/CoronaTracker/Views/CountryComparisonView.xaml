@@ -4,9 +4,13 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:CoronaTracker.Views"
+			 xmlns:infrastructure="clr-namespace:CoronaTracker.Infrastructure"
              xmlns:charts="clr-namespace:Chart_DevPrj;assembly=Chart_DevPrj"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
+	<UserControl.Resources>
+		<infrastructure:AxisScaleConverter x:Key="AxisScaleConverter" />
+	</UserControl.Resources>
     <DockPanel>
         <Grid DockPanel.Dock="Top" Margin="15, 5, 15, 0">
 		    <Grid.ColumnDefinitions>
@@ -85,11 +89,14 @@
                 <RadioButton 
 	                DockPanel.Dock="Left" 
 	                VerticalAlignment="Center" 
+	                IsChecked="{Binding Path=rbAxisScaleCCVM, Converter={StaticResource AxisScaleConverter}, ConverterParameter={x:Static charts:AxisScale.Linear}}"
+	                Content="Linear"
 	                Margin="5, 5, 0, 5"/>
-	            <TextBlock 
+	            <RadioButton 
 		            DockPanel.Dock="Left" 
-		            Text="Linear" 
 		            VerticalAlignment="Center" 
+		            IsChecked="{Binding Path=rbAxisScaleCCVM, Converter={StaticResource AxisScaleConverter}, ConverterParameter={x:Static charts:AxisScale.Linear}}"
+		            Content="Logarithmic"
 		            Margin="5, 5, 0, 5"/>
             </DockPanel>
 

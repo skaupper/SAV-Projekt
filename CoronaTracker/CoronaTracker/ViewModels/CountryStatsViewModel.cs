@@ -59,16 +59,16 @@ namespace CoronaTracker.ViewModels
             }
         }
 
-        private AxisScale _rbAxisScale = AxisScale.Linear;
-        public AxisScale rbAxisScale
+        private AxisScale _rbAxisScaleCSVM = AxisScale.Linear;
+        public AxisScale rbAxisScaleCSVM
         {
-            get { return _rbAxisScale; }
+            get { return _rbAxisScaleCSVM; }
             set
             {
-                if (value != _rbAxisScale)
+                if (value != _rbAxisScaleCSVM)
                 {
-                    _rbAxisScale = value;
-                    NotifyPropertyChanged("rbAxisScale");
+                    _rbAxisScaleCSVM = value;
+                    NotifyPropertyChanged("rbAxisScaleCSVM");
                 }
             }
         }

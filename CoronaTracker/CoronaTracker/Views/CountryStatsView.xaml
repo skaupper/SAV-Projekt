@@ -52,12 +52,12 @@
 		            Margin="3, 0, 0, 5"/>
                 <RadioButton 
 		            VerticalAlignment="Center" 
-		            IsChecked="{Binding Path=rbAxisScale, Converter={StaticResource AxisScaleConverter}, ConverterParameter={x:Static charts:AxisScale.Linear}}"
+		            IsChecked="{Binding Path=rbAxisScaleCSVM, Converter={StaticResource AxisScaleConverter}, ConverterParameter={x:Static charts:AxisScale.Linear}}"
 		            Content="Linear"
 		            Margin="0, 0, 0, 5"/>
 	            <RadioButton
 		            VerticalAlignment="Center" 
-		            IsChecked="{Binding Path=rbAxisScale, Converter={StaticResource AxisScaleConverter}, ConverterParameter={x:Static charts:AxisScale.Logarithmic}}"
+		            IsChecked="{Binding Path=rbAxisScaleCSVM, Converter={StaticResource AxisScaleConverter}, ConverterParameter={x:Static charts:AxisScale.Logarithmic}}"
 		            Content="Logarithmic"/>
             </StackPanel>
             
