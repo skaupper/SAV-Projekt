@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
+using System.Data;
 using System.Diagnostics;
 using System.Linq;
 using System.Runtime.CompilerServices;
@@ -411,6 +412,11 @@ namespace Chart_DevPrj
         private void UpdateDataSets()
         {
             SeriesCollection.Clear();
+
+            if(DataSets == null)
+            {
+                return;
+            }
 
             foreach (var dataSet in DataSets)
             {
