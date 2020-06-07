@@ -20,6 +20,7 @@ namespace CoronaTracker.ViewModels
         public string Name { get { return "Country Comparision"; } }
         public ICommand btnAddElement { get; protected set; }
         public ICommand btnRemoveElements { get; protected set; }
+        public ICommand dgCellEditEndingCommand { get; protected set; }
         #endregion Fields
 
         #region CTOR
@@ -58,6 +59,7 @@ namespace CoronaTracker.ViewModels
         {
             btnAddElement = new RelayCommand(param => AddElementToList());
             btnRemoveElements = new RelayCommand(param => RemoveElementsFromList());
+            dgCellEditEndingCommand = new RelayCommand(param => DataGridCellWasEdited());
         }
         #endregion Init
 
@@ -159,9 +161,30 @@ namespace CoronaTracker.ViewModels
                 }
             }
         }
+        private string _yTitleCCVM = null;
+        public string YTitleCCVM
+        {
+            get { return _yTitleCCVM; }
+            set
+            {
+                if (value != _yTitleCCVM)
+                {
+                    _yTitleCCVM = value;
+                    NotifyPropertyChanged("YTitleCCVM");
+                }
+            }
+        }
         #endregion Data Bidnings
 
         #region Internal Methods
+        private void UpdateChartTitle()
+        {
+            YTitleCCVM = "";
+            foreach (GraphSelection item in cdgCountryList)
+            {
+                YTitleCCVM += item.Name + "\n";
+            }
+        }
         #endregion Internal Methods
 
         #region External Methods
@@ -187,6 +210,8 @@ namespace CoronaTracker.ViewModels
                 tmp.Name = cbAvailableCountries[0];
             }
             cdgCountryList.Add(tmp);
+
+            UpdateChartTitle();
         }
 
         /// <summary>
@@ -208,6 +233,10 @@ namespace CoronaTracker.ViewModels
             {
                 cdgCountryList.Remove(item);
             }
+        }
+        private void DataGridCellWasEdited()
+        {
+            UpdateChartTitle();
         }
         #endregion Button Commands
     }

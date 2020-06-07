@@ -7,6 +7,7 @@
 			 xmlns:infrastructure="clr-namespace:CoronaTracker.Infrastructure"
              xmlns:models="clr-namespace:CoronaTracker.ViewModels"
              xmlns:charts="clr-namespace:Chart_DevPrj;assembly=Chart_DevPrj"
+             xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
 	<UserControl.Resources>
@@ -75,13 +76,23 @@
 				AutoGenerateColumns="False"
 				IsReadOnly="False"
 				CanUserAddRows="False"
-				ItemsSource="{Binding cdgCountryList}" 
+				ItemsSource="{Binding cdgCountryList, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, NotifyOnSourceUpdated=True, NotifyOnTargetUpdated=True}" 
 				SelectionMode="Extended"
 				SelectedItemsList="{Binding cdgSelectedCountry, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
 				ColumnWidth="*">
-				<DataGrid.Columns>
+				<i:Interaction.Triggers>
+                    <i:EventTrigger EventName="CellEditEnding">
+						<i:InvokeCommandAction Command="{Binding dgCellEditEndingCommand}"/>
+					</i:EventTrigger>
+				</i:Interaction.Triggers>
+                <DataGrid.Columns>
                     <DataGridTemplateColumn Header="Country">
-                        <DataGridTemplateColumn.CellTemplate>
+	                    <DataGridTemplateColumn.CellTemplate>
+		                    <DataTemplate>
+			                    <TextBlock Text="{Binding Name}"/>
+		                    </DataTemplate>
+	                    </DataGridTemplateColumn.CellTemplate>
+                        <DataGridTemplateColumn.CellEditingTemplate>
                             <DataTemplate>
                                 <ComboBox 
 	                                ItemsSource="{Binding Source={StaticResource SelectableCountries}}" 
@@ -94,7 +105,7 @@
 	                                </ComboBox.ItemsPanel>
                                 </ComboBox>
                             </DataTemplate>
-                        </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn.CellEditingTemplate>
                     </DataGridTemplateColumn>
 				</DataGrid.Columns>
 			</infrastructure:CustomDataGrid>
@@ -176,8 +187,8 @@
 	    <charts:BasicChartArea 
 			Margin="15, 5, 15, 15"
 		    x:Name="Chart" DataSets="{Binding DataSetsCCVM}" 
-		    ScaleX="{Binding YScale}" 
+		    ScaleX="{Binding rbAxisScaleCCVM}" 
 		    UsedChartType="{Binding UsedChartType}" 
-		    TitleX="X" TitleY="{Binding YTitle}"></charts:BasicChartArea>
+		    TitleX="X" TitleY="{Binding YTitleCCVM}"></charts:BasicChartArea>
     </DockPanel>
 </UserControl>
