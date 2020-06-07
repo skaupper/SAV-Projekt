@@ -175,7 +175,7 @@
 
 	    <charts:BasicChartArea 
 			Margin="15, 5, 15, 15"
-		    x:Name="Chart" DataSets="{Binding DataSets}" 
+		    x:Name="Chart" DataSets="{Binding DataSetsCCVM}" 
 		    ScaleX="{Binding YScale}" 
 		    UsedChartType="{Binding UsedChartType}" 
 		    TitleX="X" TitleY="{Binding YTitle}"></charts:BasicChartArea>

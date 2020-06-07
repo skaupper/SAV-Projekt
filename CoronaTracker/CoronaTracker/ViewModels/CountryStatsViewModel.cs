@@ -2,6 +2,7 @@
 using CoronaTracker.Infrastructure;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
@@ -20,6 +21,27 @@ namespace CoronaTracker.ViewModels
         public CountryStatsViewModel()
         {
             InitDataBindings();
+
+            DataSetsCSVM = new BindingList<ObservableCollection<DataElement>>{
+                new ObservableCollection<DataElement>()
+                {
+                    new DataElement
+                    {
+                        X=1,
+                        Y=2
+                    },
+                    new DataElement
+                    {
+                        X=10,
+                        Y=4
+                    },
+                    new DataElement
+                    {
+                        X=100,
+                        Y=40
+                    }
+                }
+            };
         }
         #endregion CTOR
 
@@ -54,11 +76,16 @@ namespace CoronaTracker.ViewModels
                 {
                     _cbSelectedCountry = value;
                     NotifyPropertyChanged("cbSelectedCountry");
+                    NotifyPropertyChanged("YTitleCSVM");
                     SelectedCountryChanged();
                 }
             }
         }
-
+        // can be bound directly to the selected country
+        public string YTitleCSVM
+        {
+            get { return _cbSelectedCountry; }
+        }
         private AxisScale _rbAxisScaleCSVM = AxisScale.Linear;
         public AxisScale rbAxisScaleCSVM
         {
@@ -72,13 +99,24 @@ namespace CoronaTracker.ViewModels
                 }
             }
         }
+        private BindingList<ObservableCollection<DataElement>> _dataSetsCSVM;
+        public BindingList<ObservableCollection<DataElement>> DataSetsCSVM
+        {
+            get { return _dataSetsCSVM; }
+            set
+            {
+                if (value != _dataSetsCSVM)
+                {
+                    _dataSetsCSVM = value;
+                    NotifyPropertyChanged("DataSetsCSVM");
+                }
+            }
+        }
         #endregion Data Bindings
 
         #region internal Methods
         private void SelectedCountryChanged()
         {
-
-
         }
         #endregion internal Methods
 

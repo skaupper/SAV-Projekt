@@ -4,6 +4,7 @@ using CoronaTracker.Models;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
@@ -25,6 +26,27 @@ namespace CoronaTracker.ViewModels
         public CountryComparisonViewModel()
         {
             InitButtons();
+
+            DataSetsCCVM = new BindingList<ObservableCollection<DataElement>>{
+                new ObservableCollection<DataElement>()
+                {
+                    new DataElement
+                    {
+                        X=1,
+                        Y=2
+                    },
+                    new DataElement
+                    {
+                        X=10,
+                        Y=400
+                    },
+                    new DataElement
+                    {
+                        X=100,
+                        Y=40
+                    }
+                }
+            };
         }
         #endregion CTOR
 
@@ -121,6 +143,19 @@ namespace CoronaTracker.ViewModels
                 if (value != _cbAvailableCountries)
                 {
                     _cbAvailableCountries = value;
+                }
+            }
+        }
+        BindingList<ObservableCollection<DataElement>> _dataSetsCCVM;
+        public BindingList<ObservableCollection<DataElement>> DataSetsCCVM
+        {
+            get { return _dataSetsCCVM; }
+            set
+            {
+                if (value != _dataSetsCCVM)
+                {
+                    _dataSetsCCVM = value;
+                    NotifyPropertyChanged("DataSetsCCVM");
                 }
             }
         }

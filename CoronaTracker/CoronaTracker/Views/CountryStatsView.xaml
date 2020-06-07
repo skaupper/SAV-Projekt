@@ -69,9 +69,9 @@
         <TextBlock DockPanel.Dock="Top" Margin="15, 5, 15, 0" Text="Overall Distribution:"/>
         <charts:BasicChartArea 
 	        Margin="15, 5, 15, 15"
-	        x:Name="Chart" DataSets="{Binding DataSets}" 
-	        ScaleX="{Binding YScale}" 
+	        x:Name="Chart" DataSets="{Binding DataSetsCSVM}" 
+	        ScaleX="{Binding rbAxisScaleCSVM}" 
 	        UsedChartType="{Binding UsedChartType}" 
-	        TitleX="X" TitleY="{Binding YTitle}"></charts:BasicChartArea>
+	        TitleX="X" TitleY="{Binding YTitleCSVM}"></charts:BasicChartArea>
     </DockPanel>
 </UserControl>
