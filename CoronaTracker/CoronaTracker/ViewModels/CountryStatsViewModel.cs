@@ -1,4 +1,5 @@
-﻿using CoronaTracker.Infrastructure;
+﻿using Chart_DevPrj;
+using CoronaTracker.Infrastructure;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -54,6 +55,20 @@ namespace CoronaTracker.ViewModels
                     _cbSelectedCountry = value;
                     NotifyPropertyChanged("cbSelectedCountry");
                     SelectedCountryChanged();
+                }
+            }
+        }
+
+        private AxisScale _rbAxisScale = AxisScale.Linear;
+        public AxisScale rbAxisScale
+        {
+            get { return _rbAxisScale; }
+            set
+            {
+                if (value != _rbAxisScale)
+                {
+                    _rbAxisScale = value;
+                    NotifyPropertyChanged("rbAxisScale");
                 }
             }
         }
