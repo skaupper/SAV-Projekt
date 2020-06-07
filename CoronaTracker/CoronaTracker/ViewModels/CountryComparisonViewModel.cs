@@ -53,7 +53,7 @@ namespace CoronaTracker.ViewModels
                 }
             }
         }
-        private DateTime _dpFromDate = DateTime.Now;
+        private DateTime _dpFromDate = DateTime.Now.Date;
         public DateTime dpFromDate
         {
             get { return _dpFromDate; }
@@ -66,7 +66,7 @@ namespace CoronaTracker.ViewModels
                 }
             }
         }
-        private DateTime _dpToDate = DateTime.Now;
+        private DateTime _dpToDate = DateTime.Now.Date;
         public DateTime dpToDate
         {
             get { return _dpToDate; }
@@ -74,8 +74,15 @@ namespace CoronaTracker.ViewModels
             {
                 if (value != _dpToDate)
                 {
-                    _dpToDate = value;
-                    NotifyPropertyChanged("dpToDate");
+                    if(value.Date >= dpFromDate.Date)
+                    {
+                        _dpToDate = value;
+                        NotifyPropertyChanged("dpToDate");
+                    }
+                    else
+                    {
+                        MessageBox.Show("The To-Date msut be later than the From-Date! Please check your input.");
+                    }
                 }
             }
         }
@@ -120,7 +127,6 @@ namespace CoronaTracker.ViewModels
         #endregion Data Bidnings
 
         #region Internal Methods
-
         #endregion Internal Methods
 
         #region External Methods
