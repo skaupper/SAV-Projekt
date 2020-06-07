@@ -56,7 +56,9 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Infrastructure\AxisScaleConverter.cs" />
+    <Compile Include="Infrastructure\CustomDataGrid.cs" />
     <Compile Include="Infrastructure\IPageViewModel.cs" />
+    <Compile Include="Models\GraphSelection.cs" />
     <Compile Include="ViewModels\CountryComparisonViewModel.cs" />
     <Compile Include="ViewModels\CountryStatsViewModel.cs" />
     <Compile Include="ViewModels\WorldMapViewModel.cs" />
@@ -131,9 +133,7 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Models\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <ProjectReference Include="..\..\Chart_DevPrj\Chart_DevPrj\Chart_DevPrj.csproj">
       <Project>{3180c787-8ec5-444e-a027-9687d36d3be7}</Project>
