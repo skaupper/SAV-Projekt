@@ -57,9 +57,40 @@ namespace CoronaTracker.ViewModels
         }
         #endregion Init
 
+        #region Data Bindings
+        private bool _connectionState = false;
+        public bool ConnectionState
+        {
+            get { return _connectionState; }
+            set
+            {
+                if(value != _connectionState)
+                {
+                    _connectionState = value;
+                    OnPropertyChanged("ConnectionState");
+                    OnPropertyChanged("InvertedConnectionState");
+                }
+            }
+        }
+        public bool InvertedConnectionState
+        {
+            get { return !_connectionState; }
+            set
+            {
+                if (value == _connectionState)
+                {
+                    _connectionState = !value;
+                    OnPropertyChanged("InvertedConnectionState");
+                    OnPropertyChanged("ConnectionState");
+                }
+            }
+        }
+        #endregion Data Bindings
+
         #region Internal Methods
         private void TriggerPageSetups()
         {
+            SetupPage();
             countryStatsViewModel.SetupPage();
             countryComparisonViewModel.SetupPage();
             worldMapViewModel.SetupPage();
@@ -69,7 +100,7 @@ namespace CoronaTracker.ViewModels
         #region external Methods
         public void SetupPage()
         {
-
+            ConnectionState = true;
         }
         #endregion external Methods
 
