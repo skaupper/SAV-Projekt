@@ -30,7 +30,7 @@ namespace CoronaTracker.Models.Helper
             return response.Data;
         }
 
-        public CountryTimeline LoadCountryTimelineAsync(string countryCode)
+        public async Task<CountryTimeline> LoadCountryTimelineAsync(string countryCode)
         {
             const string api_url_c = "https://api.covid19api.com/";
 
@@ -40,7 +40,7 @@ namespace CoronaTracker.Models.Helper
             var request = new RestRequest(api_endpoint);
 
             // Perform API request
-            var response = client.Execute<List<Day>>(request);
+            var response = await client.ExecuteAsync<List<Day>>(request);
             if (response.ErrorException != null)
             {
                 throw new Exception("Error retreiving response from API.\n" +

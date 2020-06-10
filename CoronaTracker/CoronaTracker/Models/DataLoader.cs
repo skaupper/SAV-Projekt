@@ -35,7 +35,7 @@ namespace CoronaTracker.Models
                         dataStore.Accumulated = await apiHandler.LoadCurrentCountryDataAsync();
 
                         // Load timeline for each country, that was loaded with above command
-                        DownloadTimelineHelperAsync();
+                        await DownloadTimelineHelperAsync();
                     }
                     catch (Exception e)
                     { throw e; }
@@ -53,13 +53,17 @@ namespace CoronaTracker.Models
             }
         }
 
-        private void DownloadTimelineHelperAsync()
+        private async Task DownloadTimelineHelperAsync()
         {
+            // Create a list of tasks
             var availableCountries = this.GetListOfProperty(CountryProperty.CODE);
 
-            List<CountryTimeline> results = new List<CountryTimeline>();
+            List<Task<CountryTimeline>> taskList = new List<Task<CountryTimeline>>();
             foreach (var country in availableCountries)
-                results.Add(apiHandler.LoadCountryTimelineAsync(country));
+                taskList.Add(apiHandler.LoadCountryTimelineAsync(country));
+
+            // Await all in parallel
+            var results = await Task.WhenAll(taskList);
 
             // Add the results to the DataStore
             dataStore.Timeline = new TimelineData
