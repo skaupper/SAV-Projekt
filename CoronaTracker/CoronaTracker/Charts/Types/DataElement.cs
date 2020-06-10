@@ -1,8 +1,10 @@
-﻿namespace CoronaTracker.Charts.Types
+﻿using System;
+
+namespace CoronaTracker.Charts.Types
 {
     public class DataElement
     {
-        public double X { get; set; }
+        public DateTime X { get; set; }
         public double Y { get; set; }
     };
 }

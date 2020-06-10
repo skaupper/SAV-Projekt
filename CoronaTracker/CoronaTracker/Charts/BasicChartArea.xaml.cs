@@ -27,7 +27,7 @@ using System.Windows.Shapes;
 
 namespace CoronaTracker.Charts
 {
-    using DataSetsType = BindingList<ObservableCollection<DataElement>>;
+    using DataSetsType = BindingList<Types.DataSet>;
 
     /// <summary>
     /// Interaktionslogik für UserControl1.xaml
@@ -51,8 +51,7 @@ namespace CoronaTracker.Charts
 
         #region Private Members
 
-        private AutoResetEvent updatingChartEvent;
-        private CartesianMapper<ObservablePoint> mapper;
+        private CartesianMapper<DataElement> mapper;
 
         #endregion
 
@@ -60,7 +59,6 @@ namespace CoronaTracker.Charts
         #region Properties
 
         private SeriesCollection seriesCollection;
-        private bool updatingChart;
         private bool disableAnimations;
         private AxesCollection axisX;
         private AxesCollection axisY;
@@ -155,23 +153,6 @@ namespace CoronaTracker.Charts
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("SeriesCollection"));
             }
         }
-        public bool UpdatingChart
-        {
-            get => updatingChart;
-            set
-            {
-                if (value)
-                {
-                    updatingChartEvent.WaitOne();
-                }
-                else
-                {
-                    updatingChartEvent.Set();
-                }
-                updatingChart = value;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("UpdatingChart"));
-            }
-        }
         public bool DisableAnimations
         {
             get => disableAnimations;
@@ -248,6 +229,11 @@ namespace CoronaTracker.Charts
         private static void Static_TitleX_Changed(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             var chartArea = d as BasicChartArea;
+            if (chartArea?.Chart?.AxisX == null)
+            {
+                return;
+            }
+
             if (chartArea.Chart.AxisX.Count > 0)
             {
                 chartArea.Chart.AxisX[0].Title = chartArea.TitleX;
@@ -257,6 +243,11 @@ namespace CoronaTracker.Charts
         private static void Static_TitleY_Changed(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             var chartArea = d as BasicChartArea;
+            if (chartArea?.Chart?.AxisY == null)
+            {
+                return;
+            }
+
             if (chartArea.Chart.AxisY.Count > 0)
             {
                 chartArea.Chart.AxisY[0].Title = chartArea.TitleY;
@@ -295,8 +286,7 @@ namespace CoronaTracker.Charts
 
         public BasicChartArea()
         {
-            updatingChartEvent = new AutoResetEvent(true);
-            mapper = new CartesianMapper<ObservablePoint>();
+            mapper = new CartesianMapper<DataElement>();
 
             SeriesCollection = new SeriesCollection(mapper);
             AxisX = new AxesCollection();
@@ -314,30 +304,22 @@ namespace CoronaTracker.Charts
 
         public void CallUpdateDataSets()
         {
-            UpdatingChart = true;
             UpdateDataSets();
-            UpdatingChart = false;
         }
 
         public void CallCreateAllAxes()
         {
-            UpdatingChart = true;
             CreateAllAxes();
-            UpdatingChart = false;
         }
 
         public void CallCreateAxisX()
         {
-            UpdatingChart = true;
             CreateAxis(AxisX, ScaleX, TitleX);
-            UpdatingChart = false;
         }
 
         public void CallCreateAxisY()
         {
-            UpdatingChart = true;
             CreateAxis(AxisY, ScaleY, TitleY);
-            UpdatingChart = false;
         }
 
         #endregion
@@ -368,7 +350,8 @@ namespace CoronaTracker.Charts
                     }
                     else if (coll == AxisX)
                     {
-                        mapper.X(p => p.X);
+                        mapper.X(p => p.X.Ticks / TimeSpan.FromDays(1).Ticks);
+                        ax.LabelFormatter = value => new DateTime((long)(value * TimeSpan.FromDays(1).Ticks)).ToString("d");
                     }
                     else
                     {
@@ -391,11 +374,15 @@ namespace CoronaTracker.Charts
 
                     if (coll == AxisY)
                     {
+                        if (UsedChartType == ChartType.StackedBars)
+                        {
+                            throw new ArgumentException("The logarithmic Y axis is not compatible with the chart type StackedBars!");
+                        }
                         mapper.Y(p => (p.Y > 0) ? Math.Log(p.Y, LogBase) : 0);
                     }
                     else if (coll == AxisX)
                     {
-                        mapper.X(p => (p.X > 0) ? Math.Log(p.X, LogBase) : 0);
+                        throw new ArgumentException("Logarithmic X axes are not supported!");
                     }
                     else
                     {
@@ -434,25 +421,13 @@ namespace CoronaTracker.Charts
                     case ChartType.StackedBars: series = new StackedColumnSeries(); break;
                     case ChartType.Lines: series = new LineSeries(); break;
                 }
-
-
-                // Transform DataElements into ObservablePoints
-                var chartValues = new ChartValues<ObservablePoint>();
-                foreach (var p in dataSet)
-                {
-                    chartValues.Add(new ObservablePoint
-                    {
-                        X = p.X,
-                        Y = p.Y
-                    });
-                }
-                series.Values = chartValues;
+                
+                series.Title = dataSet.Name;
+                series.Values = new ChartValues<DataElement>(dataSet.Values);
 
                 // Add the series to the chart
                 SeriesCollection.Add(series);
             }
-
-            //CreateAllAxes();
         }
 
         #endregion 

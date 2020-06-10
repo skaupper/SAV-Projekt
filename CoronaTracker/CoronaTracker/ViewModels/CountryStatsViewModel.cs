@@ -80,8 +80,8 @@ namespace CoronaTracker.ViewModels
                 }
             }
         }
-        private BindingList<ObservableCollection<DataElement>> _dataSetsCSVM;
-        public BindingList<ObservableCollection<DataElement>> DataSetsCSVM
+        private BindingList<DataSet> _dataSetsCSVM;
+        public BindingList<DataSet> DataSetsCSVM
         {
             get { return _dataSetsCSVM; }
             set
@@ -110,56 +110,38 @@ namespace CoronaTracker.ViewModels
                 cbSelectedCountry = cbCountryNames.FirstOrDefault();
 
                 // TODO: move to an appropriate event
-                DataSetsCSVM = new BindingList<ObservableCollection<DataElement>>();
-
-                var tmp = new ObservableCollection<DataElement>();
+                DataSetsCSVM = new BindingList<DataSet>();
 
 
-                var timeline = dataLoader.GetCountryTimeline("AT");
-                var daylist = timeline.DayList;
+                var daylist = dataLoader.GetCountryTimeline("AT").DayList;
 
-                foreach (var day in daylist)
+
+                var transformed = from day in daylist select new DataElement { X = day.Date, Y = day.Details.TotalCases };
+                DataSetsCSVM.Add(new DataSet
                 {
-                    tmp.Add(new DataElement()
-                    {
-                        X = day.Date.ToBinary(),
-                        Y = day.Details.TotalCases
-                    });
-                }
+                    Name = "Total Cases",
+                    Values = new ObservableCollection<DataElement>(transformed)
+                });
 
-                DataSetsCSVM.Add(tmp);
-
-                tmp = new ObservableCollection<DataElement>();
-
-                foreach (var day in daylist)
+                transformed = from day in daylist select new DataElement { X = day.Date, Y = day.Details.TotalRecoveries };
+                DataSetsCSVM.Add(new DataSet
                 {
-                    tmp.Add(new DataElement()
-                    {
-                        X = day.Date.ToBinary(),
-                        Y = day.Details.TotalDeaths
-                    });
-                }
+                    Name = "Total Recoveries",
+                    Values = new ObservableCollection<DataElement>(transformed)
+                });
 
-                DataSetsCSVM.Add(tmp);
-
-                tmp = new ObservableCollection<DataElement>();
-
-                foreach (var day in daylist)
+                transformed = from day in daylist select new DataElement { X = day.Date, Y = day.Details.TotalDeaths };
+                DataSetsCSVM.Add(new DataSet
                 {
-                    tmp.Add(new DataElement()
-                    {
-                        X = day.Date.ToBinary(),
-                        Y = day.Details.TotalRecoveries
-                    });
-                }
-
-                DataSetsCSVM.Add(tmp);
+                    Name = "Total Deaths",
+                    Values = new ObservableCollection<DataElement>(transformed)
+                });
             }
             catch (FieldAccessException)
             {
                 // Data not loaded yet
             }
-            
+
         }
         #endregion external Methods
 
