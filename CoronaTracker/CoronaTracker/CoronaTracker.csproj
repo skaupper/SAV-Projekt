@@ -187,10 +187,6 @@
       <Project>{3180c787-8ec5-444e-a027-9687d36d3be7}</Project>
       <Name>Chart_DevPrj</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\projekt\projekt.csproj">
-      <Project>{329E4665-8573-4554-950D-20F6D0111D3D}</Project>
-      <Name>projekt</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Connected Services\" />
