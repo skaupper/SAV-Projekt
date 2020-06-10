@@ -4,7 +4,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Windows;
 
 namespace CoronaTracker.Models
 {
@@ -36,7 +35,7 @@ namespace CoronaTracker.Models
                         dataStore.Accumulated = await apiHandler.LoadCurrentCountryDataAsync();
 
                         // Load timeline for each country, that was loaded with above command
-                        await DownloadTimelineHelperAsync();
+                        DownloadTimelineHelperAsync();
                     }
                     catch (Exception e)
                     { throw e; }
@@ -54,17 +53,13 @@ namespace CoronaTracker.Models
             }
         }
 
-        private async Task DownloadTimelineHelperAsync()
+        private void DownloadTimelineHelperAsync()
         {
-            // Create a list of tasks
-            List<Task<CountryTimeline>> taskList = new List<Task<CountryTimeline>>();
             var availableCountries = this.GetListOfProperty(CountryProperty.CODE);
 
+            List<CountryTimeline> results = new List<CountryTimeline>();
             foreach (var country in availableCountries)
-                taskList.Add(apiHandler.LoadCountryTimelineAsync(country));
-            
-            // Await all tasks in parallel
-            var results = await Task.WhenAll(taskList);
+                results.Add(apiHandler.LoadCountryTimelineAsync(country));
 
             // Add the results to the DataStore
             dataStore.Timeline = new TimelineData
@@ -73,7 +68,7 @@ namespace CoronaTracker.Models
             };
             foreach (var result in results)
             {
-                string countrycode = result.Days.First().CountryCode;
+                string countrycode = result.Days.First().Country;
                 if (dataStore.Timeline.Countries.ContainsKey(countrycode))
                     throw new Exception($"{countrycode} already exists in Dict!!");
                 else

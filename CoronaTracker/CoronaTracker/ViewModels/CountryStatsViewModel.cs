@@ -138,7 +138,7 @@ namespace CoronaTracker.ViewModels
                 // TODO: move to an appropriate event
                 DataSetsCSVM = new BindingList<DataSet>();
 
-                var daylist = dataLoader.GetCountryTimeline("austria").Days;
+                var daylist = dataLoader.GetCountryTimeline("Austria").Days;
 
                 var transformed = from day in daylist select new DataElement { X = day.Date, Y = day.Confirmed };
                 DataSetsCSVM.Add(new DataSet
