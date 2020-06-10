@@ -55,6 +55,25 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Infrastructure\IPageViewModel.cs" />
+    <Compile Include="ViewModels\CountryComparisonViewModel.cs" />
+    <Compile Include="ViewModels\CountryStatsViewModel.cs" />
+    <Compile Include="ViewModels\WorldMapViewModel.cs" />
+    <Compile Include="Views\WorldMapView.xaml.cs">
+      <DependentUpon>WorldMapView.xaml</DependentUpon>
+    </Compile>
+    <Page Include="Views\CountryComparisonView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\CountryStatsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\HomeView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\MainView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -65,11 +84,25 @@
     </Compile>
     <Compile Include="Infrastructure\NotifyBase.cs" />
     <Compile Include="Infrastructure\RelayCommand.cs" />
+    <Compile Include="ViewModels\HomeViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
+    <Compile Include="Views\CountryComparisonView.xaml.cs">
+      <DependentUpon>CountryComparisonView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\CountryStatsView.xaml.cs">
+      <DependentUpon>CountryStatsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\HomeView.xaml.cs">
+      <DependentUpon>HomeView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\MainView.xaml.cs">
       <DependentUpon>MainView.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="Views\WorldMapView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">

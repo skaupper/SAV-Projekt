@@ -24,7 +24,11 @@ namespace CoronaTracker
             MainView mainView = new MainView();
 
             // create all necessary viewmodels with coresponding links to other viewmodels if needed
-            MainViewModel mainViewModel = new MainViewModel();
+            HomeViewModel homeViewModel = new HomeViewModel();
+            CountryStatsViewModel countryStatsViewModel = new CountryStatsViewModel();
+            CountryComparisonViewModel countryComparisonViewModel = new CountryComparisonViewModel();
+            WorldMapViewModel worldMapViewModel = new WorldMapViewModel();
+            MainViewModel mainViewModel = new MainViewModel(homeViewModel, countryStatsViewModel, countryComparisonViewModel, worldMapViewModel);
 
             //Set the data context to the view model, which handels the bindings and show the application window
             mainView.DataContext = mainViewModel;
