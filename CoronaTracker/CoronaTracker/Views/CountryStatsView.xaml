@@ -4,9 +4,14 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:CoronaTracker.Views"
+			 xmlns:infrastructure="clr-namespace:CoronaTracker.Infrastructure"
+             xmlns:charts="clr-namespace:Chart_DevPrj;assembly=Chart_DevPrj"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <DockPanel>
+    <UserControl.Resources>
+        <infrastructure:AxisScaleConverter x:Key="AxisScaleConverter" />
+    </UserControl.Resources>
+	<DockPanel>
 	    <Grid DockPanel.Dock="Top" Margin="15, 5, 15, 0">
 		    <Grid.ColumnDefinitions>
 			    <ColumnDefinition Width="1*"></ColumnDefinition>
@@ -19,17 +24,54 @@
 		    </Grid.RowDefinitions>
 
             <TextBlock Grid.Row="0" Grid.Column="0" Text="Select Country:" Margin="0, 5, 5, 0"/>
-            <ComboBox Grid.Row="1" Grid.Column="0" Margin="0, 5, 5, 5"/>
 
-            <TextBlock Grid.Row="0" Grid.Column="1" Text="Scale:" Margin="15, 5, 0, 0"/>
-            <RadioButton Grid.Row="1" Grid.Column="1" VerticalAlignment="Center" Margin="15, 0, 0, 0"/>
-            <TextBlock Grid.Row="1" Grid.Column="1" Text="Linear" VerticalAlignment="Center" Margin="35, 0, 0, 1"/>
-	    </Grid>
+            <!-- Get rid of Combobox lag with big lists: https://stackoverflow.com/questions/8198645/wpf-combobox-performance-problems-by-binding-a-large-collections -->
+            <ComboBox 
+	            Grid.Row="1" 
+	            Grid.Column="0" 
+	            Margin="0, 5, 5, 5"
+	            ItemsSource="{Binding cbCountryNames}"
+	            SelectedItem="{Binding cbSelectedCountry}">
+                <ComboBox.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <VirtualizingStackPanel/>
+                    </ItemsPanelTemplate>
+                </ComboBox.ItemsPanel>
+            </ComboBox>
+
+            <StackPanel
+	            Grid.Row="0"
+	            Grid.Column="1"
+				Grid.RowSpan="2"
+	            VerticalAlignment="Center"
+	            Margin="15, 5, 0, 0">
+	            <TextBlock 
+		            Grid.Row="0" 
+		            Grid.Column="1" 
+		            Text="Scale:"
+		            Margin="3, 0, 0, 5"/>
+                <RadioButton 
+		            VerticalAlignment="Center" 
+		            IsChecked="{Binding Path=rbAxisScaleCSVM, Converter={StaticResource AxisScaleConverter}, ConverterParameter={x:Static charts:AxisScale.Linear}}"
+		            Content="Linear"
+		            Margin="0, 0, 0, 5"/>
+	            <RadioButton
+		            VerticalAlignment="Center" 
+		            IsChecked="{Binding Path=rbAxisScaleCSVM, Converter={StaticResource AxisScaleConverter}, ConverterParameter={x:Static charts:AxisScale.Logarithmic}}"
+		            Content="Logarithmic"/>
+            </StackPanel>
+            
+        </Grid>
 
         <TextBlock DockPanel.Dock="Top" Margin="15, 5, 15, 0" Text="Distribution Today:"/>
         <Rectangle DockPanel.Dock="Top" Fill="DeepPink" Margin="15, 5, 15, 5" Height="70"/>
 
         <TextBlock DockPanel.Dock="Top" Margin="15, 5, 15, 0" Text="Overall Distribution:"/>
-        <Rectangle DockPanel.Dock="Top" Fill="Pink" Margin="15, 5, 15, 15"/>
+        <charts:BasicChartArea 
+	        Margin="15, 5, 15, 15"
+	        x:Name="Chart" DataSets="{Binding DataSetsCSVM}" 
+	        ScaleX="{Binding rbAxisScaleCSVM}" 
+	        UsedChartType="{Binding UsedChartType}" 
+	        TitleX="X" TitleY="{Binding YTitleCSVM}"></charts:BasicChartArea>
     </DockPanel>
 </UserControl>

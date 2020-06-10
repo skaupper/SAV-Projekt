@@ -1,14 +1,140 @@
-﻿using CoronaTracker.Infrastructure;
+﻿using Chart_DevPrj;
+using CoronaTracker.Infrastructure;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Data;
 
 namespace CoronaTracker.ViewModels
 {
     class CountryStatsViewModel : NotifyBase, IPageViewModel
     {
+        #region Fields
         public string Name { get { return "Country Statistics"; } }
+        #endregion Fields
+
+        #region CTOR
+        public CountryStatsViewModel()
+        {
+            InitDataBindings();
+
+            DataSetsCSVM = new BindingList<ObservableCollection<DataElement>>{
+                new ObservableCollection<DataElement>()
+                {
+                    new DataElement
+                    {
+                        X=1,
+                        Y=2
+                    },
+                    new DataElement
+                    {
+                        X=10,
+                        Y=4
+                    },
+                    new DataElement
+                    {
+                        X=100,
+                        Y=40
+                    }
+                }
+            };
+        }
+        #endregion CTOR
+
+        #region Init
+        private void InitDataBindings()
+        {
+
+        }
+        #endregion Init
+
+        #region Data Bindings
+        private BindingList<string> _cbCountryNames = null;
+        public BindingList<string> cbCountryNames
+        {
+            get { return _cbCountryNames; }
+            set 
+            {
+                if(value != _cbCountryNames)
+                {
+                    _cbCountryNames = value;
+                    NotifyPropertyChanged("cbCountryNames");
+                }
+            }
+        }
+        private string _cbSelectedCountry = null;
+        public string cbSelectedCountry
+        {
+            get { return _cbSelectedCountry; }
+            set
+            {
+                if (value != _cbSelectedCountry)
+                {
+                    _cbSelectedCountry = value;
+                    NotifyPropertyChanged("cbSelectedCountry");
+                    NotifyPropertyChanged("YTitleCSVM");
+                    SelectedCountryChanged();
+                }
+            }
+        }
+        // can be bound directly to the selected country
+        public string YTitleCSVM
+        {
+            get { return _cbSelectedCountry; }
+        }
+        private AxisScale _rbAxisScaleCSVM = AxisScale.Linear;
+        public AxisScale rbAxisScaleCSVM
+        {
+            get { return _rbAxisScaleCSVM; }
+            set
+            {
+                if (value != _rbAxisScaleCSVM)
+                {
+                    _rbAxisScaleCSVM = value;
+                    NotifyPropertyChanged("rbAxisScaleCSVM");
+                }
+            }
+        }
+        private BindingList<ObservableCollection<DataElement>> _dataSetsCSVM;
+        public BindingList<ObservableCollection<DataElement>> DataSetsCSVM
+        {
+            get { return _dataSetsCSVM; }
+            set
+            {
+                if (value != _dataSetsCSVM)
+                {
+                    _dataSetsCSVM = value;
+                    NotifyPropertyChanged("DataSetsCSVM");
+                }
+            }
+        }
+        #endregion Data Bindings
+
+        #region internal Methods
+        private void SelectedCountryChanged()
+        {
+        }
+        #endregion internal Methods
+
+        #region external Methods
+        public void SetupPage()
+        {
+            try
+            {
+                cbCountryNames = new BindingList<string>(dataLoader.GetAllCountrieNames());
+                cbSelectedCountry = cbCountryNames.FirstOrDefault();
+            }
+            catch (FieldAccessException)
+            {
+                // Data not loaded yet
+            }
+            
+        }
+        #endregion external Methods
+
     }
 }
