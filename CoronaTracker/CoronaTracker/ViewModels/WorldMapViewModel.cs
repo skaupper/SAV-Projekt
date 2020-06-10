@@ -29,6 +29,19 @@ namespace CoronaTracker.ViewModels
         #endregion CTOR
 
         #region Data Bindings
+        private bool _pageIsEnabled = false;
+        public bool IsEnabled
+        {
+            get { return _pageIsEnabled; }
+            set
+            {
+                if (value != _pageIsEnabled)
+                {
+                    _pageIsEnabled = value;
+                    NotifyPropertyChanged("IsEnabled");
+                }
+            }
+        }
         BindingList<HeatMapElement> heatMap;
         public BindingList<HeatMapElement> HeatMap
         {
@@ -40,10 +53,12 @@ namespace CoronaTracker.ViewModels
             }
         }
         #endregion Data Bindings
+
         #region external Methods
         public void SetupPage()
         {
-
+            if (dataLoader.CheckIfDataIsLoaded())
+                IsEnabled = true;
         }
         #endregion external Methods
     }

@@ -31,7 +31,8 @@
 						<Button Content="{Binding Name}"
 						        Command="{Binding DataContext.ChangePageCommand, RelativeSource={RelativeSource AncestorType={x:Type Window}}}"
 						        CommandParameter="{Binding }"
-						        Margin="2,5"/>
+						        Margin="2,5"
+						        IsEnabled="{Binding IsEnabled}"/>
 					</DataTemplate>
 				</ItemsControl.ItemTemplate>
 			</ItemsControl>

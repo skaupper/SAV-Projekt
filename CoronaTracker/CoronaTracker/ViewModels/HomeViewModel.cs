@@ -18,6 +18,7 @@ namespace CoronaTracker.ViewModels
         private readonly CountryStatsViewModel countryStatsViewModel;
         private readonly CountryComparisonViewModel countryComparisonViewModel;
         private readonly WorldMapViewModel worldMapViewModel;
+
         public string Name { get { return "Home"; } }
 
         public ICommand BtnLoadFromWeb { get; internal set; }
@@ -85,6 +86,19 @@ namespace CoronaTracker.ViewModels
         #endregion Init
 
         #region Data Bindings
+        private bool _pageIsEnabled = true;
+        public bool IsEnabled
+        {
+            get { return _pageIsEnabled; }
+            set
+            {
+                if (value != _pageIsEnabled)
+                {
+                    _pageIsEnabled = value;
+                    NotifyPropertyChanged("IsEnabled");
+                }
+            }
+        }
         private bool _connectionState = false;
         public bool ConnectionState
         {
@@ -127,8 +141,12 @@ namespace CoronaTracker.ViewModels
         #region external Methods
         public void SetupPage()
         {
-            ConnectionState = true;
-            CanRefreshSaveDatasetBtn = true;
+            if(dataLoader.CheckIfDataIsLoaded())
+            {
+                ConnectionState = true;
+                CanRefreshSaveDatasetBtn = true;
+                IsEnabled = true;
+            }       
         }
         #endregion external Methods
 

@@ -228,6 +228,13 @@ namespace CoronaTracker.Models
             return dataStore.Timeline.Values.First().DayList.Last().Date;
         }
 
+        public bool CheckIfDataIsLoaded()
+        {
+            if (dataStore == null || dataStore.Accumulated == null)
+                return false;
+            else
+                return true;
+        }
         #endregion
     }
 }
