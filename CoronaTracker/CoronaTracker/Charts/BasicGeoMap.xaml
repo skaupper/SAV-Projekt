@@ -8,15 +8,17 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
-        <lvc:GeoMap x:Name="Chart"
-                    Background="Transparent"
-                    LandStroke="LightGray"
-                    LandClick="Chart_LandClick"
-                    EnableZoomingAndPanning="False"
-                    HeatMap="{Binding InternalHeatMap, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type local:BasicGeoMap}}}"
-                    Hoverable="{Binding Hoverable, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type local:BasicGeoMap}}}"
-                    Source="{Binding SourceFile, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type local:BasicGeoMap}}}"
-                    LanguagePack="{Binding LanguagePack, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type local:BasicGeoMap}}}"/>
+        <Grid Name="ChartWrapper" Visibility="Collapsed">
+            <lvc:GeoMap x:Name="Chart"
+                        Background="Transparent"
+                        LandStroke="LightGray"
+                        LandClick="Chart_LandClick"
+                        EnableZoomingAndPanning="False"
+                        HeatMap="{Binding InternalHeatMap, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type local:BasicGeoMap}}}"
+                        Hoverable="{Binding Hoverable, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type local:BasicGeoMap}}}"
+                        Source="{Binding SourceFile, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type local:BasicGeoMap}}}"
+                        LanguagePack="{Binding LanguagePack, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type local:BasicGeoMap}}}"/>
+        </Grid>
 
         <TextBlock x:Name="ErrorTextBlock" Visibility="Collapsed"
                    VerticalAlignment="Center"

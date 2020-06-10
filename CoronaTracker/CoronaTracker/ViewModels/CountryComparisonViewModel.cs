@@ -29,23 +29,27 @@ namespace CoronaTracker.ViewModels
         {
             InitButtons();
 
-            DataSetsCCVM = new BindingList<ObservableCollection<DataElement>>{
-                new ObservableCollection<DataElement>()
+            DataSetsCCVM = new BindingList<DataSet>{
+                new DataSet
                 {
-                    new DataElement
+                    Name = "Test",
+                    Values = new ObservableCollection<DataElement>
                     {
-                        X=1,
-                        Y=2
-                    },
-                    new DataElement
-                    {
-                        X=10,
-                        Y=400
-                    },
-                    new DataElement
-                    {
-                        X=100,
-                        Y=40
+                        new DataElement
+                        {
+                            X=DateTime.Now,
+                            Y=2
+                        },
+                        new DataElement
+                        {
+                            X=DateTime.Now.AddDays(1),
+                            Y=400
+                        },
+                        new DataElement
+                        {
+                            X=DateTime.Now.AddDays(2),
+                            Y=40
+                        }
                     }
                 }
             };
@@ -99,7 +103,7 @@ namespace CoronaTracker.ViewModels
             {
                 if (value != _dpToDate)
                 {
-                    if(value.Date >= dpFromDate.Date)
+                    if (value.Date >= dpFromDate.Date)
                     {
                         _dpToDate = value;
                         NotifyPropertyChanged("dpToDate");
@@ -149,8 +153,8 @@ namespace CoronaTracker.ViewModels
                 }
             }
         }
-        BindingList<ObservableCollection<DataElement>> _dataSetsCCVM;
-        public BindingList<ObservableCollection<DataElement>> DataSetsCCVM
+        BindingList<DataSet> _dataSetsCCVM;
+        public BindingList<DataSet> DataSetsCCVM
         {
             get { return _dataSetsCCVM; }
             set
@@ -206,7 +210,7 @@ namespace CoronaTracker.ViewModels
         private void AddElementToList()
         {
             GraphSelection tmp = new GraphSelection();
-            if(cbAvailableCountries.Count > 0)
+            if (cbAvailableCountries.Count > 0)
             {
                 tmp.Name = cbAvailableCountries[0];
             }
