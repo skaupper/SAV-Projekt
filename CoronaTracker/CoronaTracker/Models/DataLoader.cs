@@ -37,10 +37,6 @@ namespace CoronaTracker.Models
 
                         // Load timeline for each country, that was loaded with above command
                         await DownloadTimelineHelperAsync();
-
-                        // TODO: Remove this temporary MessageBox
-                        MessageBox.Show("Done loading timeline!", "Done.",
-                            MessageBoxButton.OK, MessageBoxImage.Information);
                     }
                     catch (Exception e)
                     { throw e; }
@@ -214,7 +210,6 @@ namespace CoronaTracker.Models
         {
             return GetDate(false);
         }
-
         private DateTime GetDate(bool oldest)
         {
             if (dataStore == null || dataStore.Timeline == null)
