@@ -73,9 +73,9 @@ namespace CoronaTracker.ViewModels
         {
             try
             {
-                List<CountryAccumData> tmp = dataLoader.GetCountryAccumData();
-
-                CdgDataList = CollectionViewSource.GetDefaultView(tmp);
+                AccumData tmp = dataLoader.GetCountryAccumData();
+                
+                CdgDataList = CollectionViewSource.GetDefaultView(tmp.Countries);
 
                 IsEnabled = true;
             }

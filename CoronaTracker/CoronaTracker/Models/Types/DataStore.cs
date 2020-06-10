@@ -2,7 +2,7 @@
 using System.Text.Json;
 
 namespace CoronaTracker.Models.Types
-{ 
+{
     public class DataStore
     {
         public AccumData Accumulated { get; set; }
