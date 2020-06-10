@@ -5,8 +5,8 @@ namespace CoronaTracker.Models.Types
 { 
     public class DataStore
     {
-        public List<CountryAccumData> Accumulated { get; set; }
-        public Dictionary<string, TimelineData> Timeline { get; set; }
+        public AccumData Accumulated { get; set; }
+        public TimelineData Timeline { get; set; }
 
         public string Serialize()
         {

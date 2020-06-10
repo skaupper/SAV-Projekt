@@ -57,23 +57,27 @@ namespace CoronaTracker.Models
         private async Task DownloadTimelineHelperAsync()
         {
             // Create a list of tasks
-            List<Task<Tuple<string, TimelineData>>> taskList = new List<Task<Tuple<string, TimelineData>>>();
-            var available = this.GetListOfProperty(CountryProperty.CODE);
+            List<Task<CountryTimeline>> taskList = new List<Task<CountryTimeline>>();
+            var availableCountries = this.GetListOfProperty(CountryProperty.CODE);
 
-            foreach (var code in available)
-                taskList.Add(apiHandler.LoadCountryTimelineAsync(code));
-
+            foreach (var country in availableCountries)
+                taskList.Add(apiHandler.LoadCountryTimelineAsync(country));
+            
             // Await all tasks in parallel
             var results = await Task.WhenAll(taskList);
 
             // Add the results to the DataStore
-            dataStore.Timeline = new Dictionary<string, TimelineData>();
+            dataStore.Timeline = new TimelineData
+            {
+                Countries = new Dictionary<string, CountryTimeline>()
+            };
             foreach (var result in results)
             {
-                if (dataStore.Timeline.ContainsKey(result.Item1))
-                    throw new Exception($"{result.Item1} already exists in Dict!!");
+                string countrycode = result.Days.First().CountryCode;
+                if (dataStore.Timeline.Countries.ContainsKey(countrycode))
+                    throw new Exception($"{countrycode} already exists in Dict!!");
                 else
-                    dataStore.Timeline.Add(result.Item1, result.Item2);
+                    dataStore.Timeline.Countries.Add(countrycode, result);
             }
         }
 
@@ -96,15 +100,15 @@ namespace CoronaTracker.Models
         #endregion
 
         #region Query_Functions
-        public CountryAccumData GetCountryAccumData(string countryCode)
+        public CountryDetail GetCountryAccumData(string countryCode)
         {
             if (dataStore == null || dataStore.Accumulated == null)
                 throw new FieldAccessException(
                     "Data cannot be accessed, since it was not loaded yet.\n" +
                     "Please call DataLoader.LoadAllData() first.");
 
-            CountryAccumData countrydata =
-                dataStore.Accumulated.Find(item => item.Code == countryCode);
+            CountryDetail countrydata =
+                dataStore.Accumulated.Countries.Find(item => item.CountryCode == countryCode);
             if (countrydata == null)
                 throw new ArgumentException(
                     $"Countrycode {countryCode} was not found in the currently loaded dataset!");
@@ -112,7 +116,7 @@ namespace CoronaTracker.Models
             return countrydata;
         }
 
-        public List<CountryAccumData> GetCountryAccumData()
+        public AccumData GetCountryAccumData()
         {
             if (dataStore == null || dataStore.Accumulated == null)
                 throw new FieldAccessException(
@@ -122,7 +126,7 @@ namespace CoronaTracker.Models
             return dataStore.Accumulated;
         }
 
-        public TimelineData GetCountryTimeline(string countryCode,
+        public CountryTimeline GetCountryTimeline(string countryCode,
             DateTime? from = null, DateTime? to = null)
         {
             if (dataStore == null || dataStore.Timeline == null)
@@ -130,7 +134,7 @@ namespace CoronaTracker.Models
                     "Data cannot be accessed, since it was not loaded yet.\n" +
                     "Please call DataLoader.LoadAllData() first.");
 
-            bool exists = dataStore.Timeline.TryGetValue(countryCode, out TimelineData timeline);
+            bool exists = dataStore.Timeline.Countries.TryGetValue(countryCode, out CountryTimeline timeline);
             if (!exists)
                 throw new ArgumentException(
                     $"Countrycode {countryCode} was not found in the currently loaded dataset!");
@@ -145,25 +149,25 @@ namespace CoronaTracker.Models
                     throw new ArgumentException("Date 'from' cannot be greater than today!");
                 if (to > DateTime.Now)
                     throw new ArgumentException("Date 'to' cannot be greater than today!");
-                if (from < timeline.DayList[0].Date) // DayList is already sorted by date
+                if (from < timeline.Days[0].Date) // DayList is already sorted by date
                     throw new ArgumentException("Date 'from' is smaller than the datasets' earliest date.");
-                if (to > timeline.DayList[timeline.DayList.Count - 1].Date)
+                if (to > timeline.Days[timeline.Days.Count - 1].Date)
                     throw new ArgumentException("Date 'to' is greater than the datasets' most recent date.");
 
                 // Find index closest to 'from' date (linear search up to that index)
-                int idx_from = timeline.DayList.FindIndex(e => e.Date > from) - 1;
+                int idx_from = timeline.Days.FindIndex(e => e.Date > from) - 1;
                 if (idx_from < 0)
                     throw new ArgumentException("Could not find a 'from' index.");
 
                 // Find index closest to 'to' date (linar search up to that index)
-                int idx_to = timeline.DayList.FindIndex(e => e.Date > to);
+                int idx_to = timeline.Days.FindIndex(e => e.Date > to);
                 if (idx_to < 0)
                     throw new ArgumentException("Could not find a 'to' index.");
 
                 // Select the chosen range
                 int num_elems = idx_to - idx_from;
-                var range = timeline.DayList.GetRange(idx_from, num_elems);
-                timeline.DayList = range;
+                var range = timeline.Days.GetRange(idx_from, num_elems);
+                timeline.Days = range;
             }
 
             return timeline;
@@ -177,15 +181,15 @@ namespace CoronaTracker.Models
                     "Please call DataLoader.LoadAllData() first.");
 
             List<string> available = new List<string>();
-            foreach (CountryAccumData item in dataStore.Accumulated)
+            foreach (var item in dataStore.Accumulated.Countries)
             {
                 switch (prop)
                 {
                     case CountryProperty.CODE:
-                        available.Add(item.Code);
+                        available.Add(item.Slug);
                         break;
                     case CountryProperty.NAME:
-                        available.Add(item.Title);
+                        available.Add(item.Country);
                         break;
                     default:
                         throw new NotImplementedException(
@@ -217,15 +221,15 @@ namespace CoronaTracker.Models
                     "Data cannot be accessed, since it was not loaded yet.\n" +
                     "Please call DataLoader.LoadAllData() first.");
 
-            if (dataStore.Timeline.Count == 0)
+            if (dataStore.Timeline.Countries.Count == 0)
                 throw new IndexOutOfRangeException("Date cannot be retrieved. Timeline is empty.");
 
             // return oldest date in dataset
             if (oldest)
-                return dataStore.Timeline.Values.First().DayList.First().Date;
+                return dataStore.Timeline.Countries.Values.First().Days.First().Date;
 
             // return newest date in dataset
-            return dataStore.Timeline.Values.First().DayList.Last().Date;
+            return dataStore.Timeline.Countries.Values.First().Days.Last().Date;
         }
 
         public bool CheckIfDataIsLoaded()

@@ -124,10 +124,9 @@
     <Compile Include="Models\DataLoader.cs" />
     <Compile Include="Models\GraphSelection.cs" />
     <Compile Include="Models\Helper\APIHandler.cs" />
-    <Compile Include="Models\Helper\ApiJsonParser.cs" />
     <Compile Include="Models\Types\DataStore.cs" />
     <Compile Include="Models\Helper\FileHandler.cs" />
-    <Compile Include="Models\Types\CountryAccumData.cs" />
+    <Compile Include="Models\Types\AccumData.cs" />
     <Compile Include="Models\Types\TimelineData.cs" />
     <Compile Include="ViewModels\CountryComparisonViewModel.cs" />
     <Compile Include="ViewModels\CountryStatsViewModel.cs" />
