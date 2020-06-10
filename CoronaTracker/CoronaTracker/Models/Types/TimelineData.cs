@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 
-using Newtonsoft.Json;
-
 namespace CoronaTracker.Models.Types
 {
     public class TimelineData
