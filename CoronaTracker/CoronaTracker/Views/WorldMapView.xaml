@@ -29,7 +29,7 @@
             </ListView.View>
         </ListView>
         
-
+    
         <Rectangle Margin="15,5,15,15" Fill="Pink"/>
         <!--
         <charts:BasicGeoMap Margin="15, 5, 15, 15"
