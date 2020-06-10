@@ -72,7 +72,7 @@
 	        Margin="15, 5, 15, 15"
 	        x:Name="Chart" DataSets="{Binding DataSetsCSVM}" 
 	        ScaleX="{Binding rbAxisScaleCSVM}" 
-	        UsedChartType="{Binding UsedChartType}" 
+	        UsedChartType="StackedBars" 
 	        TitleX="X" TitleY="{Binding YTitleCSVM}"></charts:BasicChartArea>
     </DockPanel>
 </UserControl>

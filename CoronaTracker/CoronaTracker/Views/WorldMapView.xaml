@@ -9,7 +9,6 @@
              d:DesignHeight="650" d:DesignWidth="850">
     <DockPanel>
         <TextBlock DockPanel.Dock="Top" Margin="15, 5, 15, 5" Text="Detailed Statistics:"/>
-<!--
         <ListView 
             DockPanel.Dock="Top"
             Margin="15, 0, 15, 5"
@@ -29,11 +28,13 @@
                 </GridView>
             </ListView.View>
         </ListView>
-        
-        -->
 
+
+        <Rectangle Margin="15,5,15,15" Fill="Pink"/>
+        <!--
         <charts:BasicGeoMap Margin="15, 5, 15, 15"
-                    HeatMap="{Binding HeatMap}"
+                    HeatMap="{Binding HeatMap, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type local:WorldMapView}}}"
                  ></charts:BasicGeoMap>
+        -->
     </DockPanel>
 </UserControl>

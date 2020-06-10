@@ -22,27 +22,6 @@ namespace CoronaTracker.ViewModels
         public CountryStatsViewModel()
         {
             InitDataBindings();
-
-            DataSetsCSVM = new BindingList<ObservableCollection<DataElement>>{
-                new ObservableCollection<DataElement>()
-                {
-                    new DataElement
-                    {
-                        X=1,
-                        Y=2
-                    },
-                    new DataElement
-                    {
-                        X=10,
-                        Y=4
-                    },
-                    new DataElement
-                    {
-                        X=100,
-                        Y=40
-                    }
-                }
-            };
         }
         #endregion CTOR
 
@@ -58,15 +37,16 @@ namespace CoronaTracker.ViewModels
         public BindingList<string> cbCountryNames
         {
             get { return _cbCountryNames; }
-            set 
+            set
             {
-                if(value != _cbCountryNames)
+                if (value != _cbCountryNames)
                 {
                     _cbCountryNames = value;
                     NotifyPropertyChanged("cbCountryNames");
                 }
             }
         }
+
         private string _cbSelectedCountry = null;
         public string cbSelectedCountry
         {
@@ -128,6 +108,52 @@ namespace CoronaTracker.ViewModels
             {
                 cbCountryNames = new BindingList<string>(dataLoader.GetListOfProperty(Models.DataLoader.CountryProperty.NAME));
                 cbSelectedCountry = cbCountryNames.FirstOrDefault();
+
+                // TODO: move to an appropriate event
+                DataSetsCSVM = new BindingList<ObservableCollection<DataElement>>();
+
+                var tmp = new ObservableCollection<DataElement>();
+
+
+                var timeline = dataLoader.GetCountryTimeline("AT");
+                var daylist = timeline.DayList;
+
+                foreach (var day in daylist)
+                {
+                    tmp.Add(new DataElement()
+                    {
+                        X = day.Date.ToBinary(),
+                        Y = day.Details.TotalCases
+                    });
+                }
+
+                DataSetsCSVM.Add(tmp);
+
+                tmp = new ObservableCollection<DataElement>();
+
+                foreach (var day in daylist)
+                {
+                    tmp.Add(new DataElement()
+                    {
+                        X = day.Date.ToBinary(),
+                        Y = day.Details.TotalDeaths
+                    });
+                }
+
+                DataSetsCSVM.Add(tmp);
+
+                tmp = new ObservableCollection<DataElement>();
+
+                foreach (var day in daylist)
+                {
+                    tmp.Add(new DataElement()
+                    {
+                        X = day.Date.ToBinary(),
+                        Y = day.Details.TotalRecoveries
+                    });
+                }
+
+                DataSetsCSVM.Add(tmp);
             }
             catch (FieldAccessException)
             {
