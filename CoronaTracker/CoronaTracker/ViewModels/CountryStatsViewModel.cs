@@ -170,7 +170,6 @@ namespace CoronaTracker.ViewModels
                 IsEnabled = false;
                 // Data not loaded yet
             }
-
         }
         #endregion external Methods
 

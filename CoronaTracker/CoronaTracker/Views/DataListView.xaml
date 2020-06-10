@@ -1,0 +1,52 @@
+﻿<UserControl x:Class="CoronaTracker.Views.DataListView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:CoronaTracker.Views"
+             xmlns:infrastructure="clr-namespace:CoronaTracker.Infrastructure"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <DockPanel>
+        <infrastructure:CustomDataGrid
+	        Margin="15, 5, 15, 5"
+	        AutoGenerateColumns="False"
+	        IsReadOnly="False"
+	        CanUserAddRows="False"
+	        ItemsSource="{Binding CdgDataList, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, NotifyOnSourceUpdated=True, NotifyOnTargetUpdated=True}" 
+	        SelectionMode="Extended"
+	        SelectedItemsList="{Binding CdgSelectedDataEntries, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+	        ColumnWidth="*"
+	        CanUserSortColumns="True">
+	        <DataGrid.Columns>
+                <DataGridTextColumn Header="Country" Binding="{Binding Title}" Width="auto"/>
+                <DataGridTextColumn Header="Code" Binding="{Binding Code}" Width="auto"/>
+                <DataGridTextColumn Header="Total Cases" Binding="{Binding TotalCases, Mode=TwoWay}" Width="auto"/>
+                <DataGridTextColumn Header="Total Recovered" Binding="{Binding TotalRecovered}" Width="auto"/>
+                <DataGridTextColumn Header="Total Deaths" Binding="{Binding TotalDeaths}" Width="auto"/>
+                <DataGridTextColumn Header="Total New Today" Binding="{Binding TotalNewCasesToday}" Width="auto"/>
+                <DataGridTextColumn Header="Total Active" Binding="{Binding TotalActiveCases}" Width="auto"/>
+                <DataGridTextColumn Header="Total Serious" Binding="{Binding TotalSeriousCases}"/>
+            </DataGrid.Columns>
+        </infrastructure:CustomDataGrid>
+        <!--
+        <ListView 
+			Margin="15, 5, 15, 5"
+		    ItemsSource="{Binding DataList}" 
+		    ScrollViewer.VerticalScrollBarVisibility="Auto">
+		    <ListView.View>
+			    <GridView>
+				    <GridViewColumn Header="Country" Width="Auto" DisplayMemberBinding="{Binding Title}" />
+				    <GridViewColumn Header="Code" Width="Auto" DisplayMemberBinding="{Binding Code}" />
+				    <GridViewColumn Header="Total" Width="Auto" DisplayMemberBinding="{Binding TotalCases}" />
+				    <GridViewColumn Header="Recovered" Width="Auto" DisplayMemberBinding="{Binding TotalRecovered}" />
+				    <GridViewColumn Header="Deaths" Width="Auto" DisplayMemberBinding="{Binding TotalDeaths}" />
+				    <GridViewColumn Header="New Today" Width="Auto" DisplayMemberBinding="{Binding TotalNewCasesToday}" />
+				    <GridViewColumn Header="Active" Width="Auto" DisplayMemberBinding="{Binding TotalActiveCases}" />
+				    <GridViewColumn Header="Serious" Width="Auto" DisplayMemberBinding="{Binding TotalSeriousCases}" />
+			    </GridView>
+		    </ListView.View>
+	    </ListView>
+        -->
+    </DockPanel>
+</UserControl>

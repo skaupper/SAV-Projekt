@@ -15,9 +15,7 @@ namespace CoronaTracker.ViewModels
     class HomeViewModel : NotifyBase, IPageViewModel
     {
         #region Fields
-        private readonly CountryStatsViewModel countryStatsViewModel;
-        private readonly CountryComparisonViewModel countryComparisonViewModel;
-        private readonly WorldMapViewModel worldMapViewModel;
+        private readonly List<IPageViewModel> ListOfAvailablePages = null;
 
         public string Name { get { return "Home"; } }
 
@@ -57,11 +55,13 @@ namespace CoronaTracker.ViewModels
         #endregion Fields
 
         #region CTOR
-        public HomeViewModel(CountryStatsViewModel csvm, CountryComparisonViewModel ccvm, WorldMapViewModel wmvm)
+        public HomeViewModel(CountryStatsViewModel csvm, CountryComparisonViewModel ccvm, WorldMapViewModel wmvm, DataListViewModel dlvm)
         {
-            countryStatsViewModel = csvm;
-            countryComparisonViewModel = ccvm;
-            worldMapViewModel = wmvm;
+            ListOfAvailablePages = new List<IPageViewModel>();
+            ListOfAvailablePages.Add(csvm);
+            ListOfAvailablePages.Add(ccvm);
+            ListOfAvailablePages.Add(wmvm);
+            ListOfAvailablePages.Add(dlvm);
 
             InitButtons();
             InitStates();
@@ -145,9 +145,11 @@ namespace CoronaTracker.ViewModels
         private void TriggerPageSetups()
         {
             SetupPage();
-            countryStatsViewModel.SetupPage();
-            countryComparisonViewModel.SetupPage();
-            worldMapViewModel.SetupPage();
+
+            foreach (IPageViewModel item in ListOfAvailablePages)
+            {
+                item.SetupPage();
+            }
         }
         #endregion Internal Methods
 

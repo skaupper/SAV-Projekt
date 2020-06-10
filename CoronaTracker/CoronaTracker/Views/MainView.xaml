@@ -21,6 +21,9 @@
 		<DataTemplate DataType="{x:Type models:WorldMapViewModel}">
 			<views:WorldMapView />
 		</DataTemplate>
+		<DataTemplate DataType="{x:Type models:DataListViewModel}">
+			<views:DataListView />
+		</DataTemplate>
 
         <!-- change font weight on selection: https://stackoverflow.com/questions/20903720/make-textblock-bold-only-if-certain-condition-is-true-via-binding -->
 		<Style TargetType="Button" x:Key="MenuBar">
