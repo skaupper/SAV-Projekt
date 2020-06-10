@@ -116,7 +116,7 @@ namespace CoronaTracker.ViewModels
             get { return _connectionState; }
             set
             {
-                if(value != _connectionState)
+                if (value != _connectionState)
                 {
                     _connectionState = value;
                     OnPropertyChanged("ConnectionState");
@@ -154,12 +154,12 @@ namespace CoronaTracker.ViewModels
         #region external Methods
         public void SetupPage()
         {
-            if(dataLoader.CheckIfDataIsLoaded())
+            if (dataLoader.CheckIfDataIsLoaded())
             {
                 ConnectionState = true;
                 CanRefreshSaveDatasetBtn = true;
                 IsEnabled = true;
-            }       
+            }
         }
         #endregion external Methods
 

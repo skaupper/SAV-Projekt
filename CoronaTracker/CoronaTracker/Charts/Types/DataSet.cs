@@ -3,7 +3,7 @@ using System.ComponentModel;
 
 namespace CoronaTracker.Charts.Types
 {
-    public class DataSet: INotifyPropertyChanged
+    public class DataSet : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
 

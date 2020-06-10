@@ -66,17 +66,17 @@ namespace CoronaTracker.ViewModels
 
         #region Data Bindings
         private bool _pageIsEnabled = false;
-        public bool IsEnabled 
-        { 
-            get { return _pageIsEnabled; } 
-            set 
+        public bool IsEnabled
+        {
+            get { return _pageIsEnabled; }
+            set
             {
                 if (value != _pageIsEnabled)
                 {
                     _pageIsEnabled = value;
                     NotifyPropertyChanged("IsEnabled");
                 }
-            } 
+            }
         }
         private bool _pageIsSelected = false;
         public bool IsSelected
