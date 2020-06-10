@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Text.Json;
+﻿using Newtonsoft.Json;
 
 namespace CoronaTracker.Models.Types
 {
@@ -10,12 +9,12 @@ namespace CoronaTracker.Models.Types
 
         public string Serialize()
         {
-            return JsonSerializer.Serialize(this);
+            return JsonConvert.SerializeObject(this, Formatting.Indented);
         }
 
-        public static DataStore Deserialize(string jsonStudent)
+        public static DataStore Deserialize(string jsonDataStore)
         {
-            return JsonSerializer.Deserialize<DataStore>(jsonStudent);
+            return JsonConvert.DeserializeObject<DataStore>(jsonDataStore);
         }
     }
 }
