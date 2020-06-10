@@ -2,6 +2,7 @@
 using CoronaTracker.Models.Types;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 
@@ -204,6 +205,34 @@ namespace CoronaTracker.Models
 
             return available;
         }
+
+        public DateTime GetOldestDate()
+        {
+            return GetDate(true);
+        }
+        public DateTime GetNewestDate()
+        {
+            return GetDate(false);
+        }
+
+        private DateTime GetDate(bool oldest)
+        {
+            if (dataStore == null || dataStore.Timeline == null)
+                throw new FieldAccessException(
+                    "Data cannot be accessed, since it was not loaded yet.\n" +
+                    "Please call DataLoader.LoadAllData() first.");
+
+            if (dataStore.Timeline.Count == 0)
+                throw new IndexOutOfRangeException("Date cannot be retrieved. Timeline is empty.");
+
+            // return oldest date in dataset
+            if (oldest)
+                return dataStore.Timeline.Values.First().DayList.First().Date;
+
+            // return newest date in dataset
+            return dataStore.Timeline.Values.First().DayList.Last().Date;
+        }
+
         #endregion
     }
 }
