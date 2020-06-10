@@ -112,14 +112,14 @@ namespace Chart_DevPrj
             DependencyProperty.Register(
                 "TitleX", typeof(string),
                 typeof(BasicChartArea),
-                new PropertyMetadata("X", Static_AxisX_Changed)
+                new PropertyMetadata("X", Static_TitleX_Changed)
             );
 
         public static readonly DependencyProperty TitleYProperty =
             DependencyProperty.Register(
                 "TitleY", typeof(string),
                 typeof(BasicChartArea),
-                new PropertyMetadata("Y", Static_AxisY_Changed)
+                new PropertyMetadata("Y", Static_TitleY_Changed)
             );
 
 
@@ -256,6 +256,24 @@ namespace Chart_DevPrj
         {
             var chartArea = d as BasicChartArea;
             chartArea.AxisYScale_Changed(d, e);
+        }
+
+        private static void Static_TitleX_Changed(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            var chartArea = d as BasicChartArea;
+            if (chartArea.Chart.AxisX.Count > 0)
+            {
+                chartArea.Chart.AxisX[0].Title = chartArea.TitleX;
+            }
+        }
+
+        private static void Static_TitleY_Changed(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            var chartArea = d as BasicChartArea;
+            if (chartArea.Chart.AxisY.Count > 0)
+            {
+                chartArea.Chart.AxisY[0].Title = chartArea.TitleY;
+            }
         }
 
         #endregion
@@ -413,7 +431,7 @@ namespace Chart_DevPrj
         {
             SeriesCollection.Clear();
 
-            if(DataSets == null)
+            if (DataSets == null)
             {
                 return;
             }

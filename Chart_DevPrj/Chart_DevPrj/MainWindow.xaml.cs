@@ -131,7 +131,7 @@ namespace Chart_DevPrj
         static Random rand = new Random();
 
         private void Grid_MouseRightButtonUp(object sender, MouseButtonEventArgs e)
-        {
+        {/*
             if (YScale == AxisScale.Linear)
             {
                 YScale = AxisScale.Logarithmic;
@@ -140,9 +140,9 @@ namespace Chart_DevPrj
             {
                 YScale = AxisScale.Linear;
             }
-
+            */
             YTitle += "T";
-
+            /*
             DataSets[0].Add(new DataElement { X = nextX++, Y = rand.Next(0, 100) });
 
 
@@ -152,6 +152,7 @@ namespace Chart_DevPrj
                 Country = "DE",
                 Value = 100
             });
+            */
         }
 
         private void Grid_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
