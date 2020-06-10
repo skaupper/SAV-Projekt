@@ -1,15 +1,10 @@
-﻿using CoronaTracker.Charts;
-using CoronaTracker.Charts.Types;
+﻿using CoronaTracker.Charts.Types;
 using CoronaTracker.Infrastructure;
 using CoronaTracker.Models;
 using System;
 using System.Collections;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 
@@ -71,17 +66,17 @@ namespace CoronaTracker.ViewModels
 
         #region Data Bindings
         private bool _pageIsEnabled = false;
-        public bool IsEnabled 
-        { 
-            get { return _pageIsEnabled; } 
-            set 
+        public bool IsEnabled
+        {
+            get { return _pageIsEnabled; }
+            set
             {
                 if (value != _pageIsEnabled)
                 {
                     _pageIsEnabled = value;
                     NotifyPropertyChanged("IsEnabled");
                 }
-            } 
+            }
         }
         private bool _pageIsSelected = false;
         public bool IsSelected
