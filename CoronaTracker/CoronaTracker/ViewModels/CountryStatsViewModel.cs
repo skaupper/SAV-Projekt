@@ -125,7 +125,7 @@ namespace CoronaTracker.ViewModels
         {
             try
             {
-                cbCountryNames = new BindingList<string>(dataLoader.GetAllCountrieNames());
+                cbCountryNames = new BindingList<string>(dataLoader.GetListOfProperty(Models.DataLoader.CountryProperty.NAME));
                 cbSelectedCountry = cbCountryNames.FirstOrDefault();
             }
             catch (FieldAccessException)
