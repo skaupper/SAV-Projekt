@@ -20,11 +20,38 @@ namespace CoronaTracker.Views
     /// <summary>
     /// Interaction logic for WorldmapView.xaml
     /// </summary>
-    public partial class WorldMapView : UserControl
+    public partial class WorldMapView : UserControl, INotifyPropertyChanged
     {
         public WorldMapView()
         {
+            HeatMap = new BindingList<HeatMapElement>()
+            {
+                new HeatMapElement
+                {
+                    Country = "US",
+                    Value = 123
+                }
+            };
+            DataContext = this;
             InitializeComponent();
+
+        }
+
+
+
+
+        BindingList<HeatMapElement> heatMap;
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        public BindingList<HeatMapElement> HeatMap
+        {
+            get => heatMap;
+            set
+            {
+                heatMap = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("HeatMap"));
+            }
         }
     }
 }
