@@ -111,6 +111,7 @@
       <DependentUpon>BasicGeoMap.xaml</DependentUpon>
     </Compile>
     <Compile Include="Charts\Types\DataElement.cs" />
+    <Compile Include="Charts\Types\DataSet.cs" />
     <Compile Include="Charts\Types\HeatMapElement.cs" />
     <Compile Include="Infrastructure\AxisScaleConverter.cs" />
     <Compile Include="Infrastructure\CustomDataGrid.cs" />

@@ -69,7 +69,7 @@ namespace CoronaTracker.Models.Helper
 
                     // Strip "Date" hierarchy and convert to object
                     var temp = item.Children().ToList()[0];
-                    day.Details = temp.ToObject<DayDetail>();
+                    day.Details = temp.ToObject<DayDetailJson>();
 
                     timeline.DayList.Add(day);
                 }

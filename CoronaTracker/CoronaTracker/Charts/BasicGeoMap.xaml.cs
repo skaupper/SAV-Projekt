@@ -168,6 +168,8 @@ namespace CoronaTracker.Charts
             }
 
             InitializeComponent();
+
+            Loaded += (s, e) => ChartWrapper.Visibility = Visibility.Visible;
         }
 
         #endregion

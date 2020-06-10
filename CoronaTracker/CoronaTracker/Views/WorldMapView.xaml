@@ -30,11 +30,6 @@
         </ListView>
 
 
-        <Rectangle Margin="15,5,15,15" Fill="Pink"/>
-        <!--
-        <charts:BasicGeoMap Margin="15, 5, 15, 15"
-                    HeatMap="{Binding HeatMap, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type local:WorldMapView}}}"
-                 ></charts:BasicGeoMap>
-        -->
+        <charts:BasicGeoMap Margin="15, 5, 15, 15" HeatMap="{Binding HeatMap}" />
     </DockPanel>
 </UserControl>
