@@ -99,6 +99,19 @@ namespace CoronaTracker.ViewModels
                 }
             }
         }
+        private bool _pageIsSelected = true;
+        public bool IsSelected
+        {
+            get { return _pageIsSelected; }
+            set
+            {
+                if (value != _pageIsSelected)
+                {
+                    _pageIsSelected = value;
+                    NotifyPropertyChanged("IsSelected");
+                }
+            }
+        }
         private bool _connectionState = false;
         public bool ConnectionState
         {

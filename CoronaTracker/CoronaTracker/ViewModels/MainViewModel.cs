@@ -109,6 +109,14 @@ namespace CoronaTracker.ViewModels
 
             CurrentPageViewModel = PageViewModels
                 .FirstOrDefault(vm => vm == viewModel);
+
+            foreach (IPageViewModel item in PageViewModels)
+            {
+                if (item == CurrentPageViewModel)
+                    item.IsSelected = true;
+                else
+                    item.IsSelected = false;
+            }
         }
         #endregion Methods
     }

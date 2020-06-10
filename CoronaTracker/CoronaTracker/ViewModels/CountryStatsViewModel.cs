@@ -46,6 +46,19 @@ namespace CoronaTracker.ViewModels
                 }
             }
         }
+        private bool _pageIsSelected = false;
+        public bool IsSelected
+        {
+            get { return _pageIsSelected; }
+            set
+            {
+                if (value != _pageIsSelected)
+                {
+                    _pageIsSelected = value;
+                    NotifyPropertyChanged("IsSelected");
+                }
+            }
+        }
         private BindingList<string> _cbCountryNames = null;
         public BindingList<string> cbCountryNames
         {

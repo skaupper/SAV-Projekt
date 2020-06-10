@@ -12,6 +12,8 @@ namespace CoronaTracker.Infrastructure
 
         bool IsEnabled { get; set; }
 
+        bool IsSelected { get; set; }
+
         void SetupPage();
     }
 }

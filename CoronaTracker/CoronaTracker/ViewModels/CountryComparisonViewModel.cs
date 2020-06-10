@@ -83,6 +83,19 @@ namespace CoronaTracker.ViewModels
                 }
             } 
         }
+        private bool _pageIsSelected = false;
+        public bool IsSelected
+        {
+            get { return _pageIsSelected; }
+            set
+            {
+                if (value != _pageIsSelected)
+                {
+                    _pageIsSelected = value;
+                    NotifyPropertyChanged("IsSelected");
+                }
+            }
+        }
         private AxisScale _rbAxisScaleCCVM = AxisScale.Linear;
         public AxisScale rbAxisScaleCCVM
         {

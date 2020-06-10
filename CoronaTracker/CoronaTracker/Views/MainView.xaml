@@ -21,6 +21,16 @@
 		<DataTemplate DataType="{x:Type models:WorldMapViewModel}">
 			<views:WorldMapView />
 		</DataTemplate>
+
+        <!-- change font weight on selection: https://stackoverflow.com/questions/20903720/make-textblock-bold-only-if-certain-condition-is-true-via-binding -->
+		<Style TargetType="Button" x:Key="MenuBar">
+			<Style.Triggers>
+				<DataTrigger Binding="{Binding IsSelected}"
+				             Value="True">
+					<Setter Property="FontWeight" Value="Bold"/>
+				</DataTrigger>
+			</Style.Triggers>
+		</Style>
     </Window.Resources>
 
 	<DockPanel>
@@ -28,11 +38,18 @@
 			<ItemsControl ItemsSource="{Binding PageViewModels}">
 				<ItemsControl.ItemTemplate>
 					<DataTemplate>
-						<Button Content="{Binding Name}"
-						        Command="{Binding DataContext.ChangePageCommand, RelativeSource={RelativeSource AncestorType={x:Type Window}}}"
-						        CommandParameter="{Binding }"
-						        Margin="2,5"
-						        IsEnabled="{Binding IsEnabled}"/>
+                        <!-- Fix resize on selection due to font weight change: https://stackoverflow.com/questions/20556328/how-can-i-have-a-wpf-textblock-that-has-the-same-size-for-all-font-weights -->
+                        <Button 
+							Style="{StaticResource MenuBar}"
+							Command="{Binding DataContext.ChangePageCommand, RelativeSource={RelativeSource AncestorType={x:Type Window}}}"
+	                        CommandParameter="{Binding }"
+	                        Margin="2,5"
+	                        IsEnabled="{Binding IsEnabled}">
+                            <Grid>
+                                <TextBlock Text="{Binding Name}"/>
+                                <TextBlock Text="{Binding Name}" FontWeight="Bold" Visibility="Hidden"/>
+                            </Grid>
+                        </Button>
 					</DataTemplate>
 				</ItemsControl.ItemTemplate>
 			</ItemsControl>

@@ -42,6 +42,19 @@ namespace CoronaTracker.ViewModels
                 }
             }
         }
+        private bool _pageIsSelected = false;
+        public bool IsSelected
+        {
+            get { return _pageIsSelected; }
+            set
+            {
+                if (value != _pageIsSelected)
+                {
+                    _pageIsSelected = value;
+                    NotifyPropertyChanged("IsSelected");
+                }
+            }
+        }
         BindingList<HeatMapElement> heatMap;
         public BindingList<HeatMapElement> HeatMap
         {
