@@ -1,4 +1,5 @@
-﻿using LiveCharts;
+﻿using CoronaTracker.Charts.Types;
+using LiveCharts;
 using LiveCharts.Configurations;
 using LiveCharts.Defaults;
 using LiveCharts.Wpf;
@@ -24,23 +25,9 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace Chart_DevPrj
+namespace CoronaTracker.Charts
 {
     using DataSetsType = BindingList<ObservableCollection<DataElement>>;
-
-
-    public enum AxisScale
-    {
-        Linear,
-        Logarithmic
-    }
-
-    public enum ChartType
-    {
-        Bars,
-        StackedBars,
-        Lines
-    }
 
     /// <summary>
     /// Interaktionslogik für UserControl1.xaml

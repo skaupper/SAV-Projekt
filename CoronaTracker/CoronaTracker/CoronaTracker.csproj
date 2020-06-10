@@ -35,6 +35,12 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="LiveCharts, Version=0.9.7.0, Culture=neutral, PublicKeyToken=0bc1f845d1ebb8df, processorArchitecture=MSIL">
+      <HintPath>..\packages\LiveCharts.0.9.7\lib\net45\LiveCharts.dll</HintPath>
+    </Reference>
+    <Reference Include="LiveCharts.Wpf, Version=0.9.7.0, Culture=neutral, PublicKeyToken=0bc1f845d1ebb8df, processorArchitecture=MSIL">
+      <HintPath>..\packages\LiveCharts.Wpf.0.9.7\lib\net45\LiveCharts.Wpf.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Bcl.AsyncInterfaces, Version=1.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Bcl.AsyncInterfaces.1.1.0\lib\net461\Microsoft.Bcl.AsyncInterfaces.dll</HintPath>
     </Reference>
@@ -96,9 +102,24 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Charts\Types\ChartType.cs" />
+    <Compile Include="Charts\Types\AxisScale.cs" />
+    <Compile Include="Charts\BasicChartArea.xaml.cs">
+      <DependentUpon>BasicChartArea.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Charts\BasicGeoMap.xaml.cs">
+      <DependentUpon>BasicGeoMap.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Charts\Types\DataElement.cs" />
+    <Compile Include="Charts\Types\HeatMapElement.cs" />
     <Compile Include="Infrastructure\AxisScaleConverter.cs" />
     <Compile Include="Infrastructure\CustomDataGrid.cs" />
     <Compile Include="Infrastructure\IPageViewModel.cs" />
+    <Compile Include="Maps.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Maps.resx</DependentUpon>
+    </Compile>
     <Compile Include="Models\DataLoader.cs" />
     <Compile Include="Models\GraphSelection.cs" />
     <Compile Include="Models\Helper\APIHandler.cs" />
@@ -113,6 +134,14 @@
     <Compile Include="Views\WorldMapView.xaml.cs">
       <DependentUpon>WorldMapView.xaml</DependentUpon>
     </Compile>
+    <Page Include="Charts\BasicChartArea.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Charts\BasicGeoMap.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Views\CountryComparisonView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -173,6 +202,10 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <EmbeddedResource Include="Maps.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Maps.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -183,12 +216,6 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Chart_DevPrj\Chart_DevPrj\Chart_DevPrj.csproj">
-      <Project>{3180c787-8ec5-444e-a027-9687d36d3be7}</Project>
-      <Name>Chart_DevPrj</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <WCFMetadata Include="Connected Services\" />
   </ItemGroup>
   <ItemGroup>
@@ -197,6 +224,9 @@
   <ItemGroup>
     <Resource Include="Images\Database_connect.png" />
     <Resource Include="Images\Database_disconnect.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\World.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

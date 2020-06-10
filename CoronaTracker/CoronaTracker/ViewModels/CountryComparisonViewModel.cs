@@ -1,4 +1,5 @@
-﻿using Chart_DevPrj;
+﻿using CoronaTracker.Charts;
+using CoronaTracker.Charts.Types;
 using CoronaTracker.Infrastructure;
 using CoronaTracker.Models;
 using System;

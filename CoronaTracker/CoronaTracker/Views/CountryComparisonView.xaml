@@ -6,7 +6,8 @@
              xmlns:local="clr-namespace:CoronaTracker.Views"
 			 xmlns:infrastructure="clr-namespace:CoronaTracker.Infrastructure"
              xmlns:models="clr-namespace:CoronaTracker.ViewModels"
-             xmlns:charts="clr-namespace:Chart_DevPrj;assembly=Chart_DevPrj"
+             xmlns:charts="clr-namespace:CoronaTracker.Charts"
+             xmlns:chartTypes="clr-namespace:CoronaTracker.Charts.Types"
              xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
@@ -159,13 +160,13 @@
                 <RadioButton 
 	                DockPanel.Dock="Left" 
 	                VerticalAlignment="Center" 
-	                IsChecked="{Binding Path=rbAxisScaleCCVM, Converter={StaticResource AxisScaleConverter}, ConverterParameter={x:Static charts:AxisScale.Linear}}"
+	                IsChecked="{Binding Path=rbAxisScaleCCVM, Converter={StaticResource AxisScaleConverter}, ConverterParameter={x:Static chartTypes:AxisScale.Linear}}"
 	                Content="Linear"
 	                Margin="5, 5, 0, 5"/>
 	            <RadioButton 
 		            DockPanel.Dock="Left" 
 		            VerticalAlignment="Center" 
-		            IsChecked="{Binding Path=rbAxisScaleCCVM, Converter={StaticResource AxisScaleConverter}, ConverterParameter={x:Static charts:AxisScale.Linear}}"
+		            IsChecked="{Binding Path=rbAxisScaleCCVM, Converter={StaticResource AxisScaleConverter}, ConverterParameter={x:Static chartTypes:AxisScale.Linear}}"
 		            Content="Logarithmic"
 		            Margin="5, 5, 0, 5"/>
             </DockPanel>
