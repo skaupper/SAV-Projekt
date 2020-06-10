@@ -30,12 +30,12 @@ namespace CoronaTracker.Models.Helper
             return response.Data;
         }
 
-        public async Task<CountryTimeline> LoadCountryTimelineAsync(string countryCode)
+        public async Task<CountryTimeline> LoadCountryTimelineAsync(string countrySlug)
         {
             const string api_url_c = "https://api.covid19api.com/";
 
             // Prepare API request objects
-            string api_endpoint = "total/country/" + countryCode;
+            string api_endpoint = "total/country/" + countrySlug;
             var client = new RestClient(api_url_c);
             var request = new RestRequest(api_endpoint);
 
@@ -48,33 +48,7 @@ namespace CoronaTracker.Models.Helper
                     $"Error Message: '{response.ErrorMessage}'");
             }
 
-            /* NOTE: The data delivered by the API is very comprehensive.
-             *       Some countries offer details for certain provinces.
-             *       However, we do not need this information. Thus, the dataset
-             *       is filtered here, to only contain the entire country's cases.
-             */
-            // TODO: Option 1 (for some reason, this does not work..)
-            //var filtered = response.Data.Where(item => item.Province.Equals("")).ToList();
-            //CountryTimeline timeline =
-            //    new CountryTimeline { Days = filtered };
-
-            //var timeline = new CountryTimeline { Days = new List<Day>() };
-            //for (int i = 0; i < response.Data.Count; i++)
-            //{
-            //    if (response.Data[i].Province == "")
-            //        timeline.Days.Add(response.Data[i]);
-            //}
-
-            // Option 2 (for some reason, this does not work either...)
-            //var list = response.Data.ToList();
-            //list.RemoveAll(x => !(x.Province.Equals("")));
-            //CountryTimeline timeline =
-            //    new CountryTimeline { Days = list };
-
-            CountryTimeline timeline =
-                new CountryTimeline { Days = response.Data };
-
-            return timeline;
+            return new CountryTimeline { Days = response.Data };
         }
     }
 }

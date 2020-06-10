@@ -10,7 +10,7 @@ namespace CoronaTracker.Models
     public class DataLoader
     {
         public enum Source { API, LOCALFILE }
-        public enum CountryProperty { CODE, NAME }
+        public enum CountryProperty { CODE, NAME, SLUG }
 
         private DataStore dataStore;
         private readonly APIHandler apiHandler;
@@ -56,7 +56,7 @@ namespace CoronaTracker.Models
         private async Task DownloadTimelineHelperAsync()
         {
             // Create a list of tasks
-            var availableCountries = this.GetListOfProperty(CountryProperty.CODE);
+            var availableCountries = this.GetListOfProperty(CountryProperty.SLUG);
 
             List<Task<CountryTimeline>> taskList = new List<Task<CountryTimeline>>();
             foreach (var country in availableCountries)
@@ -72,11 +72,17 @@ namespace CoronaTracker.Models
             };
             foreach (var result in results)
             {
-                string countrycode = result.Days.First().Country;
-                if (dataStore.Timeline.Countries.ContainsKey(countrycode))
-                    throw new Exception($"{countrycode} already exists in Dict!!");
+                // Take first element, just to get the CountryName
+                string countryName = result.Days.First().Country;
+                if (dataStore.Timeline.Countries.ContainsKey(countryName))
+                {
+                    throw new Exception($"{countryName} already exists in Dict!!");
+                }
                 else
-                    dataStore.Timeline.Countries.Add(countrycode, result);
+                {
+                    // Add the current CountryTimeline to the DataStore
+                    dataStore.Timeline.Countries.Add(countryName, result);
+                }
             }
         }
 
@@ -185,6 +191,9 @@ namespace CoronaTracker.Models
                 switch (prop)
                 {
                     case CountryProperty.CODE:
+                        available.Add(item.CountryCode);
+                        break;
+                    case CountryProperty.SLUG:
                         available.Add(item.Slug);
                         break;
                     case CountryProperty.NAME:
