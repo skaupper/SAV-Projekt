@@ -10,6 +10,10 @@ namespace CoronaTracker.Infrastructure
     {
         string Name { get; }
 
+        bool IsEnabled { get; set; }
+
+        bool IsSelected { get; set; }
+
         void SetupPage();
     }
 }

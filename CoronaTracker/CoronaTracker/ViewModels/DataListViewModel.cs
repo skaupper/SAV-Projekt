@@ -1,30 +1,25 @@
-﻿using CoronaTracker.Charts.Types;
-using CoronaTracker.Infrastructure;
+﻿using CoronaTracker.Infrastructure;
+using CoronaTracker.Models.Types;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Data;
 
 namespace CoronaTracker.ViewModels
 {
-    class WorldMapViewModel : NotifyBase, IPageViewModel
+    class DataListViewModel : NotifyBase, IPageViewModel
     {
         #region Fields
-        public string Name { get { return "World Map"; } }
+        public string Name { get { return "Data List"; } }
         #endregion Fields
 
         #region CTOR
-        public WorldMapViewModel()
+        public DataListViewModel()
         {
-            HeatMap = new BindingList<HeatMapElement>{
-                new HeatMapElement
-                {
-                    Country = "US",
-                    Value = 10
-                }
-            };
+
         }
         #endregion CTOR
 
@@ -55,24 +50,41 @@ namespace CoronaTracker.ViewModels
                 }
             }
         }
-        BindingList<HeatMapElement> heatMap;
-        public BindingList<HeatMapElement> HeatMap
+        private ICollectionView _cdgdataList;
+        public ICollectionView CdgDataList
         {
-            get => heatMap;
+            get { return _cdgdataList; }
             set
             {
-                heatMap = value;
-                OnPropertyChanged("HeatMap");
+                if (value != _cdgdataList)
+                {
+                    _cdgdataList = value;
+                    NotifyPropertyChanged("CdgDataList");
+                }
             }
         }
-        #endregion Data Bindings
+        #endregion Data bindings
 
-        #region external Methods
+        #region Internal Methods
+        #endregion Internal Methods
+
+        #region External Methods
         public void SetupPage()
         {
-            if (dataLoader.CheckIfDataIsLoaded())
+            try
+            {
+                List<CountryAccumData> tmp = dataLoader.GetCountryAccumData();
+
+                CdgDataList = CollectionViewSource.GetDefaultView(tmp);
+
                 IsEnabled = true;
+            }
+            catch (FieldAccessException)
+            {
+                IsEnabled = false;
+                // Data not loaded yet
+            }
         }
-        #endregion external Methods
+        #endregion External Methods
     }
 }

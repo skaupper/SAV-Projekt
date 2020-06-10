@@ -15,9 +15,8 @@ namespace CoronaTracker.ViewModels
     class HomeViewModel : NotifyBase, IPageViewModel
     {
         #region Fields
-        private readonly CountryStatsViewModel countryStatsViewModel;
-        private readonly CountryComparisonViewModel countryComparisonViewModel;
-        private readonly WorldMapViewModel worldMapViewModel;
+        private readonly List<IPageViewModel> ListOfAvailablePages = null;
+
         public string Name { get { return "Home"; } }
 
         public ICommand BtnLoadFromWeb { get; internal set; }
@@ -56,11 +55,13 @@ namespace CoronaTracker.ViewModels
         #endregion Fields
 
         #region CTOR
-        public HomeViewModel(CountryStatsViewModel csvm, CountryComparisonViewModel ccvm, WorldMapViewModel wmvm)
+        public HomeViewModel(CountryStatsViewModel csvm, CountryComparisonViewModel ccvm, WorldMapViewModel wmvm, DataListViewModel dlvm)
         {
-            countryStatsViewModel = csvm;
-            countryComparisonViewModel = ccvm;
-            worldMapViewModel = wmvm;
+            ListOfAvailablePages = new List<IPageViewModel>();
+            ListOfAvailablePages.Add(csvm);
+            ListOfAvailablePages.Add(ccvm);
+            ListOfAvailablePages.Add(wmvm);
+            ListOfAvailablePages.Add(dlvm);
 
             InitButtons();
             InitStates();
@@ -85,6 +86,32 @@ namespace CoronaTracker.ViewModels
         #endregion Init
 
         #region Data Bindings
+        private bool _pageIsEnabled = true;
+        public bool IsEnabled
+        {
+            get { return _pageIsEnabled; }
+            set
+            {
+                if (value != _pageIsEnabled)
+                {
+                    _pageIsEnabled = value;
+                    NotifyPropertyChanged("IsEnabled");
+                }
+            }
+        }
+        private bool _pageIsSelected = true;
+        public bool IsSelected
+        {
+            get { return _pageIsSelected; }
+            set
+            {
+                if (value != _pageIsSelected)
+                {
+                    _pageIsSelected = value;
+                    NotifyPropertyChanged("IsSelected");
+                }
+            }
+        }
         private bool _connectionState = false;
         public bool ConnectionState
         {
@@ -118,17 +145,23 @@ namespace CoronaTracker.ViewModels
         private void TriggerPageSetups()
         {
             SetupPage();
-            countryStatsViewModel.SetupPage();
-            countryComparisonViewModel.SetupPage();
-            worldMapViewModel.SetupPage();
+
+            foreach (IPageViewModel item in ListOfAvailablePages)
+            {
+                item.SetupPage();
+            }
         }
         #endregion Internal Methods
 
         #region external Methods
         public void SetupPage()
         {
-            ConnectionState = true;
-            CanRefreshSaveDatasetBtn = true;
+            if(dataLoader.CheckIfDataIsLoaded())
+            {
+                ConnectionState = true;
+                CanRefreshSaveDatasetBtn = true;
+                IsEnabled = true;
+            }       
         }
         #endregion external Methods
 

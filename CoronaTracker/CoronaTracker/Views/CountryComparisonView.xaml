@@ -187,9 +187,10 @@
 
 	    <charts:BasicChartArea 
 			Margin="15, 5, 15, 15"
-		    x:Name="Chart" DataSets="{Binding DataSetsCCVM}" 
-		    ScaleX="{Binding rbAxisScaleCCVM}" 
+			DataSets="{Binding DataSetsCCVM}" 
+		    ScaleY="{Binding rbAxisScaleCCVM}" 
 		    UsedChartType="{Binding UsedChartType}" 
-		    TitleX="X" TitleY="{Binding YTitleCCVM}"></charts:BasicChartArea>
+		    TitleX="Date" 
+			TitleY="{Binding YTitleCCVM}"/>
     </DockPanel>
 </UserControl>

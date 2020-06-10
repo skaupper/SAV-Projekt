@@ -18,6 +18,7 @@ namespace CoronaTracker.ViewModels
         private readonly CountryStatsViewModel countryStatsViewModel;
         private CountryComparisonViewModel _countryComparisonViewModel;
         private readonly WorldMapViewModel worldMapViewModel;
+        private readonly DataListViewModel dataListViewModel;
 
         private ICommand _changePageCommand;
 
@@ -39,18 +40,20 @@ namespace CoronaTracker.ViewModels
         }
 
         #region CTOR
-        public MainViewModel(HomeViewModel homeModel, CountryStatsViewModel countryStatsModel, CountryComparisonViewModel countryComparisonModel, WorldMapViewModel worldMapModel)
+        public MainViewModel(HomeViewModel homeModel, CountryStatsViewModel countryStatsModel, CountryComparisonViewModel countryComparisonModel, WorldMapViewModel worldMapModel, DataListViewModel dataListModel)
         {
             homeViewModel = homeModel;
             countryStatsViewModel = countryStatsModel;
             countryComparisonViewModel = countryComparisonModel;
             worldMapViewModel = worldMapModel;
+            dataListViewModel = dataListModel;
 
             // Add available pages
             PageViewModels.Add(homeViewModel);
             PageViewModels.Add(countryStatsViewModel);
             PageViewModels.Add(countryComparisonViewModel);
             PageViewModels.Add(worldMapViewModel);
+            PageViewModels.Add(dataListViewModel);
 
             // Set starting page
             CurrentPageViewModel = PageViewModels[0];
@@ -109,6 +112,14 @@ namespace CoronaTracker.ViewModels
 
             CurrentPageViewModel = PageViewModels
                 .FirstOrDefault(vm => vm == viewModel);
+
+            foreach (IPageViewModel item in PageViewModels)
+            {
+                if (item == CurrentPageViewModel)
+                    item.IsSelected = true;
+                else
+                    item.IsSelected = false;
+            }
         }
         #endregion Methods
     }

@@ -70,9 +70,11 @@
         <TextBlock DockPanel.Dock="Top" Margin="15, 5, 15, 0" Text="Overall Distribution:"/>
         <charts:BasicChartArea 
 	        Margin="15, 5, 15, 15"
-	        x:Name="Chart" DataSets="{Binding DataSetsCSVM}" 
+	        x:Name="Chart" 
+	        DataSets="{Binding DataSetsCSVM}" 
 	        ScaleY="{Binding rbAxisScaleCSVM}" 
 	        UsedChartType="Lines" 
-	        TitleX="Date" TitleY="{Binding YTitleCSVM}"></charts:BasicChartArea>
+	        TitleX="Date" 
+	        TitleY="{Binding YTitleCSVM}"/>
     </DockPanel>
 </UserControl>

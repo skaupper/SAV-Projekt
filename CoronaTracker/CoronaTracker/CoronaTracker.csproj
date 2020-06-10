@@ -131,7 +131,11 @@
     <Compile Include="Models\Types\TimelineData.cs" />
     <Compile Include="ViewModels\CountryComparisonViewModel.cs" />
     <Compile Include="ViewModels\CountryStatsViewModel.cs" />
+    <Compile Include="ViewModels\DataListViewModel.cs" />
     <Compile Include="ViewModels\WorldMapViewModel.cs" />
+    <Compile Include="Views\DataListView.xaml.cs">
+      <DependentUpon>DataListView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\WorldMapView.xaml.cs">
       <DependentUpon>WorldMapView.xaml</DependentUpon>
     </Compile>
@@ -148,6 +152,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\CountryStatsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\DataListView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

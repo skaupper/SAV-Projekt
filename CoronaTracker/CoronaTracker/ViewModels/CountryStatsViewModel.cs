@@ -33,6 +33,32 @@ namespace CoronaTracker.ViewModels
         #endregion Init
 
         #region Data Bindings
+        private bool _pageIsEnabled = false;
+        public bool IsEnabled
+        {
+            get { return _pageIsEnabled; }
+            set
+            {
+                if (value != _pageIsEnabled)
+                {
+                    _pageIsEnabled = value;
+                    NotifyPropertyChanged("IsEnabled");
+                }
+            }
+        }
+        private bool _pageIsSelected = false;
+        public bool IsSelected
+        {
+            get { return _pageIsSelected; }
+            set
+            {
+                if (value != _pageIsSelected)
+                {
+                    _pageIsSelected = value;
+                    NotifyPropertyChanged("IsSelected");
+                }
+            }
+        }
         private BindingList<string> _cbCountryNames = null;
         public BindingList<string> cbCountryNames
         {
@@ -136,12 +162,14 @@ namespace CoronaTracker.ViewModels
                     Name = "Total Deaths",
                     Values = new ObservableCollection<DataElement>(transformed)
                 });
+
+                IsEnabled = true;
             }
             catch (FieldAccessException)
             {
+                IsEnabled = false;
                 // Data not loaded yet
             }
-
         }
         #endregion external Methods
 

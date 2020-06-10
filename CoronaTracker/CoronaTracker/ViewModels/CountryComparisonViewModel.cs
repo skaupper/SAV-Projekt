@@ -19,6 +19,7 @@ namespace CoronaTracker.ViewModels
     {
         #region Fields
         public string Name { get { return "Country Comparision"; } }
+
         public ICommand btnAddElement { get; protected set; }
         public ICommand btnRemoveElements { get; protected set; }
         public ICommand dgCellEditEndingCommand { get; protected set; }
@@ -69,6 +70,32 @@ namespace CoronaTracker.ViewModels
         #endregion Init
 
         #region Data Bindings
+        private bool _pageIsEnabled = false;
+        public bool IsEnabled 
+        { 
+            get { return _pageIsEnabled; } 
+            set 
+            {
+                if (value != _pageIsEnabled)
+                {
+                    _pageIsEnabled = value;
+                    NotifyPropertyChanged("IsEnabled");
+                }
+            } 
+        }
+        private bool _pageIsSelected = false;
+        public bool IsSelected
+        {
+            get { return _pageIsSelected; }
+            set
+            {
+                if (value != _pageIsSelected)
+                {
+                    _pageIsSelected = value;
+                    NotifyPropertyChanged("IsSelected");
+                }
+            }
+        }
         private AxisScale _rbAxisScaleCCVM = AxisScale.Linear;
         public AxisScale rbAxisScaleCCVM
         {
@@ -198,9 +225,11 @@ namespace CoronaTracker.ViewModels
             try
             {
                 cbAvailableCountries = new BindingList<string>(dataLoader.GetListOfProperty(DataLoader.CountryProperty.NAME));
+                IsEnabled = true;
             }
             catch (FieldAccessException)
             {
+                IsEnabled = false;
                 // Data not loaded yet
             }
         }
