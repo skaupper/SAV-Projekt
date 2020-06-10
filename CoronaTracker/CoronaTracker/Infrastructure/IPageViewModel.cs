@@ -9,5 +9,7 @@ namespace CoronaTracker.Infrastructure
     interface IPageViewModel
     {
         string Name { get; }
+
+        void SetupPage();
     }
 }

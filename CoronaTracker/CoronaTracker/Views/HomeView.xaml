@@ -6,19 +6,79 @@
              xmlns:local="clr-namespace:CoronaTracker.Views"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <DockPanel>
-        <Button 
+    <UserControl.Resources>
+	    <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+    </UserControl.Resources>
+	<DockPanel Margin="15, 5, 15, 5">
+        <DockPanel 
+            DockPanel.Dock="Top"
+	        Margin="0, 5, 0, 5">
+            <Image 
+					Source="pack://application:,,,/Images/logo.png"
+					Height="100" 
+					Width="100" />
+
+            <TextBlock
+					DockPanel.Dock="Top"
+					Text="Corona Tracker"
+					FontSize="25"
+					HorizontalAlignment="Center"
+					FontWeight="Bold"
+					Margin="-100, 5, 0, 5"/>
+
+            <TextBlock
+				Margin="15, 0, 15, 0"
+				TextWrapping="Wrap">
+	            The Corona Tracker offers you the ability to gather corona related statistic data and present it in a vivid way. Therefore the data is collected from countries around the globe. It 
+	            also offers the ability to compare a defined parameters of several countries or show a selected parameter on a world map.
+            </TextBlock>
+        </DockPanel>
+
+        <Grid 
 	        DockPanel.Dock="Top"
-	        Content="Load Dataset from Web"
-	        Command="{Binding btnLoadFromWeb}"/>
-        <Button 
-	        DockPanel.Dock="Top"
-	        Content="Load Dataset local"
-	        Command="{Binding btnLoadLocal}"/>
-        <Button 
-	        DockPanel.Dock="Top"
-	        Content="Save Dataset"
-	        Command="{Binding btnSaveDataset}"/>
+	        Margin="0, 10, 0, 0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="1*"/>
+            </Grid.ColumnDefinitions>
+
+            <Grid.RowDefinitions>
+                <RowDefinition Height="1*"/>
+            </Grid.RowDefinitions>
+
+            <DockPanel Grid.Column="0" Grid.Row="0">
+                <Button 
+		            DockPanel.Dock="Top"
+					Margin="0, 5, 0, 5"
+		            Content="Load Dataset from Web"
+		            Command="{Binding btnLoadFromWeb}"/>
+                <Button 
+		            DockPanel.Dock="Top"
+		            Margin="0, 25, 0, 5"
+		            Content="Load Dataset local"
+		            Command="{Binding btnLoadLocal}"/>
+                <Button 
+		            DockPanel.Dock="Top"
+		            Margin="0, 25, 0, 5"
+		            Content="Save Dataset"
+		            Command="{Binding btnSaveDataset}"/>
+            </DockPanel>
+
+            <Image 
+				Grid.Column="1"
+				Grid.Row="0"
+		        Source="pack://application:,,,/Images/Database_disconnect.png"
+		        Width="120"
+				Visibility="{Binding InvertedConnectionState, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+            <Image 
+	            Grid.Column="1"
+	            Grid.Row="0"
+	            Source="pack://application:,,,/Images/Database_connect.png"
+	            Width="120"
+	            Visibility="{Binding ConnectionState, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+        </Grid>
+
+        <!-- Filler -->
         <Rectangle />
     </DockPanel>
 </UserControl>

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CoronaTracker.Models;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
@@ -13,15 +14,21 @@ namespace CoronaTracker.Infrastructure
     /// </summary>
     public class NotifyBase : INotifyPropertyChanged
     {
+        #region Fields
+        protected static DataLoader dataLoader;
+        #endregion Fields
+
         #region CTOR
         /// <summary>
         /// Empty CTOR
         /// </summary>
         protected NotifyBase()
         {
+            dataLoader = new DataLoader();
         }
         #endregion CTOR
 
+        #region Property Handling
         //field
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -54,6 +61,7 @@ namespace CoronaTracker.Infrastructure
                 handler(this, e);
             }
         }
+        #endregion Property Handling
 
         #region Debugging Aides
         /// <summary>
