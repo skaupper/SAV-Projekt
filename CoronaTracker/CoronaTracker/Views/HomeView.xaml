@@ -51,17 +51,17 @@
 		            DockPanel.Dock="Top"
 					Margin="0, 5, 0, 5"
 		            Content="Load Dataset from Web"
-		            Command="{Binding btnLoadFromWeb}"/>
+		            Command="{Binding BtnLoadFromWeb}"/>
                 <Button 
 		            DockPanel.Dock="Top"
 		            Margin="0, 25, 0, 5"
 		            Content="Load Dataset local"
-		            Command="{Binding btnLoadLocal}"/>
+		            Command="{Binding BtnLoadLocal}"/>
                 <Button 
 		            DockPanel.Dock="Top"
 		            Margin="0, 25, 0, 5"
 		            Content="Save Dataset"
-		            Command="{Binding btnSaveDataset}"/>
+		            Command="{Binding BtnSaveDataset}"/>
             </DockPanel>
 
             <Image 
