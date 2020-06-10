@@ -18,10 +18,10 @@ namespace CoronaTracker.Models.Types
     public class TimelineDay
     {
         public DateTime Date { get; set; }
-        public DayDetail Details { get; set; }
+        public DayDetailJson Details { get; set; }
     }
 
-    public class DayDetail
+    public class DayDetailJson
     {
         [JsonProperty("new_daily_cases")]
         public int NewDailyCases { get; set; }
