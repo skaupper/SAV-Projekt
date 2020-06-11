@@ -116,6 +116,7 @@
     <Compile Include="Infrastructure\AxisScaleConverter.cs" />
     <Compile Include="Infrastructure\CustomDataGrid.cs" />
     <Compile Include="Infrastructure\IPageViewModel.cs" />
+    <Compile Include="Infrastructure\SliderMouseWheelBehaviour.cs" />
     <Compile Include="Maps.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

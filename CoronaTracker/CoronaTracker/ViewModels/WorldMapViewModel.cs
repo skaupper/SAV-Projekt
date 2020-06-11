@@ -1,5 +1,6 @@
 ﻿using CoronaTracker.Charts.Types;
 using CoronaTracker.Infrastructure;
+using System;
 using System.ComponentModel;
 
 namespace CoronaTracker.ViewModels
@@ -8,6 +9,8 @@ namespace CoronaTracker.ViewModels
     {
         #region Fields
         public string Name { get { return "World Map"; } }
+        DateTime StartDate;
+        DateTime EndDate;
         #endregion Fields
 
         #region CTOR
@@ -60,14 +63,80 @@ namespace CoronaTracker.ViewModels
                 OnPropertyChanged("HeatMap");
             }
         }
+        private DateTime _tbWorldMapDate = DateTime.Now.Date;
+        public DateTime TbWorldMapDate
+        {
+            get { return _tbWorldMapDate.Date; }
+            set
+            {
+                if (value != _tbWorldMapDate.Date)
+                {
+                    _tbWorldMapDate = value;
+                    NotifyPropertyChanged("TbWorldMapDate");
+                }
+            }
+        }
+        private double _sNofDays = 0;
+        public double SNofDays
+        {
+            get { return _sNofDays; }
+            set
+            {
+                if (value != _sNofDays)
+                {
+                    _sNofDays = value;
+                    NotifyPropertyChanged("SNofDays");
+                }
+            }
+        }
+        public double SMouseWheelIncrement
+        {
+            get { return _sNofDays / 10; }
+        }
+        private double _sSelectedDate;
+        public double SSelectedDate
+        {
+            get { return _sSelectedDate; }
+            set
+            {
+                if (value != _sSelectedDate)
+                {
+                    _sSelectedDate = value;
+                    NotifyPropertyChanged("SSelectedDate");
+                    SliderChanged();
+                }
+            }
+        }
         #endregion Data Bindings
 
-        #region external Methods
+        #region Internal Methods
+        private void SliderChanged()
+        {
+            TbWorldMapDate = StartDate.AddDays(SSelectedDate);
+
+            //TODO: Load Worldmap with new data
+        }
+        #endregion Internal Methods
+
+        #region External Methods
         public void SetupPage()
         {
-            if (dataLoader.CheckIfDataIsLoaded())
+            try
+            {
+                StartDate = dataLoader.GetOldestDate();
+                EndDate = dataLoader.GetNewestDate();
+
+                SNofDays = (EndDate - StartDate).TotalDays;
+                SSelectedDate = 0;
+                SliderChanged();
                 IsEnabled = true;
+            }
+            catch (FieldAccessException)
+            {
+                IsEnabled = false;
+                // Data not loaded yet
+            } 
         }
-        #endregion external Methods
+        #endregion External Methods
     }
 }

@@ -20,7 +20,7 @@ namespace CoronaTracker.Infrastructure
 
         public static readonly DependencyProperty SelectedItemsListProperty =
                 DependencyProperty.Register("SelectedItemsList", typeof(IList), typeof(CustomDataGrid), new PropertyMetadata(null));
-        #endregion
+        #endregion SelectedItemsList Dependecy Property
 
         #region CTOR
         public CustomDataGrid()

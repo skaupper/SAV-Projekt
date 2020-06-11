@@ -5,6 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:CoronaTracker.Views"
              xmlns:charts="clr-namespace:CoronaTracker.Charts"
+             xmlns:infrastructure="clr-namespace:CoronaTracker.Infrastructure"
              mc:Ignorable="d" 
              d:DesignHeight="650" d:DesignWidth="850">
     <DockPanel>
@@ -29,6 +30,23 @@
             </ListView.View>
         </ListView>
 
+        <DockPanel DockPanel.Dock="Bottom">
+            <TextBlock
+                DockPanel.Dock="Right"
+                Margin="5, 5, 15, 5"
+                Text="{Binding TbWorldMapDate, StringFormat=dd-MM-yyyy}"/>
+            <Slider
+		        VerticalAlignment="Center"
+		        Margin="15, 5, 10, 5"
+		        TickPlacement="BottomRight"
+		        IsSnapToTickEnabled="True"
+                Minimum="0"
+		        Maximum="{Binding SNofDays}"
+		        TickFrequency="1"
+		        Value="{Binding SSelectedDate}"
+		        infrastructure:SliderMouseWheelBehaviour.Value="{Binding SMouseWheelIncrement}"/>
+        </DockPanel>
+        
 
         <charts:BasicGeoMap Margin="15, 5, 15, 15" HeatMap="{Binding HeatMap}" />
     </DockPanel>
