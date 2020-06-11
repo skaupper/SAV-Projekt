@@ -41,9 +41,9 @@
 		            DockPanel.Dock="Top"
 		            Margin="15, 5, 0, 15"
 		            ItemsSource="{Binding LvDetailedStatistics}" 
-		            ScrollViewer.HorizontalScrollBarVisibility="Auto"
+		            ScrollViewer.HorizontalScrollBarVisibility="Hidden"
 		            ScrollViewer.VerticalScrollBarVisibility="Hidden"
-		            Height="60">
+		            Height="45">
 		            <ListView.View>
 			            <GridView>
 				            <GridViewColumn Width="129" Header="Selection" DisplayMemberBinding="{Binding Selection}"/>

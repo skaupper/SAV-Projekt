@@ -2,6 +2,7 @@
 using CoronaTracker.Infrastructure;
 using CoronaTracker.Models;
 using CoronaTracker.Models.Types;
+using LiveCharts.Maps;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -19,6 +20,8 @@ namespace CoronaTracker.ViewModels
         DateTime EndDate;
         Dictionary<string, string> CountryCodeAssociation = null;
         public ICommand BgmLandClicked { get; protected set; }
+        private string SelectedDetailedCountryCode = null;
+        private string SelectedDetailedCountry = null;
         #endregion Fields
 
         #region CTOR
@@ -133,6 +136,19 @@ namespace CoronaTracker.ViewModels
                 }
             }
         }
+        private BindingList<DetailedWorldMapStatistics> _lvDetailedStatistics = new BindingList<DetailedWorldMapStatistics>();
+        public BindingList<DetailedWorldMapStatistics> LvDetailedStatistics
+        {
+            get { return _lvDetailedStatistics; }
+            set
+            {
+                if (value != _lvDetailedStatistics)
+                {
+                    _lvDetailedStatistics = value;
+                    NotifyPropertyChanged("LvDetailedStatistics");
+                }
+            }
+        }
         #endregion Data Bindings
 
         #region Internal Methods
@@ -174,10 +190,72 @@ namespace CoronaTracker.ViewModels
                     tmp.Add(GetTransFormedHeatMapElements(daylist, CbWorldMapSelectedCompAttribute).FirstOrDefault());
                 }
                 HeatMap = new BindingList<HeatMapElement>(tmp);
+
+                string tmpCountryName = null;
+                if (SelectedDetailedCountryCode != null)
+                    tmpCountryName = CountryCodeAssociation.FirstOrDefault(x => x.Value == SelectedDetailedCountryCode).Key;
+                SetUpDetailedData(tmpCountryName);
             }
             catch (Exception e)
             {
                 MessageBox.Show("An unhandeled exception occured: " + e.Message);
+            }
+        }
+        private void SetUpDetailedData(string CountryName = null)
+        {
+            try
+            {
+                if (CountryName == null)
+                    SetUpDetailedGlobalData();
+                else
+                    SetUpDetailedCountryData(CountryName);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("The detailed country data for the selected country are not available: " + ex.Message);
+            }
+        }
+        private void SetUpDetailedCountryData(string CountryName)
+        {
+            try
+            {
+                var dayList = dataLoader.GetCountryTimeline(CountryName, TbWorldMapDate, TbWorldMapDate).Days;
+                var tmpDetailedDataCountry = new DetailedWorldMapStatistics()
+                {
+                    Selection = SelectedDetailedCountry,
+                    Active = dayList.FirstOrDefault().Active,
+                    Confirmed = dayList.FirstOrDefault().Confirmed,
+                    Deaths = dayList.FirstOrDefault().Deaths,
+                    Recovered = dayList.FirstOrDefault().Recovered
+                };
+                LvDetailedStatistics.Clear();
+                LvDetailedStatistics.Add(tmpDetailedDataCountry);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+        private void SetUpDetailedGlobalData()
+        {
+            try
+            {
+                var globalData = dataLoader.GetCountryAccumData().Global;
+                var tmpDetailedDataGlobal = new DetailedWorldMapStatistics()
+                {
+                    Selection = "Global",
+                    Active = 0,
+                    Confirmed = 0,
+                    Deaths = 0,
+                    Recovered = 0
+                };
+                LvDetailedStatistics.Clear();
+                LvDetailedStatistics.Add(tmpDetailedDataGlobal);
+                return;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
             }
         }
         #endregion Internal Methods
@@ -212,7 +290,23 @@ namespace CoronaTracker.ViewModels
         #region Commands
         public void LandClicked(object e)
         {
+            if (e == null)
+            {
+                // Click on the map but not on a country
+                SelectedDetailedCountryCode = null;
+                SelectedDetailedCountry = null;
+                SetUpDetailedData();
+            }
 
+            //Click ahppened on country
+            MapData countryInformation = e as MapData;
+            if (countryInformation == null)
+                return;
+
+            SelectedDetailedCountryCode = countryInformation.Id;
+            SelectedDetailedCountry = countryInformation.Name;
+
+            SetUpDetailedData(CountryCodeAssociation.FirstOrDefault(x => x.Value == countryInformation.Id).Key);            
         }
         #endregion Commands
     }
