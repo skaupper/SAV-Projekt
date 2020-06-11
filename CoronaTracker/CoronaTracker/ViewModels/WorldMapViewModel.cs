@@ -1,5 +1,7 @@
 ﻿using CoronaTracker.Charts.Types;
 using CoronaTracker.Infrastructure;
+using CoronaTracker.Models;
+using CoronaTracker.Models.Types;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -14,6 +16,7 @@ namespace CoronaTracker.ViewModels
         public string Name { get { return "World Map"; } }
         DateTime StartDate;
         DateTime EndDate;
+        Dictionary<string, string> CountryCodeAssociation = null;
         #endregion Fields
 
         #region CTOR
@@ -110,32 +113,61 @@ namespace CoronaTracker.ViewModels
                 }
             }
         }
+        private SelectableStatistics _cbWorldMapSelectedCompAttribute = SelectableStatistics.ActiveCases;
+        public SelectableStatistics CbWorldMapSelectedCompAttribute
+        {
+            get { return _cbWorldMapSelectedCompAttribute; }
+            set
+            {
+                if (value != _cbWorldMapSelectedCompAttribute)
+                {
+                    _cbWorldMapSelectedCompAttribute = value;
+                    NotifyPropertyChanged("CbWorldMapSelectedCompAttribute");
+                    SliderChanged();
+                }
+            }
+        }
         #endregion Data Bindings
 
         #region Internal Methods
+        IEnumerable<HeatMapElement> GetTransFormedHeatMapElements(List<Day> dayList, SelectableStatistics selectedStatistic)
+        {
+            IEnumerable<HeatMapElement> transformed;
+            switch (CbWorldMapSelectedCompAttribute)
+            {
+                case SelectableStatistics.ConfirmedCases:
+                    transformed = from day in dayList select new HeatMapElement { Country = CountryCodeAssociation[day.Country], Value = day.Confirmed };
+                    break;
+                case SelectableStatistics.ActiveCases:
+                    transformed = from day in dayList select new HeatMapElement { Country = CountryCodeAssociation[day.Country], Value = day.Active };
+                    break;
+                case SelectableStatistics.Deaths:
+                    transformed = from day in dayList select new HeatMapElement { Country = CountryCodeAssociation[day.Country], Value = day.Deaths };
+                    break;
+                case SelectableStatistics.Recovered:
+                    transformed = from day in dayList select new HeatMapElement { Country = CountryCodeAssociation[day.Country], Value = day.Recovered };
+                    break;
+                default:
+                    transformed = from day in dayList select new HeatMapElement { Country = CountryCodeAssociation[day.Country], Value = day.Confirmed };
+                    break;
+            }
+            return transformed;
+        }
         private void SliderChanged()
         {
             TbWorldMapDate = StartDate.AddDays(SSelectedDate);
 
             try
             {
-                HeatMap = new BindingList<HeatMapElement>();
-
                 var tmp = new BindingList<HeatMapElement>();
 
-                var tmpAllCountries = dataLoader.GetListOfProperty(Models.DataLoader.CountryProperty.NAME);
-                var tmpAllCountrycodes= dataLoader.GetListOfProperty(Models.DataLoader.CountryProperty.CODE);
-
-                var CountryCodeAssociation = tmpAllCountries.Zip(tmpAllCountrycodes, (k, v) => new { k, v }).ToDictionary(x => x.k, x => x.v);
-
-                foreach (var countryCode in tmpAllCountries)
+                foreach (KeyValuePair<string, string> entry in CountryCodeAssociation)
                 {
-                    var daylist = dataLoader.GetCountryTimeline(countryCode, TbWorldMapDate, TbWorldMapDate).Days;
+                    var daylist = dataLoader.GetCountryTimeline(entry.Key, TbWorldMapDate, TbWorldMapDate).Days;
 
-                    var transformed = from day in daylist select new HeatMapElement { Country = CountryCodeAssociation[day.Country], Value = day.Confirmed };
-                    tmp.Add(transformed.FirstOrDefault());
+                    tmp.Add(GetTransFormedHeatMapElements(daylist, CbWorldMapSelectedCompAttribute).FirstOrDefault());
                 }
-                HeatMap = tmp;
+                HeatMap = new BindingList<HeatMapElement>(tmp);
             }
             catch (Exception e)
             {
@@ -154,6 +186,12 @@ namespace CoronaTracker.ViewModels
 
                 SNofDays = (EndDate - StartDate).TotalDays;
                 SSelectedDate = 0;
+
+                var tmpAllCountries = dataLoader.GetListOfProperty(Models.DataLoader.CountryProperty.NAME);
+                var tmpAllCountrycodes = dataLoader.GetListOfProperty(Models.DataLoader.CountryProperty.CODE);
+
+                CountryCodeAssociation = tmpAllCountries.Zip(tmpAllCountrycodes, (k, v) => new { k, v }).ToDictionary(x => x.k, x => x.v);
+
                 SliderChanged();
                 IsEnabled = true;
             }
