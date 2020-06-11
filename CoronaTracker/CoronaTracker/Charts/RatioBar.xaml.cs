@@ -204,7 +204,7 @@ namespace CoronaTracker.Charts
             FormatterY = val => dateHelper.FromDouble(val).ToString("d");
 
             mapper = new CartesianMapper<DataElement>();
-            mapper.X(p => p.Y).Y(p => dateHelper.ToDouble(p.X));
+            mapper.X(p => Math.Round(p.Y, 0)).Y(p => dateHelper.ToDouble(p.X));
             SeriesCollection = new SeriesCollection(mapper);
 
             Chart.DataContext = this;

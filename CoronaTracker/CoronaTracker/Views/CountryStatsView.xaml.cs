@@ -25,16 +25,5 @@ namespace CoronaTracker.Views
         {
             InitializeComponent();
         }
-
-        private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            Debug.Assert(e.AddedItems.Count <= 1);
-            if (e.AddedItems.Count == 0)
-            {
-                return;
-            }
-
-
-        }
     }
 }
