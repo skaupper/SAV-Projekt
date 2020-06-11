@@ -114,6 +114,7 @@ namespace CoronaTracker.ViewModels
                 }
             }
         }
+
         #endregion Data Bindings
 
         #region internal Methods
@@ -135,10 +136,10 @@ namespace CoronaTracker.ViewModels
 
                 var daylist = dataLoader.GetCountryTimeline("Austria").Days;
 
-                var transformed = from day in daylist select new DataElement { X = day.Date, Y = day.Confirmed };
+                var transformed = from day in daylist select new DataElement { X = day.Date, Y = day.Active };
                 DataSetsCSVM.Add(new DataSet
                 {
-                    Name = "Total Cases",
+                    Name = "Active Cases",
                     Values = new ObservableCollection<DataElement>(transformed)
                 });
 

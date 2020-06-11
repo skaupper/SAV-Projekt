@@ -65,16 +65,21 @@
         </Grid>
 
         <TextBlock DockPanel.Dock="Top" Margin="15, 5, 15, 0" Text="Distribution Today:"/>
-        <Rectangle DockPanel.Dock="Top" Fill="DeepPink" Margin="15, 5, 15, 5" Height="70"/>
+        <charts:RatioBar DockPanel.Dock="Top" Margin="15, 5, 15, 5" Height="70" 
+                         LegendLocation="Top"
+                         DataSets="{Binding DataSetsCSVM}" 
+                         TitleX="Percent of total cases" 
+                         TitleY=""/>
 
         <TextBlock DockPanel.Dock="Top" Margin="15, 5, 15, 0" Text="Overall Distribution:"/>
-        <charts:BasicChartArea 
+        <charts:TimelineChart 
 	        Margin="15, 5, 15, 15"
 	        x:Name="Chart" 
 	        DataSets="{Binding DataSetsCSVM}" 
 	        ScaleY="{Binding rbAxisScaleCSVM}" 
-	        UsedChartType="Lines" 
+	        UsedChartType="StackedBars" 
 	        TitleX="Date" 
-	        TitleY="{Binding YTitleCSVM}"/>
+	        TitleY="{Binding YTitleCSVM}"
+            LegendLocation="None"/>
     </DockPanel>
 </UserControl>
