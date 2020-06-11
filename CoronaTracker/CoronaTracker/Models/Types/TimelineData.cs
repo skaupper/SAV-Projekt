@@ -1,41 +1,31 @@
 ﻿using System;
 using System.Collections.Generic;
 
-using Newtonsoft.Json;
-
 namespace CoronaTracker.Models.Types
 {
     public class TimelineData
     {
-        public List<TimelineDay> DayList { get; set; }
-
-        public TimelineData()
-        {
-            DayList = new List<TimelineDay>();
-        }
+        public Dictionary<string, CountryTimeline> Countries;
     }
 
-    public class TimelineDay
+    public class CountryTimeline
     {
+        public List<Day> Days { get; set; }
+    }
+
+    public class Day
+    {
+        public string Country { get; set; }
+        public string CountryCode { get; set; }
+        public string Province { get; set; }
+        public string City { get; set; }
+        public string CityCode { get; set; }
+        public string Lat { get; set; }
+        public string Lon { get; set; }
+        public int Confirmed { get; set; }
+        public int Deaths { get; set; }
+        public int Recovered { get; set; }
+        public int Active { get; set; }
         public DateTime Date { get; set; }
-        public DayDetailJson Details { get; set; }
-    }
-
-    public class DayDetailJson
-    {
-        [JsonProperty("new_daily_cases")]
-        public int NewDailyCases { get; set; }
-
-        [JsonProperty("new_daily_deaths")]
-        public int NewDailyDeaths { get; set; }
-
-        [JsonProperty("total_cases")]
-        public int TotalCases { get; set; }
-
-        [JsonProperty("total_recoveries")]
-        public int TotalRecoveries { get; set; }
-
-        [JsonProperty("total_deaths")]
-        public int TotalDeaths { get; set; }
     }
 }

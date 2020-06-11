@@ -1,21 +1,20 @@
-﻿using System.Collections.Generic;
-using System.Text.Json;
+﻿using Newtonsoft.Json;
 
 namespace CoronaTracker.Models.Types
-{ 
+{
     public class DataStore
     {
-        public List<CountryAccumData> Accumulated { get; set; }
-        public Dictionary<string, TimelineData> Timeline { get; set; }
+        public AccumData Accumulated { get; set; }
+        public TimelineData Timeline { get; set; }
 
         public string Serialize()
         {
-            return JsonSerializer.Serialize(this);
+            return JsonConvert.SerializeObject(this, Formatting.Indented);
         }
 
-        public static DataStore Deserialize(string jsonStudent)
+        public static DataStore Deserialize(string jsonDataStore)
         {
-            return JsonSerializer.Deserialize<DataStore>(jsonStudent);
+            return JsonConvert.DeserializeObject<DataStore>(jsonDataStore);
         }
     }
 }

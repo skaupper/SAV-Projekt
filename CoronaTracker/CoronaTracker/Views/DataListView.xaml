@@ -11,22 +11,23 @@
         <infrastructure:CustomDataGrid
 	        Margin="15, 5, 15, 5"
 	        AutoGenerateColumns="False"
-	        IsReadOnly="False"
+	        IsReadOnly="True"
 	        CanUserAddRows="False"
-	        ItemsSource="{Binding CdgDataList, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, NotifyOnSourceUpdated=True, NotifyOnTargetUpdated=True}" 
+	        ItemsSource="{Binding CdgDataList, UpdateSourceTrigger=PropertyChanged, NotifyOnSourceUpdated=True, NotifyOnTargetUpdated=True}" 
 	        SelectionMode="Extended"
-	        SelectedItemsList="{Binding CdgSelectedDataEntries, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+	        SelectedItemsList="{Binding CdgSelectedDataEntries, UpdateSourceTrigger=PropertyChanged}"
 	        ColumnWidth="*"
 	        CanUserSortColumns="True">
 	        <DataGrid.Columns>
-                <DataGridTextColumn Header="Country" Binding="{Binding Title}" Width="auto"/>
-                <DataGridTextColumn Header="Code" Binding="{Binding Code}" Width="auto"/>
-                <DataGridTextColumn Header="Total Cases" Binding="{Binding TotalCases, Mode=TwoWay}" Width="auto"/>
+                <DataGridTextColumn Header="Country" Binding="{Binding Country}" Width="auto"/>
+                <DataGridTextColumn Header="Code" Binding="{Binding CountryCode}" Width="auto"/>
+                <DataGridTextColumn Header="Total Cases" Binding="{Binding TotalConfirmed}" Width="auto"/>
+                <DataGridTextColumn Header="New Today" Binding="{Binding NewConfirmed}" Width="auto"/>
                 <DataGridTextColumn Header="Total Recovered" Binding="{Binding TotalRecovered}" Width="auto"/>
+                <DataGridTextColumn Header="New Recovered" Binding="{Binding NewRecovered}" Width="auto"/>
                 <DataGridTextColumn Header="Total Deaths" Binding="{Binding TotalDeaths}" Width="auto"/>
-                <DataGridTextColumn Header="Total New Today" Binding="{Binding TotalNewCasesToday}" Width="auto"/>
-                <DataGridTextColumn Header="Total Active" Binding="{Binding TotalActiveCases}" Width="auto"/>
-                <DataGridTextColumn Header="Total Serious" Binding="{Binding TotalSeriousCases}"/>
+                <DataGridTextColumn Header="New Deaths Today" Binding="{Binding NewDeaths}" Width="auto"/>
+                <DataGridTextColumn Header="Last Update" Binding="{Binding Date}" Width="auto"/>
             </DataGrid.Columns>
         </infrastructure:CustomDataGrid>
         <!--

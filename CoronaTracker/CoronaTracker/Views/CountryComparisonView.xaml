@@ -185,7 +185,7 @@
 		        Command="{Binding btnRemoveElements}"/>
         </Grid>
 
-	    <charts:BasicChartArea 
+	    <charts:TimelineChart 
 			Margin="15, 5, 15, 15"
 			DataSets="{Binding DataSetsCCVM}" 
 		    ScaleY="{Binding rbAxisScaleCCVM}" 

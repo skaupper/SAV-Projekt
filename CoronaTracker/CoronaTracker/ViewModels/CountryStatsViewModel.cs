@@ -1,14 +1,9 @@
-﻿using CoronaTracker.Charts;
-using CoronaTracker.Charts.Types;
+﻿using CoronaTracker.Charts.Types;
 using CoronaTracker.Infrastructure;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Data;
 
 namespace CoronaTracker.ViewModels
 {
@@ -119,6 +114,7 @@ namespace CoronaTracker.ViewModels
                 }
             }
         }
+
         #endregion Data Bindings
 
         #region internal Methods
@@ -138,25 +134,23 @@ namespace CoronaTracker.ViewModels
                 // TODO: move to an appropriate event
                 DataSetsCSVM = new BindingList<DataSet>();
 
+                var daylist = dataLoader.GetCountryTimeline("Austria").Days;
 
-                var daylist = dataLoader.GetCountryTimeline("AT").DayList;
-
-
-                var transformed = from day in daylist select new DataElement { X = day.Date, Y = day.Details.TotalCases };
+                var transformed = from day in daylist select new DataElement { X = day.Date, Y = day.Active };
                 DataSetsCSVM.Add(new DataSet
                 {
-                    Name = "Total Cases",
+                    Name = "Active Cases",
                     Values = new ObservableCollection<DataElement>(transformed)
                 });
 
-                transformed = from day in daylist select new DataElement { X = day.Date, Y = day.Details.TotalRecoveries };
+                transformed = from day in daylist select new DataElement { X = day.Date, Y = day.Recovered };
                 DataSetsCSVM.Add(new DataSet
                 {
                     Name = "Total Recoveries",
                     Values = new ObservableCollection<DataElement>(transformed)
                 });
 
-                transformed = from day in daylist select new DataElement { X = day.Date, Y = day.Details.TotalDeaths };
+                transformed = from day in daylist select new DataElement { X = day.Date, Y = day.Deaths };
                 DataSetsCSVM.Add(new DataSet
                 {
                     Name = "Total Deaths",

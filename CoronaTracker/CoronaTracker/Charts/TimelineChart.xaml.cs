@@ -1,4 +1,5 @@
-﻿using CoronaTracker.Charts.Types;
+﻿using CoronaTracker.Charts.Helper;
+using CoronaTracker.Charts.Types;
 using LiveCharts;
 using LiveCharts.Configurations;
 using LiveCharts.Defaults;
@@ -32,7 +33,7 @@ namespace CoronaTracker.Charts
     /// <summary>
     /// Interaktionslogik für UserControl1.xaml
     /// </summary>
-    public partial class BasicChartArea : UserControl, INotifyPropertyChanged
+    public partial class TimelineChart : UserControl, INotifyPropertyChanged
     {
 
         #region Events
@@ -44,7 +45,7 @@ namespace CoronaTracker.Charts
 
         #region Constants
 
-        private const int LogBase = 10;
+        public int LogBase { get; } = 10;
 
         #endregion
 
@@ -52,6 +53,7 @@ namespace CoronaTracker.Charts
         #region Private Members
 
         private CartesianMapper<DataElement> mapper;
+        private DateHelper dateHelper;
 
         #endregion
 
@@ -60,51 +62,51 @@ namespace CoronaTracker.Charts
 
         private SeriesCollection seriesCollection;
         private bool disableAnimations;
-        private AxesCollection axisX;
-        private AxesCollection axisY;
+        private Func<double, string> formatterX;
+        private Func<double, string> formatterYLog;
 
 
 
         public static readonly DependencyProperty DataSetsProperty =
             DependencyProperty.Register(
                 "DataSets", typeof(DataSetsType),
-                typeof(BasicChartArea),
+                typeof(TimelineChart),
                 new PropertyMetadata(null, Static_DataSets_Changed)
             );
 
         public static readonly DependencyProperty UsedChartTypeProperty =
             DependencyProperty.Register(
                 "UsedChartType", typeof(ChartType),
-                typeof(BasicChartArea),
+                typeof(TimelineChart),
                 new PropertyMetadata(ChartType.Lines, Static_ChartType_Changed)
-            );
-
-        public static readonly DependencyProperty ScaleXProperty =
-            DependencyProperty.Register(
-                "ScaleX", typeof(AxisScale),
-                typeof(BasicChartArea),
-                new PropertyMetadata(AxisScale.Linear, Static_AxisX_Changed)
             );
 
         public static readonly DependencyProperty ScaleYProperty =
             DependencyProperty.Register(
                 "ScaleY", typeof(AxisScale),
-                typeof(BasicChartArea),
+                typeof(TimelineChart),
                 new PropertyMetadata(AxisScale.Linear, Static_AxisY_Changed)
             );
 
         public static readonly DependencyProperty TitleXProperty =
             DependencyProperty.Register(
                 "TitleX", typeof(string),
-                typeof(BasicChartArea),
-                new PropertyMetadata("X", Static_TitleX_Changed)
+                typeof(TimelineChart),
+                new PropertyMetadata("X")
             );
 
         public static readonly DependencyProperty TitleYProperty =
             DependencyProperty.Register(
                 "TitleY", typeof(string),
-                typeof(BasicChartArea),
-                new PropertyMetadata("Y", Static_TitleY_Changed)
+                typeof(TimelineChart),
+                new PropertyMetadata("Y")
+            );
+
+        public static readonly DependencyProperty LegendLocationProperty =
+            DependencyProperty.Register(
+                "LegendLocation", typeof(LegendLocation),
+                typeof(TimelineChart),
+                new PropertyMetadata(LiveCharts.LegendLocation.Top)
             );
 
 
@@ -118,11 +120,6 @@ namespace CoronaTracker.Charts
         {
             get => (ChartType)GetValue(UsedChartTypeProperty);
             set => SetValue(UsedChartTypeProperty, value);
-        }
-        public AxisScale ScaleX
-        {
-            get => (AxisScale)GetValue(ScaleXProperty);
-            set => SetValue(ScaleXProperty, value);
         }
         public AxisScale ScaleY
         {
@@ -139,6 +136,13 @@ namespace CoronaTracker.Charts
             get => (string)GetValue(TitleYProperty);
             set => SetValue(TitleYProperty, value);
         }
+        public LegendLocation LegendLocation
+        {
+            get => (LegendLocation)GetValue(LegendLocationProperty);
+            set => SetValue(LegendLocationProperty, value);
+        }
+
+
 
 
 
@@ -162,22 +166,23 @@ namespace CoronaTracker.Charts
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("DisableAnimations"));
             }
         }
-        public AxesCollection AxisX
+        public Func<double, string> FormatterX
         {
-            get => axisX;
+            get => formatterX;
             set
             {
-                axisX = value;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("AxisX"));
+                formatterX = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("FormatterX"));
             }
         }
-        public AxesCollection AxisY
+
+        public Func<double, string> FormatterYLog
         {
-            get => axisY;
+            get => formatterYLog;
             set
             {
-                axisY = value;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("AxisY"));
+                formatterYLog = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("FormatterYLog"));
             }
         }
 
@@ -190,14 +195,14 @@ namespace CoronaTracker.Charts
 
         private static void Static_ChartType_Changed(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            var chartArea = d as BasicChartArea;
+            var chartArea = d as TimelineChart;
             chartArea.ChartType_Changed(d, e);
         }
 
 
         private static void Static_DataSets_Changed(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            var chartArea = d as BasicChartArea;
+            var chartArea = d as TimelineChart;
 
             if (e.OldValue != null)
             {
@@ -214,44 +219,10 @@ namespace CoronaTracker.Charts
             chartArea.CallUpdateDataSets();
         }
 
-        private static void Static_AxisX_Changed(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            var chartArea = d as BasicChartArea;
-            chartArea.AxisXScale_Changed(d, e);
-        }
-
         private static void Static_AxisY_Changed(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            var chartArea = d as BasicChartArea;
+            var chartArea = d as TimelineChart;
             chartArea.AxisYScale_Changed(d, e);
-        }
-
-        private static void Static_TitleX_Changed(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            var chartArea = d as BasicChartArea;
-            if (chartArea?.Chart?.AxisX == null)
-            {
-                return;
-            }
-
-            if (chartArea.Chart.AxisX.Count > 0)
-            {
-                chartArea.Chart.AxisX[0].Title = chartArea.TitleX;
-            }
-        }
-
-        private static void Static_TitleY_Changed(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            var chartArea = d as BasicChartArea;
-            if (chartArea?.Chart?.AxisY == null)
-            {
-                return;
-            }
-
-            if (chartArea.Chart.AxisY.Count > 0)
-            {
-                chartArea.Chart.AxisY[0].Title = chartArea.TitleY;
-            }
         }
 
         #endregion
@@ -269,11 +240,6 @@ namespace CoronaTracker.Charts
             CallUpdateDataSets();
         }
 
-        private void AxisXScale_Changed(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            CallCreateAxisX();
-        }
-
         private void AxisYScale_Changed(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             CallCreateAxisY();
@@ -284,122 +250,43 @@ namespace CoronaTracker.Charts
 
         #region Public Methods
 
-        public BasicChartArea()
+        public TimelineChart()
         {
+            InitializeComponent();
+            Chart.DataContext = this;
+
+            // Initialize private members
+            dateHelper = new DateHelper(TimeSpan.FromDays(1));
             mapper = new CartesianMapper<DataElement>();
 
+            mapper.X(p => dateHelper.ToDouble(p.X));
+            mapper.Y(p => p.Y);
+
+            // Internal properties
             SeriesCollection = new SeriesCollection(mapper);
-            AxisX = new AxesCollection();
-            AxisY = new AxesCollection();
+            FormatterX = val => dateHelper.FromDouble(val).ToString("d");
+            FormatterYLog = val => Math.Pow(LogBase, val).ToString("N0");
 
-            InitializeComponent();
-
-            Loaded += (s, e) => CallCreateAllAxes();
+            UpdateYAxis();
         }
 
 
-        /// <summary>
-        /// TODO: How can these methods be dispatched from the UI thread?
-        /// </summary>
+        // TODO: How can these methods be dispatched from the UI thread?
 
         public void CallUpdateDataSets()
         {
             UpdateDataSets();
         }
 
-        public void CallCreateAllAxes()
-        {
-            CreateAllAxes();
-        }
-
-        public void CallCreateAxisX()
-        {
-            CreateAxis(AxisX, ScaleX, TitleX);
-        }
-
         public void CallCreateAxisY()
         {
-            CreateAxis(AxisY, ScaleY, TitleY);
+            UpdateYAxis();
         }
 
         #endregion
 
 
         #region Private Methods
-
-        private void CreateAllAxes()
-        {
-            CreateAxis(AxisX, ScaleX, TitleX);
-            CreateAxis(AxisY, ScaleY, TitleY);
-        }
-
-        private void CreateAxis(AxesCollection coll, AxisScale scale, string title)
-        {
-            Axis ax = null;
-
-
-            // Create the axis depending on the choses scale
-            switch (scale)
-            {
-                case AxisScale.Linear:
-                    ax = new Axis();
-                    // Per default take points 1:1 as they are
-                    if (coll == AxisY)
-                    {
-                        mapper.Y(p => p.Y);
-                    }
-                    else if (coll == AxisX)
-                    {
-                        mapper.X(p => p.X.Ticks / TimeSpan.FromDays(1).Ticks);
-                        ax.LabelFormatter = value => new DateTime((long)(value * TimeSpan.FromDays(1).Ticks)).ToString("d");
-                    }
-                    else
-                    {
-                        Debug.Fail("Unknown axis given");
-                    }
-                    break;
-
-                case AxisScale.Logarithmic:
-                    var logAx = new LogarithmicAxis
-                    {
-                        // Use a constant base and set the minimum value to 1 (base^0)
-                        Base = LogBase,
-                        MinValue = 0
-                    };
-
-                    // The values are plotted as the log => the labels therefore need to be Base^value.
-                    logAx.LabelFormatter = value => Math.Pow(LogBase, value).ToString("N");
-                    ax = logAx;
-
-
-                    if (coll == AxisY)
-                    {
-                        if (UsedChartType == ChartType.StackedBars)
-                        {
-                            throw new ArgumentException("The logarithmic Y axis is not compatible with the chart type StackedBars!");
-                        }
-                        mapper.Y(p => (p.Y > 0) ? Math.Log(p.Y, LogBase) : 0);
-                    }
-                    else if (coll == AxisX)
-                    {
-                        throw new ArgumentException("Logarithmic X axes are not supported!");
-                    }
-                    else
-                    {
-                        Debug.Fail("Unknown axis given");
-                    }
-                    break;
-
-                default:
-                    Debug.Fail("An unknown axis scale has been encountered.");
-                    break;
-            }
-
-            ax.Title = title;
-
-            coll.Clear();
-            coll.Add(ax);
-        }
 
         private void UpdateDataSets()
         {
@@ -418,15 +305,39 @@ namespace CoronaTracker.Charts
                 switch (UsedChartType)
                 {
                     case ChartType.Bars: series = new ColumnSeries(); break;
-                    case ChartType.StackedBars: series = new StackedColumnSeries(); break;
+                    case ChartType.StackedBars: series = new StackedColumnSeries { ColumnPadding = 1 }; break;
                     case ChartType.Lines: series = new LineSeries(); break;
                 }
-                
+
                 series.Title = dataSet.Name;
                 series.Values = new ChartValues<DataElement>(dataSet.Values);
 
                 // Add the series to the chart
                 SeriesCollection.Add(series);
+            }
+        }
+
+        private void UpdateYAxis()
+        {
+            Chart.AxisY.Clear();
+
+            if (ScaleY == AxisScale.Linear)
+            {
+                Axis ax = new Axis();
+                ax.SetBinding(Axis.TitleProperty, "TitleY");
+                Chart.AxisY.Add(ax);
+
+                mapper.Y(p => p.Y);
+            }
+            else if (ScaleY == AxisScale.Logarithmic)
+            {
+                LogarithmicAxis ax = new LogarithmicAxis { MinValue = 0 };
+                ax.SetBinding(LogarithmicAxis.BaseProperty, "LogBase");
+                ax.SetBinding(Axis.LabelFormatterProperty, "FormatterYLog");
+                ax.SetBinding(Axis.TitleProperty, "TitleY");
+                Chart.AxisY.Add(ax);
+
+                mapper.Y(p => (p.Y > 0) ? Math.Log(p.Y, LogBase) : double.NaN);
             }
         }
 

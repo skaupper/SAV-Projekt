@@ -4,8 +4,6 @@ using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
@@ -118,7 +116,7 @@ namespace CoronaTracker.ViewModels
             get { return _connectionState; }
             set
             {
-                if(value != _connectionState)
+                if (value != _connectionState)
                 {
                     _connectionState = value;
                     OnPropertyChanged("ConnectionState");
@@ -156,12 +154,12 @@ namespace CoronaTracker.ViewModels
         #region external Methods
         public void SetupPage()
         {
-            if(dataLoader.CheckIfDataIsLoaded())
+            if (dataLoader.CheckIfDataIsLoaded())
             {
                 ConnectionState = true;
                 CanRefreshSaveDatasetBtn = true;
                 IsEnabled = true;
-            }       
+            }
         }
         #endregion external Methods
 
