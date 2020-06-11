@@ -71,7 +71,15 @@ namespace CoronaTracker.Infrastructure
             double value = GetValue(slider);
             if (slider != null && value != 0)
             {
-                slider.Value += slider.SmallChange * e.Delta / value;
+                double tmpSliderValue = slider.Value;
+                tmpSliderValue += slider.SmallChange * e.Delta / value;
+
+                if (tmpSliderValue < slider.Minimum)
+                    slider.Value = slider.Minimum;
+                else if (tmpSliderValue > slider.Maximum)
+                    slider.Value = slider.Maximum;
+                else
+                    slider.Value = tmpSliderValue;
             }
         }
     }

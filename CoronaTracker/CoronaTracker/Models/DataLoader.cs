@@ -162,17 +162,17 @@ namespace CoronaTracker.Models
                     throw new ArgumentException("Date 'to' is greater than the datasets' most recent date.");
 
                 // Find index closest to 'from' date (linear search up to that index)
-                int idx_from = timeline.Days.FindIndex(e => e.Date > from) - 1;
+                int idx_from = timeline.Days.FindIndex(e => e.Date >= from);
                 if (idx_from < 0)
                     throw new ArgumentException("Could not find a 'from' index.");
 
                 // Find index closest to 'to' date (linar search up to that index)
-                int idx_to = timeline.Days.FindIndex(e => e.Date > to);
+                int idx_to = timeline.Days.FindIndex(e => e.Date >= to);
                 if (idx_to < 0)
                     throw new ArgumentException("Could not find a 'to' index.");
 
                 // Select the chosen range
-                int num_elems = idx_to - idx_from;
+                int num_elems = idx_to - idx_from + 1;
                 retTimeline.Days = timeline.Days.GetRange(idx_from, num_elems);
 
                 return retTimeline;
