@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Windows;
+using System.Windows.Input;
 
 namespace CoronaTracker.ViewModels
 {
@@ -17,20 +18,25 @@ namespace CoronaTracker.ViewModels
         DateTime StartDate;
         DateTime EndDate;
         Dictionary<string, string> CountryCodeAssociation = null;
+        public ICommand BgmLandClicked { get; protected set; }
         #endregion Fields
 
         #region CTOR
         public WorldMapViewModel()
         {
-            HeatMap = new BindingList<HeatMapElement>{
-                new HeatMapElement
-                {
-                    Country = "US",
-                    Value = 10
-                }
-            };
+            InitButtons();
         }
         #endregion CTOR
+
+        #region Init
+        /// <summary>
+        /// Sets up the command relay to all the specified buttons. So if an onclick event occures the below specified methods are called
+        /// </summary>
+        private void InitButtons()
+        {
+            BgmLandClicked = new RelayCommand(e => LandClicked(e));
+        }
+        #endregion Init
 
         #region Data Bindings
         private bool _pageIsEnabled = false;
@@ -202,5 +208,12 @@ namespace CoronaTracker.ViewModels
             } 
         }
         #endregion External Methods
+
+        #region Commands
+        public void LandClicked(object e)
+        {
+
+        }
+        #endregion Commands
     }
 }

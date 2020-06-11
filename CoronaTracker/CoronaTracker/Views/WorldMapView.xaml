@@ -8,6 +8,7 @@
              xmlns:infrastructure="clr-namespace:CoronaTracker.Infrastructure"
              xmlns:models="clr-namespace:CoronaTracker.Models"
              xmlns:system="clr-namespace:System;assembly=System.Runtime"
+             xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
              mc:Ignorable="d" 
              d:DesignHeight="650" d:DesignWidth="850">
     <UserControl.Resources>
@@ -74,9 +75,11 @@
 		        infrastructure:SliderMouseWheelBehaviour.Value="{Binding SMouseWheelIncrement}"/>
         </DockPanel>
 
-		<charts:BasicGeoMap 
-			Margin="15, 5, 15, 15" 
-			HeatMap="{Binding HeatMap}" 
-			LandClicked="{Binding BgmLandClicked}"/>
+        <charts:BasicGeoMap 
+			Margin="15, 5, 15, 15"
+			HeatMap="{Binding HeatMap}"
+			Command="{Binding BgmLandClicked}"/>
     </DockPanel>
 </UserControl>
+
+
