@@ -18,6 +18,8 @@
 			    <x:Type TypeName="models:SelectableStatistics"/>
 		    </ObjectDataProvider.MethodParameters>
 	    </ObjectDataProvider>
+
+	    <infrastructure:EnumDescriptionConverter x:Key="EnumDescriptionConverter"/>
     </UserControl.Resources>
 	<DockPanel>
         <DockPanel DockPanel.Dock="Top" Margin="15, 0, 15, 5">
@@ -25,11 +27,17 @@
 	            <TextBlock 
 		            Margin="0, 5, 40, 5" 
 		            Text="Comparison Attribute:"/>
-	            <ComboBox 
+                <ComboBox 
 		            DockPanel.Dock="Top" 
 		            ItemsSource="{Binding Source={StaticResource comparisonAttributeFromEnum}}"
 		            SelectedItem="{Binding CbWorldMapSelectedCompAttribute}"
-		            Margin="0, 5, 5, 5"/>
+		            Margin="0, 5, 5, 5">
+	                <ComboBox.ItemTemplate>
+		                <DataTemplate>
+			                <TextBlock Text="{Binding Converter={StaticResource EnumDescriptionConverter}}"/>
+		                </DataTemplate>
+	                </ComboBox.ItemTemplate>
+                </ComboBox>
             </StackPanel>
 
             <StackPanel>
