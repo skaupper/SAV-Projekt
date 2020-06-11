@@ -26,5 +26,10 @@ namespace CoronaTracker.Views
         {
             InitializeComponent();
         }
+
+        private void BasicGeoMap_LandClicked(object sender, LiveCharts.Maps.MapData e)
+        {
+            // TODO
+        }
     }
 }

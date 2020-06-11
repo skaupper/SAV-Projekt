@@ -102,10 +102,14 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Charts\Helper\DateHelper.cs" />
+    <Compile Include="Charts\RatioBar.xaml.cs">
+      <DependentUpon>RatioBar.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Charts\Types\ChartType.cs" />
     <Compile Include="Charts\Types\AxisScale.cs" />
-    <Compile Include="Charts\BasicChartArea.xaml.cs">
-      <DependentUpon>BasicChartArea.xaml</DependentUpon>
+    <Compile Include="Charts\TimelineChart.xaml.cs">
+      <DependentUpon>TimelineChart.xaml</DependentUpon>
     </Compile>
     <Compile Include="Charts\BasicGeoMap.xaml.cs">
       <DependentUpon>BasicGeoMap.xaml</DependentUpon>
@@ -139,7 +143,11 @@
     <Compile Include="Views\WorldMapView.xaml.cs">
       <DependentUpon>WorldMapView.xaml</DependentUpon>
     </Compile>
-    <Page Include="Charts\BasicChartArea.xaml">
+    <Page Include="Charts\RatioBar.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Charts\TimelineChart.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

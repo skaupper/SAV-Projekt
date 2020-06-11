@@ -48,6 +48,6 @@
         </DockPanel>
         
 
-        <charts:BasicGeoMap Margin="15, 5, 15, 15" HeatMap="{Binding HeatMap}" />
+        <charts:BasicGeoMap Margin="15, 5, 15, 15" HeatMap="{Binding HeatMap}" LandClicked="BasicGeoMap_LandClicked"/>
     </DockPanel>
 </UserControl>

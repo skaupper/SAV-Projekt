@@ -30,6 +30,7 @@ namespace CoronaTracker.Charts
         #region Events
 
         public event PropertyChangedEventHandler PropertyChanged;
+        public event EventHandler<LiveCharts.Maps.MapData> LandClicked;
 
         #endregion
 
@@ -196,7 +197,7 @@ namespace CoronaTracker.Charts
 
         private void Chart_LandClick(object sender, LiveCharts.Maps.MapData e)
         {
-            // TODO: do we need this event?
+            LandClicked?.Invoke(this, e);
         }
 
         #endregion
