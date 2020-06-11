@@ -304,7 +304,7 @@ namespace CoronaTracker.Charts
                 // Depending on the chart type create different series object
                 switch (UsedChartType)
                 {
-                    case ChartType.Bars: series = new ColumnSeries(); break;
+                    case ChartType.Bars: series = new ColumnSeries { ColumnPadding = 1 }; break;
                     case ChartType.StackedBars: series = new StackedColumnSeries { ColumnPadding = 1 }; break;
                     case ChartType.Lines: series = new LineSeries(); break;
                 }

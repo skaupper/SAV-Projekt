@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -23,6 +24,17 @@ namespace CoronaTracker.Views
         public CountryStatsView()
         {
             InitializeComponent();
+        }
+
+        private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            Debug.Assert(e.AddedItems.Count <= 1);
+            if (e.AddedItems.Count == 0)
+            {
+                return;
+            }
+
+
         }
     }
 }
