@@ -206,7 +206,7 @@ namespace CoronaTracker.ViewModels
             try
             {
                 if (CountryName == null)
-                    SetUpDetailedGlobalData();
+                    SetUpDetailedCountryData("Global");
                 else
                     SetUpDetailedCountryData(CountryName);
             }
@@ -222,7 +222,7 @@ namespace CoronaTracker.ViewModels
                 var dayList = dataLoader.GetCountryTimeline(CountryName, TbWorldMapDate, TbWorldMapDate).Days;
                 var tmpDetailedDataCountry = new DetailedWorldMapStatistics()
                 {
-                    Selection = SelectedDetailedCountry,
+                    Selection = CountryName=="Global" ? CountryName : SelectedDetailedCountry,
                     Active = dayList.FirstOrDefault().Active,
                     Confirmed = dayList.FirstOrDefault().Confirmed,
                     Deaths = dayList.FirstOrDefault().Deaths,
@@ -230,28 +230,6 @@ namespace CoronaTracker.ViewModels
                 };
                 LvDetailedStatistics.Clear();
                 LvDetailedStatistics.Add(tmpDetailedDataCountry);
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-        }
-        private void SetUpDetailedGlobalData()
-        {
-            try
-            {
-                var globalData = dataLoader.GetCountryAccumData().Global;
-                var tmpDetailedDataGlobal = new DetailedWorldMapStatistics()
-                {
-                    Selection = "Global",
-                    Active = 0,
-                    Confirmed = 0,
-                    Deaths = 0,
-                    Recovered = 0
-                };
-                LvDetailedStatistics.Clear();
-                LvDetailedStatistics.Add(tmpDetailedDataGlobal);
-                return;
             }
             catch (Exception ex)
             {

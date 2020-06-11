@@ -66,6 +66,10 @@ namespace CoronaTracker.Models
             var results = await Task.WhenAll(taskList);
 
             // Add the results to the DataStore
+            CountryTimeline tmpGlobalSum = new CountryTimeline
+            {
+                Days = new List<Day>()
+            };
             dataStore.Timeline = new TimelineData
             {
                 Countries = new Dictionary<string, CountryTimeline>()
@@ -82,8 +86,23 @@ namespace CoronaTracker.Models
                 {
                     // Add the current CountryTimeline to the DataStore
                     dataStore.Timeline.Countries.Add(countryName, result);
+
+                    foreach (Day day in result.Days)
+                    {
+                        var tmpDate = tmpGlobalSum.Days.Where(i => i.Date == day.Date).FirstOrDefault();
+                        if (tmpDate == null)
+                            tmpGlobalSum.Days.Add(new Day() { Country="Global", Date=day.Date, Confirmed=day.Confirmed, Active=day.Active, Recovered=day.Recovered, Deaths=day.Deaths });
+                        else
+                        {
+                            tmpDate.Confirmed += day.Confirmed;
+                            tmpDate.Active += day.Active;
+                            tmpDate.Recovered += day.Recovered;
+                            tmpDate.Deaths += day.Deaths;
+                        }
+                    }
                 }
             }
+            dataStore.Timeline.Countries.Add("Global", tmpGlobalSum);
         }
 
         public void SaveAllData(string filename)
