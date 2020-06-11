@@ -1,7 +1,10 @@
 ﻿using CoronaTracker.Charts.Types;
 using CoronaTracker.Infrastructure;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
+using System.Windows;
 
 namespace CoronaTracker.ViewModels
 {
@@ -114,7 +117,26 @@ namespace CoronaTracker.ViewModels
         {
             TbWorldMapDate = StartDate.AddDays(SSelectedDate);
 
-            //TODO: Load Worldmap with new data
+            try
+            {
+                HeatMap = new BindingList<HeatMapElement>();
+                var tmpAllCountries = dataLoader.GetListOfProperty(Models.DataLoader.CountryProperty.NAME);
+                var tmpAllCountrycodes= dataLoader.GetListOfProperty(Models.DataLoader.CountryProperty.CODE);
+
+                var CountryCodeAssociation = tmpAllCountries.Zip(tmpAllCountrycodes, (k, v) => new { k, v }).ToDictionary(x => x.k, x => x.v);
+
+                foreach (var countryCode in tmpAllCountries)
+                {
+                    var daylist = dataLoader.GetCountryTimeline(countryCode, TbWorldMapDate, TbWorldMapDate).Days;
+
+                    var transformed = from day in daylist select new HeatMapElement { Country = day.CountryCode, Value = day.Confirmed };
+                    HeatMap.Add(transformed.FirstOrDefault());
+                }
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show("An unhandeled exception occured: " + e.Message);
+            }
         }
         #endregion Internal Methods
 
