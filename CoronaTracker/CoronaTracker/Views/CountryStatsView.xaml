@@ -3,36 +3,60 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:CoronaTracker.Views"
-			 xmlns:infrastructure="clr-namespace:CoronaTracker.Infrastructure"
-             xmlns:chartTypes="clr-namespace:CoronaTracker.Charts.Types"
+             xmlns:infrastructure="clr-namespace:CoronaTracker.Infrastructure"
              xmlns:charts="clr-namespace:CoronaTracker.Charts"
+             xmlns:chartTypes="clr-namespace:CoronaTracker.Charts.Types"
+             xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+             xmlns:system="clr-namespace:System;assembly=System.Runtime"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <UserControl.Resources>
-        <infrastructure:AxisScaleConverter x:Key="AxisScaleConverter" />
+        <ObjectDataProvider x:Key="AxisScaleDescriptions" 
+	                        MethodName="GetValues" ObjectType="{x:Type system:Enum}">
+            <ObjectDataProvider.MethodParameters>
+                <x:Type TypeName="chartTypes:AxisScale"/>
+            </ObjectDataProvider.MethodParameters>
+        </ObjectDataProvider>
+
+        <ObjectDataProvider x:Key="ChartTypeDescriptions" 
+	                        MethodName="GetValues" ObjectType="{x:Type system:Enum}">
+            <ObjectDataProvider.MethodParameters>
+                <x:Type TypeName="chartTypes:ChartType"/>
+            </ObjectDataProvider.MethodParameters>
+        </ObjectDataProvider>
+
+        <infrastructure:EnumDescriptionConverter x:Key="EnumDescriptionConverter" />
     </UserControl.Resources>
-	<DockPanel>
-	    <Grid DockPanel.Dock="Top" Margin="15, 5, 15, 0">
-		    <Grid.ColumnDefinitions>
-			    <ColumnDefinition Width="1*"></ColumnDefinition>
-			    <ColumnDefinition Width="4*"></ColumnDefinition>
-		    </Grid.ColumnDefinitions>
+    <DockPanel>
+        <Grid DockPanel.Dock="Top" Margin="15, 5, 15, 0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*"></ColumnDefinition>
+                <ColumnDefinition Width="1*"></ColumnDefinition>
+                <ColumnDefinition Width="1*"></ColumnDefinition>
+                <ColumnDefinition Width="3*"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
 
-		    <Grid.RowDefinitions>
-			    <RowDefinition Height="1*"></RowDefinition>
-			    <RowDefinition Height="1*"></RowDefinition>
-		    </Grid.RowDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="1*"></RowDefinition>
+                <RowDefinition Height="1*"></RowDefinition>
+            </Grid.RowDefinitions>
 
-            <TextBlock Grid.Row="0" Grid.Column="0" Text="Select Country:" Margin="0, 5, 5, 0"/>
 
             <!-- Get rid of Combobox lag with big lists: https://stackoverflow.com/questions/8198645/wpf-combobox-performance-problems-by-binding-a-large-collections -->
+            <TextBlock Grid.Row="0" Grid.Column="0" Text="Select Country:" Margin="0, 5, 5, 0"/>
             <ComboBox 
-	            Grid.Row="1" 
-	            Grid.Column="0" 
-	            Margin="0, 5, 5, 5"
-	            ItemsSource="{Binding cbCountryNames}"
-	            SelectedItem="{Binding cbSelectedCountry}">
+                Grid.Row="1" 
+                Grid.Column="0" 
+                Margin="0, 5, 5, 5"
+                Name="CbCountry"
+                SelectedIndex="0"
+                ItemsSource="{Binding cbCountryNames}">
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="SelectionChanged">
+                        <i:InvokeCommandAction Command="{Binding Command_CbCountrySelectionChanged}" CommandParameter="{Binding SelectedItem, ElementName=CbCountry}"/>
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+
                 <ComboBox.ItemsPanel>
                     <ItemsPanelTemplate>
                         <VirtualizingStackPanel/>
@@ -40,31 +64,52 @@
                 </ComboBox.ItemsPanel>
             </ComboBox>
 
-            <StackPanel
-	            Grid.Row="0"
-	            Grid.Column="1"
-				Grid.RowSpan="2"
-	            VerticalAlignment="Center"
-	            Margin="15, 5, 0, 0">
-	            <TextBlock 
-		            Grid.Row="0" 
-		            Grid.Column="1" 
-		            Text="Scale:"
-		            Margin="3, 0, 0, 5"/>
-                <RadioButton 
-		            VerticalAlignment="Center" 
-		            IsChecked="{Binding Path=rbAxisScaleCSVM, Converter={StaticResource AxisScaleConverter}, ConverterParameter={x:Static chartTypes:AxisScale.Linear}}"
-		            Content="Linear"
-		            Margin="0, 0, 0, 5"/>
-	            <RadioButton
-		            VerticalAlignment="Center" 
-		            IsChecked="{Binding Path=rbAxisScaleCSVM, Converter={StaticResource AxisScaleConverter}, ConverterParameter={x:Static chartTypes:AxisScale.Logarithmic}}"
-		            Content="Logarithmic"/>
-            </StackPanel>
-            
+            <TextBlock Grid.Row="0" Grid.Column="1" Text="Select Axis Scale:" Margin="0, 5, 5, 0"/>
+            <ComboBox
+                Grid.Row="1"
+                Grid.Column="1"
+                Margin="0,5,5,5"
+                Name="CbAxisScale"
+                SelectedIndex="0"
+                ItemsSource="{Binding Source={StaticResource AxisScaleDescriptions}}"
+                >
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="SelectionChanged">
+                        <i:InvokeCommandAction Command="{Binding Command_CbAxisScaleSelectionChanged}" CommandParameter="{Binding SelectedItem, ElementName=CbAxisScale}"/>
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding Converter={StaticResource EnumDescriptionConverter}}"/>
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+            </ComboBox>
+
+            <TextBlock Grid.Row="0" Grid.Column="2" Text="Select Chart Type:" Margin="0, 5, 5, 0"/>
+            <ComboBox
+                Grid.Row="1"
+                Grid.Column="2"
+                Margin="0,5,5,5"
+                Name="CbChartType"
+                SelectedIndex="0"
+                ItemsSource="{Binding Source={StaticResource ChartTypeDescriptions}}"
+                >
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="SelectionChanged">
+                        <i:InvokeCommandAction Command="{Binding Command_CbChartTypeSelectionChanged}" CommandParameter="{Binding SelectedItem, ElementName=CbChartType}"/>
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding Converter={StaticResource EnumDescriptionConverter}}"/>
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+            </ComboBox>
         </Grid>
 
-        <TextBlock DockPanel.Dock="Top" Margin="15, 5, 15, 0" Text="Distribution Today:"/>
+        <TextBlock DockPanel.Dock="Top" Margin="15, 10, 15, 0" Text="Most recent distribution:"/>
         <charts:RatioBar DockPanel.Dock="Top" Margin="15, 5, 15, 5" Height="70" 
                          LegendLocation="Top"
                          DataSets="{Binding DataSetsCSVM}" 
@@ -73,13 +118,14 @@
 
         <TextBlock DockPanel.Dock="Top" Margin="15, 5, 15, 0" Text="Overall Distribution:"/>
         <charts:TimelineChart 
-	        Margin="15, 5, 15, 15"
-	        x:Name="Chart" 
-	        DataSets="{Binding DataSetsCSVM}" 
-	        ScaleY="{Binding rbAxisScaleCSVM}" 
-	        UsedChartType="StackedBars" 
-	        TitleX="Date" 
-	        TitleY="{Binding YTitleCSVM}"
+            Margin="15, 5, 15, 15"
+            x:Name="Chart" 
+            DisableAnimations="False"
+            DataSets="{Binding DataSetsCSVM}" 
+            ScaleY="{Binding SelectedItem, ElementName=CbAxisScale}" 
+            UsedChartType="{Binding SelectedItem, ElementName=CbChartType}" 
+            TitleX="Date" 
+            TitleY="{Binding SelectedItem, ElementName=CbCountry}"
             LegendLocation="None"/>
     </DockPanel>
 </UserControl>
