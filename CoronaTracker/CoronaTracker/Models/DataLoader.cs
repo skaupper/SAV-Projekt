@@ -131,7 +131,7 @@ namespace CoronaTracker.Models
             return dataStore.Accumulated;
         }
 
-        public CountryTimeline GetCountryTimeline(string countryCode,
+        public CountryTimeline GetCountryTimeline(string countryName,
             DateTime? from = null, DateTime? to = null)
         {
             if (dataStore == null || dataStore.Timeline == null)
@@ -139,10 +139,12 @@ namespace CoronaTracker.Models
                     "Data cannot be accessed, since it was not loaded yet.\n" +
                     "Please call DataLoader.LoadAllData() first.");
 
-            bool exists = dataStore.Timeline.Countries.TryGetValue(countryCode, out CountryTimeline timeline);
+            bool exists = dataStore.Timeline.Countries.TryGetValue(countryName, out CountryTimeline timeline);
             if (!exists)
                 throw new ArgumentException(
-                    $"Countrycode {countryCode} was not found in the currently loaded dataset!");
+                    $"Countrycode {countryName} was not found in the currently loaded dataset!");
+
+            CountryTimeline retTimeline = new CountryTimeline();
 
             // Pick given range within the available timeline
             if (from != null && to != null)
@@ -171,10 +173,10 @@ namespace CoronaTracker.Models
 
                 // Select the chosen range
                 int num_elems = idx_to - idx_from;
-                var range = timeline.Days.GetRange(idx_from, num_elems);
-                timeline.Days = range;
-            }
+                retTimeline.Days = timeline.Days.GetRange(idx_from, num_elems);
 
+                return retTimeline;
+            }
             return timeline;
         }
 

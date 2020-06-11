@@ -10,6 +10,8 @@
     <Grid>
         <Grid Name="ChartWrapper" Visibility="Collapsed">
             <lvc:GeoMap x:Name="Chart"
+                        DisableAnimations="True"
+                        DefaultLandFill="Gray"
                         Background="Transparent"
                         LandStroke="LightGray"
                         LandClick="Chart_LandClick"

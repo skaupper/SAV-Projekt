@@ -120,6 +120,9 @@ namespace CoronaTracker.ViewModels
             try
             {
                 HeatMap = new BindingList<HeatMapElement>();
+
+                var tmp = new BindingList<HeatMapElement>();
+
                 var tmpAllCountries = dataLoader.GetListOfProperty(Models.DataLoader.CountryProperty.NAME);
                 var tmpAllCountrycodes= dataLoader.GetListOfProperty(Models.DataLoader.CountryProperty.CODE);
 
@@ -129,9 +132,10 @@ namespace CoronaTracker.ViewModels
                 {
                     var daylist = dataLoader.GetCountryTimeline(countryCode, TbWorldMapDate, TbWorldMapDate).Days;
 
-                    var transformed = from day in daylist select new HeatMapElement { Country = day.CountryCode, Value = day.Confirmed };
-                    HeatMap.Add(transformed.FirstOrDefault());
+                    var transformed = from day in daylist select new HeatMapElement { Country = CountryCodeAssociation[day.Country], Value = day.Confirmed };
+                    tmp.Add(transformed.FirstOrDefault());
                 }
+                HeatMap = tmp;
             }
             catch (Exception e)
             {
