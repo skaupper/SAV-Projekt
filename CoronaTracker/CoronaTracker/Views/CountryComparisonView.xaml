@@ -5,7 +5,9 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:CoronaTracker.Views"
 			 xmlns:infrastructure="clr-namespace:CoronaTracker.Infrastructure"
+             xmlns:converters="clr-namespace:CoronaTracker.Infrastructure.ValueConverters"
              xmlns:models="clr-namespace:CoronaTracker.Models"
+             xmlns:modelTypes="clr-namespace:CoronaTracker.Models.Types"
 			 xmlns:vmodels="clr-namespace:CoronaTracker.ViewModels"
              xmlns:charts="clr-namespace:CoronaTracker.Charts"
              xmlns:chartTypes="clr-namespace:CoronaTracker.Charts.Types"
@@ -20,7 +22,7 @@
         <ObjectDataProvider x:Key="ComparisonAttributeDescriptions"
 		                    MethodName="GetValues" ObjectType="{x:Type system:Enum}">
 			<ObjectDataProvider.MethodParameters>
-				<x:Type TypeName="models:SelectableStatistics"/>
+                <x:Type TypeName="modelTypes:SelectableStatistics"/>
 			</ObjectDataProvider.MethodParameters>
 		</ObjectDataProvider>
 
@@ -38,7 +40,7 @@
 			</ObjectDataProvider.MethodParameters>
 		</ObjectDataProvider>
 
-        <infrastructure:EnumDescriptionConverter x:Key="EnumDescriptionConverter"/>
+        <converters:EnumDescriptionConverter x:Key="EnumDescriptionConverter"/>
     </UserControl.Resources>
     <DockPanel>
         <Grid DockPanel.Dock="Top" Margin="15, 5, 15, 5">
@@ -56,42 +58,6 @@
 			    <RowDefinition Height="1*"></RowDefinition>
 		    </Grid.RowDefinitions>
 
-			<!-- 
-	        <ListView 
-		        Grid.Row="0"
-				Grid.Column="0"
-				Grid.RowSpan="2"
-				Grid.ColumnSpan="2"
-		        Height="100"
-		        Margin="0, 5, 0, 5"
-				SelectionMode="Multiple"
-		        ItemsSource="{Binding lvCountryList}" 
-		        SelectedItem="{Binding lvSelectedCountry}"
-		        ScrollViewer.HorizontalScrollBarVisibility="Hidden"
-		        ScrollViewer.VerticalScrollBarVisibility="Auto">
-		        <ListView.Resources>
-			        <Style TargetType="ListViewItem">
-				        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
-			        </Style>
-		        </ListView.Resources>
-                <ListView.View>
-			        <GridView>
-				        <GridViewColumn Header="Selection" Width="225">
-	                        <GridViewColumn.CellTemplate>
-		                        <DataTemplate>
-                                    <ComboBox 
-	                                    ItemsSource="{Binding Source={StaticResource SelectableCountries}}" 
-	                                    SelectedItem="{Binding Name}"/>
-		                        </DataTemplate>
-	                        </GridViewColumn.CellTemplate>
-                        </GridViewColumn>
-                    </GridView>
-		        </ListView.View>
-	        </ListView>
-            -->
-
-            <!-- ComboboxLag Issue: https://stackoverflow.com/questions/8198645/wpf-combobox-performance-problems-by-binding-a-large-collections
-				 ComboboxSync Issue: https://stackoverflow.com/questions/23290946/wpf-datagridtemplatecolumn-combobox-updating-all-rows-->
 			<infrastructure:CustomDataGrid
 				Grid.Row="0"
 				Grid.Column="0"
@@ -123,8 +89,7 @@
 			                        IsDropDownOpen="True">
 			                        <i:Interaction.Triggers>
 				                        <i:EventTrigger EventName="SelectionChanged">
-					                        <i:InvokeCommandAction Command="{Binding Path=DataContext.CbSelectionChanged, RelativeSource={RelativeSource AncestorType={x:Type local:CountryComparisonView}}}"
-					                                               CommandParameter="{Binding SelectedItem, ElementName=CbSingleCountry}"/>
+					                        <i:InvokeCommandAction Command="{Binding Path=DataContext.CbSelectionChanged, RelativeSource={RelativeSource AncestorType={x:Type local:CountryComparisonView}}}"/>
 				                        </i:EventTrigger>
 			                        </i:Interaction.Triggers>
                                     <ComboBox.ItemsPanel>
@@ -246,8 +211,8 @@
             IsChartEnabled="{Binding IsChartEnabled}"
 			Margin="15, 5, 15, 15"
 			DataSets="{Binding DataSets}" 
-		    ScaleY="{Binding AxisScale}" 
-		    UsedChartType="{Binding UsedChartType}" 
+		    ScaleY="{Binding CbSelectedAxisScale}" 
+		    UsedChartType="{Binding CbSelectedChartType}" 
 		    TitleX="Date" 
 			TitleY="{Binding TitleY}"/>
     </DockPanel>

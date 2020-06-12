@@ -8,6 +8,7 @@ using System;
 using System.Collections;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Linq;
 using System.Windows;
 using System.Windows.Input;
 
@@ -16,7 +17,7 @@ namespace CoronaTracker.ViewModels
     class CountryComparisonViewModel : NotifyBase, IPageViewModel
     {
         #region Fields
-        public string Name { get { return "Country Comparision"; } }
+        public string Name { get { return "Country Comparison"; } }
 
         public ICommand BtnAddElement { get; protected set; }
         public ICommand BtnRemoveElements { get; protected set; }
@@ -38,7 +39,7 @@ namespace CoronaTracker.ViewModels
         {
             BtnAddElement = new RelayCommand(param => AddElementToList());
             BtnRemoveElements = new RelayCommand(param => RemoveElementsFromList());
-            CbSelectionChanged = new RelayCommand(param => DataGridCountryChanged(param));
+            CbSelectionChanged = new RelayCommand(param => DataGridCountryChanged());
         }
         #endregion Init
 
@@ -77,8 +78,16 @@ namespace CoronaTracker.ViewModels
             {
                 if (value != _dpFromDate)
                 {
-                    _dpFromDate = value;
-                    NotifyPropertyChanged("DpFromDate");
+                    if (value.Date <= DpToDate.Date)
+                    {
+                        _dpFromDate = value;
+                        NotifyPropertyChanged("DpFromDate");
+                        UpdateDataSets();
+                    }
+                    else
+                    {
+                        MessageBox.Show("The To-Date msut be later than the From-Date! Please check your input.");
+                    }
                 }
             }
         }
@@ -94,6 +103,7 @@ namespace CoronaTracker.ViewModels
                     {
                         _dpToDate = value;
                         NotifyPropertyChanged("DpToDate");
+                        UpdateDataSets();
                     }
                     else
                     {
@@ -112,6 +122,7 @@ namespace CoronaTracker.ViewModels
                 {
                     _cbSelectedAxisScale = value;
                     NotifyPropertyChanged("CbSelectedAxisScale");
+                    UpdateDataSets();
                 }
             }
         }
@@ -125,6 +136,7 @@ namespace CoronaTracker.ViewModels
                 {
                     _cbSelectedChartType = value;
                     NotifyPropertyChanged("CbSelectedChartType");
+                    UpdateDataSets();
                 }
             }
         }
@@ -138,6 +150,7 @@ namespace CoronaTracker.ViewModels
                 {
                     _cbSelectedComparisonAttribute = value;
                     NotifyPropertyChanged("CbSelectedComparisonAttribute");
+                    UpdateDataSets();
                 }
             }
         }
@@ -190,25 +203,10 @@ namespace CoronaTracker.ViewModels
                 {
                     axisScale = value;
                     NotifyPropertyChanged("AxisScale");
+                    UpdateDataSets();
                 }
             }
         }
-
-
-        private ChartType usedChartType = ChartType.Lines;
-        public ChartType UsedChartType
-        {
-            get => usedChartType;
-            set
-            {
-                if (value != usedChartType)
-                {
-                    usedChartType = value;
-                    NotifyPropertyChanged("UsedChartType");
-                }
-            }
-        }
-
 
         private bool isChartEnabled;
         public bool IsChartEnabled
@@ -254,49 +252,26 @@ namespace CoronaTracker.ViewModels
         #endregion Data Bidnings
 
         #region Internal Methods
-        private void UpdateChartTitle()
-        {
-            string title = "";
-            foreach (GraphSelection item in cdgCountryList)
-            {
-                title += item.Name + "\n";
-            }
-            TitleY = title;
-        }
-
-
         private void UpdateDataSets()
         {
-            // TODO: get the following properties from the GUI
-            string[] countryNames = new string[]
-            {
-                "Austria",
-                "Germany",
-                "Switzerland"
-            };
-
-            AxisScale axisScale = AxisScale.Linear;
-            ChartType chartType = ChartType.Lines;
-            SelectableStatistics statistics = SelectableStatistics.ActiveCases;
-            DateTime from = DateTime.Parse("22.1.2020");
-            DateTime to = DateTime.Parse("10.6.2020");
-
-
             var dataSets = new BindingList<DataSet>();
             try
             {
-                foreach (var country in countryNames)
+                foreach (var country in CdgCountryList)
                 {
-                    var timeline = dataLoader.GetCountryTimeline(country, from, to);
+                    var timeline = dataLoader.GetCountryTimeline(country.Name, DpFromDate, DpToDate);
 
                     dataSets.Add(new DataSet
                     {
-                        Name = country,
-                        Values = new ObservableCollection<DataElement>(statistics.GetStatisticOfTimeline(timeline))
+                        Name = country.Name,
+                        Values = new ObservableCollection<DataElement>(CbSelectedComparisonAttribute.GetStatisticOfTimeline(timeline))
                     });
                 }
 
-                IsChartEnabled = true;
+                if (dataSets.Count == 0)
+                    IsChartEnabled = false;
+                else
+                    IsChartEnabled = true;
             }
             catch (FieldAccessException ex)
             {
@@ -309,9 +284,7 @@ namespace CoronaTracker.ViewModels
                 IsChartEnabled = false;
             }
 
-            TitleY = statistics.GetEnumDescription();
-            AxisScale = axisScale;
-            UsedChartType = chartType;
+            TitleY = CbSelectedComparisonAttribute.GetEnumDescription();
             DataSets = dataSets;
         }
 
@@ -322,7 +295,7 @@ namespace CoronaTracker.ViewModels
         {
             try
             {
-                cbAvailableCountries = new BindingList<string>(dataLoader.GetListOfProperty(DataLoader.CountryProperty.NAME));
+                CbAvailableCountries = new BindingList<string>(dataLoader.GetListOfProperty(DataLoader.CountryProperty.NAME));
                 UpdateDataSets();
                 IsEnabled = true;
             }
@@ -344,7 +317,7 @@ namespace CoronaTracker.ViewModels
             }
             CdgCountryList.Add(tmp);
 
-            UpdateChartTitle();
+            UpdateDataSets();
         }
 
         /// <summary>
@@ -366,10 +339,12 @@ namespace CoronaTracker.ViewModels
             {
                 CdgCountryList.Remove(item);
             }
+
+            UpdateDataSets();
         }
-        private void DataGridCountryChanged(object country)
+        private void DataGridCountryChanged()
         {
-            UpdateChartTitle();
+            UpdateDataSets();
         }
         #endregion Button Commands
     }

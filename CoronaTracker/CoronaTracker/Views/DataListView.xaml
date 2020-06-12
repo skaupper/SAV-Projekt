@@ -27,7 +27,7 @@
                 <DataGridTextColumn Header="New Recovered" Binding="{Binding NewRecovered}" Width="auto"/>
                 <DataGridTextColumn Header="Total Deaths" Binding="{Binding TotalDeaths}" Width="auto"/>
                 <DataGridTextColumn Header="New Deaths Today" Binding="{Binding NewDeaths}" Width="auto"/>
-                <DataGridTextColumn Header="Last Update" Binding="{Binding Date}" Width="auto"/>
+                <DataGridTextColumn Header="Last Update" Binding="{Binding Date}"/>
             </DataGrid.Columns>
         </infrastructure:CustomDataGrid>
         <!--
