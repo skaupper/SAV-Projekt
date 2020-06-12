@@ -63,6 +63,8 @@
 				Grid.Column="0"
 				Grid.RowSpan="2"
 				Grid.ColumnSpan="2"
+				Style="{StaticResource MahApps.Styles.DataGrid}"
+				ColumnHeaderStyle="{StaticResource MyColumnHeader}"
 				Height="130"
 				Margin="0, 5, 0, 5"
 				AutoGenerateColumns="False"
@@ -122,7 +124,7 @@
 	                </ComboBox.ItemTemplate>
                 </ComboBox>
 				<TextBlock
-					Margin="0, 5, 5, 5"
+					Margin="0, 15, 5, 5"
 					HorizontalAlignment="Left"
 					Text="Select Chart Type:"/>
                 <ComboBox 
@@ -173,7 +175,7 @@
 	            </DockPanel>
 
 	            <TextBlock
-					Margin="0, 5, 5, 5"
+					Margin="0, 15, 5, 5"
 		            DockPanel.Dock="Top"
 		            HorizontalAlignment="Left"
 		            Text="Select Axis Scale:"/>
@@ -183,7 +185,7 @@
 					Width="305"
 		            ItemsSource="{Binding Source={StaticResource AxisScaleDescriptions}}"
 		            SelectedItem="{Binding CbSelectedAxisScale}"
-		            Margin="0, 4, 5, 5"
+		            Margin="0, 5, 5, 5"
 		            Height="23">
                     <ComboBox.ItemTemplate>
                         <DataTemplate>

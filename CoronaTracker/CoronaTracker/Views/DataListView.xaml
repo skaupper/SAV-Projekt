@@ -7,8 +7,13 @@
              xmlns:infrastructure="clr-namespace:CoronaTracker.Infrastructure"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <DockPanel>
-        <infrastructure:CustomDataGrid
+    <UserControl.Resources>
+        
+    </UserControl.Resources>
+	<DockPanel>
+	    <infrastructure:CustomDataGrid
+			Style="{StaticResource MahApps.Styles.DataGrid.Azure}"
+			ColumnHeaderStyle="{StaticResource MyColumnHeader}"
 	        Margin="15, 5, 15, 5"
 	        AutoGenerateColumns="False"
 	        IsReadOnly="True"
@@ -26,28 +31,9 @@
                 <DataGridTextColumn Header="Total Recovered" Binding="{Binding TotalRecovered}" Width="auto"/>
                 <DataGridTextColumn Header="New Recovered" Binding="{Binding NewRecovered}" Width="auto"/>
                 <DataGridTextColumn Header="Total Deaths" Binding="{Binding TotalDeaths}" Width="auto"/>
-                <DataGridTextColumn Header="New Deaths Today" Binding="{Binding NewDeaths}" Width="auto"/>
+                <DataGridTextColumn Header="New Deaths" Binding="{Binding NewDeaths}" Width="auto"/>
                 <DataGridTextColumn Header="Last Update" Binding="{Binding Date}"/>
             </DataGrid.Columns>
         </infrastructure:CustomDataGrid>
-        <!--
-        <ListView 
-			Margin="15, 5, 15, 5"
-		    ItemsSource="{Binding DataList}" 
-		    ScrollViewer.VerticalScrollBarVisibility="Auto">
-		    <ListView.View>
-			    <GridView>
-				    <GridViewColumn Header="Country" Width="Auto" DisplayMemberBinding="{Binding Title}" />
-				    <GridViewColumn Header="Code" Width="Auto" DisplayMemberBinding="{Binding Code}" />
-				    <GridViewColumn Header="Total" Width="Auto" DisplayMemberBinding="{Binding TotalCases}" />
-				    <GridViewColumn Header="Recovered" Width="Auto" DisplayMemberBinding="{Binding TotalRecovered}" />
-				    <GridViewColumn Header="Deaths" Width="Auto" DisplayMemberBinding="{Binding TotalDeaths}" />
-				    <GridViewColumn Header="New Today" Width="Auto" DisplayMemberBinding="{Binding TotalNewCasesToday}" />
-				    <GridViewColumn Header="Active" Width="Auto" DisplayMemberBinding="{Binding TotalActiveCases}" />
-				    <GridViewColumn Header="Serious" Width="Auto" DisplayMemberBinding="{Binding TotalSeriousCases}" />
-			    </GridView>
-		    </ListView.View>
-	    </ListView>
-        -->
-    </DockPanel>
+	</DockPanel>
 </UserControl>

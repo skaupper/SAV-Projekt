@@ -1,0 +1,10 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:local="clr-namespace:CoronaTracker"
+                    xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls">
+	<Style x:Key="MyColumnHeader" 
+	       BasedOn="{StaticResource MahApps.Styles.DataGridColumnHeader.Azure}" 
+	       TargetType="{x:Type DataGridColumnHeader}">
+		<Setter Property="controls:ControlsHelper.ContentCharacterCasing" Value="Normal"/>
+	</Style>
+</ResourceDictionary>
