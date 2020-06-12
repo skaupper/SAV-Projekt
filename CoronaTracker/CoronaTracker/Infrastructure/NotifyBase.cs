@@ -11,7 +11,7 @@ namespace CoronaTracker.Infrastructure
     public class NotifyBase : INotifyPropertyChanged
     {
         #region Fields
-        protected static DataLoader dataLoader;
+        protected static DataLoader dataLoader = new DataLoader();
         #endregion Fields
 
         #region CTOR
@@ -20,7 +20,6 @@ namespace CoronaTracker.Infrastructure
         /// </summary>
         protected NotifyBase()
         {
-            dataLoader = new DataLoader();
         }
         #endregion CTOR
 
