@@ -98,7 +98,7 @@ namespace CoronaTracker.Charts
             DependencyProperty.Register(
                 "DisableAnimations", typeof(bool),
                 typeof(RatioBar),
-                new PropertyMetadata(true)
+                new PropertyMetadata(true, Static_DisableAnimations_Changed)
             );
 
 
@@ -173,6 +173,12 @@ namespace CoronaTracker.Charts
 
 
         #region Static Callbacks
+
+        private static void Static_DisableAnimations_Changed(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            var chartArea = d as RatioBar;
+            chartArea.Chart.Update(true);
+        }
 
         private static void Static_DataSets_Changed(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {

@@ -4,6 +4,7 @@ using LiveCharts;
 using LiveCharts.Configurations;
 using LiveCharts.Defaults;
 using LiveCharts.Wpf;
+using LiveCharts.Wpf.Charts.Base;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -120,7 +121,7 @@ namespace CoronaTracker.Charts
             DependencyProperty.Register(
                 "DisableAnimations", typeof(bool),
                 typeof(TimelineChart),
-                new PropertyMetadata(true)
+                new PropertyMetadata(true, Static_DisableAnimations_Changed)
             );
 
 
@@ -219,12 +220,18 @@ namespace CoronaTracker.Charts
 
         #region Static Callbacks
 
+        private static void Static_DisableAnimations_Changed(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            var chartArea = d as TimelineChart;
+            chartArea.Chart.Update(true);
+        }
+
+
         private static void Static_ChartType_Changed(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             var chartArea = d as TimelineChart;
             chartArea.ChartType_Changed(d, e);
         }
-
 
         private static void Static_DataSets_Changed(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
