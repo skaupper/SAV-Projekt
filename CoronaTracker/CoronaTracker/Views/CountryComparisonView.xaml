@@ -209,6 +209,7 @@
 
 	    <charts:TimelineChart 
             IsChartEnabled="{Binding IsChartEnabled}"
+            DisableAnimations="True"
 			Margin="15, 5, 15, 15"
 			DataSets="{Binding DataSets}" 
 		    ScaleY="{Binding CbSelectedAxisScale}" 

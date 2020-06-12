@@ -21,6 +21,8 @@ namespace CoronaTracker.ViewModels
 
         private IPageViewModel _currentPageViewModel;
         private List<IPageViewModel> _pageViewModels;
+
+        private bool disableAnimations;
         #endregion Fields
 
         #region CTOR
@@ -83,6 +85,19 @@ namespace CoronaTracker.ViewModels
                 {
                     _currentPageViewModel = value;
                     OnPropertyChanged("CurrentPageViewModel");
+                }
+            }
+        }
+
+
+        public bool DisableAnimations {
+            get => disableAnimations;
+            set
+            {
+                if (disableAnimations != value)
+                {
+                    disableAnimations = value;
+                    OnPropertyChanged("DisableAnimations");
                 }
             }
         }

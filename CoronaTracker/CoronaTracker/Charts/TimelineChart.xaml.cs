@@ -61,7 +61,6 @@ namespace CoronaTracker.Charts
         #region Properties
 
         private SeriesCollection seriesCollection;
-        private bool disableAnimations;
         private Func<double, string> formatterX;
         private Func<double, string> formatterY;
         private Func<double, string> formatterYLog;
@@ -117,6 +116,13 @@ namespace CoronaTracker.Charts
                 new PropertyMetadata(true)
             );
 
+        public static readonly DependencyProperty DisableAnimationsProperty =
+            DependencyProperty.Register(
+                "DisableAnimations", typeof(bool),
+                typeof(TimelineChart),
+                new PropertyMetadata(true)
+            );
+
 
 
         public DataSetsType DataSets
@@ -154,6 +160,11 @@ namespace CoronaTracker.Charts
             get => (bool)GetValue(IsChartEnabledProperty);
             set => SetValue(IsChartEnabledProperty, value);
         }
+        public bool DisableAnimations
+        {
+            get => (bool)GetValue(DisableAnimationsProperty);
+            set => SetValue(DisableAnimationsProperty, value);
+        }
 
 
 
@@ -170,15 +181,7 @@ namespace CoronaTracker.Charts
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("SeriesCollection"));
             }
         }
-        public bool DisableAnimations
-        {
-            get => disableAnimations;
-            set
-            {
-                disableAnimations = value;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("DisableAnimations"));
-            }
-        }
+
         public Func<double, string> FormatterX
         {
             get => formatterX;
