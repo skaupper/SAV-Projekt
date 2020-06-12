@@ -10,8 +10,25 @@ using System.Windows.Input;
 
 namespace CoronaTracker.ViewModels
 {
+    public delegate void DataLoadedEventHandler(object sender, DataLoadedEventArgs e);
+
+    public class DataLoadedEventArgs : EventArgs
+    { 
+        public DataLoadedEventArgs()
+        {
+        }
+    }
     class HomeViewModel : NotifyBase, IPageViewModel
     {
+        #region Events
+        public event DataLoadedEventHandler DataLoaded;
+
+        private void OnDataLoaded(DataLoadedEventArgs args)
+        {
+            DataLoaded?.Invoke(this, args);
+        }
+        #endregion Events
+
         #region Fields
         private readonly List<IPageViewModel> ListOfAvailablePages = null;
 
@@ -156,6 +173,7 @@ namespace CoronaTracker.ViewModels
         {
             if (dataLoader.CheckIfDataIsLoaded())
             {
+                OnDataLoaded(new DataLoadedEventArgs());
                 ConnectionState = true;
                 CanRefreshSaveDatasetBtn = true;
                 IsEnabled = true;
