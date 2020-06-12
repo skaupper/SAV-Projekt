@@ -30,7 +30,8 @@
 				Margin="15, 0, 15, 0"
 				TextWrapping="Wrap">
 	            The Corona Tracker offers you the ability to gather corona related statistic data and present it in a vivid way. Therefore the data is collected from countries around the globe. It 
-	            also offers the ability to compare a defined parameters of several countries or show a selected parameter on a world map. A dataset must be loaded to get access to the other pages.
+	            also offers the ability to compare a defined parameters of several countries or show a selected parameter on a world map. A dataset must be loaded to get access to the other pages. 
+				The data is sourced from the Johns Hopkins CSSE.
             </TextBlock>
         </DockPanel>
 
