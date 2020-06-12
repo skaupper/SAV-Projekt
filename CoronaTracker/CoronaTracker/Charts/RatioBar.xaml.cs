@@ -88,6 +88,13 @@ namespace CoronaTracker.Charts
                 new PropertyMetadata(LiveCharts.LegendLocation.Top)
             );
 
+        public static readonly DependencyProperty IsChartEnabledProperty =
+            DependencyProperty.Register(
+                "IsChartEnabled", typeof(bool),
+                typeof(RatioBar),
+                new PropertyMetadata(true)
+            );
+
 
 
 
@@ -110,6 +117,11 @@ namespace CoronaTracker.Charts
         {
             get => (LegendLocation)GetValue(LegendLocationProperty);
             set => SetValue(LegendLocationProperty, value);
+        }
+        public bool IsChartEnabled
+        {
+            get => (bool)GetValue(IsChartEnabledProperty);
+            set => SetValue(IsChartEnabledProperty, value);
         }
 
 
@@ -204,7 +216,7 @@ namespace CoronaTracker.Charts
             FormatterY = val => dateHelper.FromDouble(val).ToString("d");
 
             mapper = new CartesianMapper<DataElement>();
-            mapper.X(p => Math.Round(p.Y, 0)).Y(p => dateHelper.ToDouble(p.X));
+            mapper.X(p => Math.Round(p.Value, 0)).Y(p => dateHelper.ToDouble(p.Date));
             SeriesCollection = new SeriesCollection(mapper);
 
             Chart.DataContext = this;

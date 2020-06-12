@@ -5,28 +5,42 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
              xmlns:local="clr-namespace:CoronaTracker.Charts"
+             xmlns:converters="clr-namespace:CoronaTracker.Infrastructure.ValueConverters"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <DockPanel>
-        <lvc:CartesianChart x:Name="Chart"
+    <UserControl.Resources>
+        <converters:BoolToVisibilityConverter x:Key="BoolToVisibleConverter" TrueVisibility="Visible" FalseVisibility="Collapsed"/>
+        <converters:BoolToVisibilityConverter x:Key="BoolToCollapsedConverter" TrueVisibility="Collapsed" FalseVisibility="Visible"/>
+    </UserControl.Resources>
+
+    <Grid>
+        <Grid Visibility="{Binding IsChartEnabled, Converter={StaticResource BoolToVisibleConverter}, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type local:RatioBar}}}">
+            <lvc:CartesianChart x:Name="Chart"
                             Series="{Binding SeriesCollection, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type local:RatioBar}}}" 
                             DisableAnimations="{Binding DisableAnimations, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type local:RatioBar}}}" 
                             LegendLocation="{Binding LegendLocation, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type local:RatioBar}}}">
-            <!-- The charts data context is set to the user control itself. -->
-            <lvc:CartesianChart.AxisY>
-                <lvc:Axis LabelFormatter="{Binding FormatterY}" Title="{Binding TitleY}" ShowLabels="False"/>
-            </lvc:CartesianChart.AxisY>
-            <lvc:CartesianChart.AxisX>
-                <lvc:Axis LabelFormatter="{Binding FormatterX}" Title="{Binding TitleX}">
-                    <lvc:Axis.Separator>
-                        <lvc:Separator Step="0.2"/>
-                    </lvc:Axis.Separator>
-                </lvc:Axis>
-            </lvc:CartesianChart.AxisX>
+                <!-- The charts data context is set to the user control itself. -->
+                <lvc:CartesianChart.AxisY>
+                    <lvc:Axis LabelFormatter="{Binding FormatterY}" Title="{Binding TitleY}" ShowLabels="False"/>
+                </lvc:CartesianChart.AxisY>
+                <lvc:CartesianChart.AxisX>
+                    <lvc:Axis LabelFormatter="{Binding FormatterX}" Title="{Binding TitleX}">
+                        <lvc:Axis.Separator>
+                            <lvc:Separator Step="0.2"/>
+                        </lvc:Axis.Separator>
+                    </lvc:Axis>
+                </lvc:CartesianChart.AxisX>
 
-            <lvc:CartesianChart.DataTooltip>
-                <lvc:DefaultTooltip SelectionMode="SharedYValues"></lvc:DefaultTooltip>
-            </lvc:CartesianChart.DataTooltip>
-        </lvc:CartesianChart>
-    </DockPanel>
+                <lvc:CartesianChart.DataTooltip>
+                    <lvc:DefaultTooltip SelectionMode="SharedYValues"></lvc:DefaultTooltip>
+                </lvc:CartesianChart.DataTooltip>
+            </lvc:CartesianChart>
+        </Grid>
+
+
+        <TextBlock x:Name="DisabledTextBlock" Visibility="{Binding IsChartEnabled, Converter={StaticResource BoolToCollapsedConverter}, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type local:RatioBar}}}"
+                   VerticalAlignment="Center"
+                   HorizontalAlignment="Center"
+                   >Chart is disabled!</TextBlock>
+    </Grid>
 </UserControl>

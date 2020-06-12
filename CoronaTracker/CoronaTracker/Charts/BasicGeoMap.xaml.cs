@@ -206,7 +206,6 @@ namespace CoronaTracker.Charts
 
         #region Command
         // Source: https://stackoverflow.com/questions/47849666/add-command-property-to-any-custom-controls
-
         public ICommand Command
         {
             get { return (ICommand)GetValue(CommandProperty); }

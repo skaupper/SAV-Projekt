@@ -4,7 +4,7 @@ namespace CoronaTracker.Charts.Types
 {
     public class DataElement
     {
-        public DateTime X { get; set; }
-        public double Y { get; set; }
+        public DateTime Date { get; set; }
+        public double Value { get; set; }
     };
 }
