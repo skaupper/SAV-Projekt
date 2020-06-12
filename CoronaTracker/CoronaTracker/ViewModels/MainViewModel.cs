@@ -13,7 +13,7 @@ namespace CoronaTracker.ViewModels
         #region Fields
         private readonly HomeViewModel homeViewModel;
         private readonly CountryStatsViewModel countryStatsViewModel;
-        private CountryComparisonViewModel _countryComparisonViewModel;
+        private readonly CountryComparisonViewModel countryComparisonViewModel;
         private readonly WorldMapViewModel worldMapViewModel;
         private readonly DataListViewModel dataListViewModel;
 
@@ -22,19 +22,6 @@ namespace CoronaTracker.ViewModels
         private IPageViewModel _currentPageViewModel;
         private List<IPageViewModel> _pageViewModels;
         #endregion Fields
-
-        public CountryComparisonViewModel countryComparisonViewModel
-        {
-            get { return _countryComparisonViewModel; }
-            set
-            {
-                if (value != _countryComparisonViewModel)
-                {
-                    _countryComparisonViewModel = value;
-                    NotifyPropertyChanged("countryComparisonViewModel");
-                }
-            }
-        }
 
         #region CTOR
         public MainViewModel(HomeViewModel homeModel, CountryStatsViewModel countryStatsModel, CountryComparisonViewModel countryComparisonModel, WorldMapViewModel worldMapModel, DataListViewModel dataListModel)

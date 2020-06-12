@@ -7,7 +7,8 @@
         xmlns:models="clr-namespace:CoronaTracker.ViewModels"
         xmlns:views="clr-namespace:CoronaTracker.Views"
         mc:Ignorable="d"
-        Title="Corona Tracker" Height="650" Width="1000">
+        Title="Corona Tracker" Height="650" Width="1000"
+        Name="MainViewUiElement">
 	<Window.Resources>
 		<DataTemplate DataType="{x:Type models:HomeViewModel}">
 			<views:HomeView />
