@@ -255,11 +255,13 @@ namespace CoronaTracker.ViewModels
         private void UpdateDataSets()
         {
             var dataSets = new BindingList<DataSet>();
-            try
+            foreach (var country in CdgCountryList)
             {
-                foreach (var country in CdgCountryList)
+                try
                 {
                     var timeline = dataLoader.GetCountryTimeline(country.Name, DpFromDate, DpToDate);
+                    if (timeline.Days.Count == 0)
+                        continue;
 
                     dataSets.Add(new DataSet
                     {
@@ -267,22 +269,29 @@ namespace CoronaTracker.ViewModels
                         Values = new ObservableCollection<DataElement>(CbSelectedComparisonAttribute.GetStatisticOfTimeline(timeline))
                     });
                 }
-
-                if (dataSets.Count == 0)
+                catch (FieldAccessException ex)
+                {
+                    MessageBox.Show(ex.Message);
                     IsChartEnabled = false;
-                else
-                    IsChartEnabled = true;
+                }
+                catch (ArgumentException ex)
+                {
+                    MessageBox.Show(ex.Message);
+                    IsChartEnabled = false;
+                }
             }
-            catch (FieldAccessException ex)
+
+            // If no dataset was created do not enable the chart
+            if (dataSets.Count == 0)
             {
-                MessageBox.Show(ex.Message);
                 IsChartEnabled = false;
+
+                // If there would have been countries to retrieve data for, inform the user that the date constraints issued only empty datasets
+                if (CdgCountryList.Count != 0)
+                    MessageBox.Show("No data found in the given timespan.", "No data found", MessageBoxButton.OK, MessageBoxImage.Information);
             }
-            catch (ArgumentException ex)
-            {
-                MessageBox.Show(ex.Message);
-                IsChartEnabled = false;
-            }
+            else
+                IsChartEnabled = true;
 
             TitleY = CbSelectedComparisonAttribute.GetEnumDescription();
             DataSets = dataSets;
@@ -330,14 +339,10 @@ namespace CoronaTracker.ViewModels
                 MessageBox.Show("At least one Country must be selected.");
                 return;
             }
-            /*** use other iteration list since selected and original list are bound with references***/
-            BindingList<GraphSelection> tmp = new BindingList<GraphSelection>();
-            foreach (GraphSelection item in CdgSelectedCountry)
-                tmp.Add(item);
-            /*** - ***/
-            foreach (GraphSelection item in tmp)
+
+            for(int i = CdgSelectedCountry.Count-1; i >= 0; --i)
             {
-                CdgCountryList.Remove(item);
+                CdgCountryList.Remove(CdgSelectedCountry[i] as GraphSelection);
             }
 
             UpdateDataSets();

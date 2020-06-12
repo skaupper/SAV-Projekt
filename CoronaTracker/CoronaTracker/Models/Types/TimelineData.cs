@@ -5,12 +5,12 @@ namespace CoronaTracker.Models.Types
 {
     public class TimelineData
     {
-        public Dictionary<string, CountryTimeline> Countries;
+        public Dictionary<string, CountryTimeline> Countries { get; set; } = new Dictionary<string, CountryTimeline>();
     }
 
     public class CountryTimeline
     {
-        public List<Day> Days { get; set; }
+        public List<Day> Days { get; set; } = new List<Day>();
     }
 
     public class Day
