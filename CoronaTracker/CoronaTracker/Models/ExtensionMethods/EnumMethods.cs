@@ -1,18 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Globalization;
 using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
-using System.Windows.Data;
 
-namespace CoronaTracker.Infrastructure
+namespace CoronaTracker.Models.ExtensionMethods
 {
-    public class EnumDescriptionConverter : IValueConverter
+    static class EnumMethods
     {
-        private string GetEnumDescription(Enum enumObj)
+        public static string GetEnumDescription(this Enum enumObj)
         {
             FieldInfo fieldInfo = enumObj.GetType().GetField(enumObj.ToString());
             object[] attribArray = fieldInfo.GetCustomAttributes(false);
@@ -34,21 +32,6 @@ namespace CoronaTracker.Infrastructure
 
                 return enumObj.ToString();
             }
-        }
-
-        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
-        {
-            if (value.GetType() == typeof(String) &&  (value as string) == String.Empty)
-                return null;
-
-            Enum myEnum = (Enum)value;
-            string description = GetEnumDescription(myEnum);
-            return description;
-        }
-
-        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
-        {
-            return string.Empty;
         }
     }
 }

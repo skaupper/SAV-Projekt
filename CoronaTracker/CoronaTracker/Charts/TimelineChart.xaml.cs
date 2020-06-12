@@ -110,6 +110,13 @@ namespace CoronaTracker.Charts
                 new PropertyMetadata(LiveCharts.LegendLocation.Top)
             );
 
+        public static readonly DependencyProperty IsChartEnabledProperty =
+            DependencyProperty.Register(
+                "IsChartEnabled", typeof(bool),
+                typeof(TimelineChart),
+                new PropertyMetadata(true)
+            );
+
 
 
         public DataSetsType DataSets
@@ -141,6 +148,11 @@ namespace CoronaTracker.Charts
         {
             get => (LegendLocation)GetValue(LegendLocationProperty);
             set => SetValue(LegendLocationProperty, value);
+        }
+        public bool IsChartEnabled
+        {
+            get => (bool)GetValue(IsChartEnabledProperty);
+            set => SetValue(IsChartEnabledProperty, value);
         }
 
 
@@ -270,8 +282,8 @@ namespace CoronaTracker.Charts
             dateHelper = new DateHelper(TimeSpan.FromDays(1));
             mapper = new CartesianMapper<DataElement>();
 
-            mapper.X(p => dateHelper.ToDouble(p.X));
-            mapper.Y(p => p.Y);
+            mapper.X(p => dateHelper.ToDouble(p.Date));
+            mapper.Y(p => p.Value);
 
             // Internal properties
             SeriesCollection = new SeriesCollection(mapper);
@@ -340,7 +352,7 @@ namespace CoronaTracker.Charts
                 ax.SetBinding(Axis.TitleProperty, "TitleY");
                 Chart.AxisY.Add(ax);
 
-                mapper.Y(p => p.Y);
+                mapper.Y(p => p.Value);
             }
             else if (ScaleY == AxisScale.Logarithmic)
             {
@@ -350,7 +362,7 @@ namespace CoronaTracker.Charts
                 ax.SetBinding(Axis.TitleProperty, "TitleY");
                 Chart.AxisY.Add(ax);
 
-                mapper.Y(p => (p.Y > 0) ? Math.Log(p.Y, LogBase) : double.NaN);
+                mapper.Y(p => (p.Value > 0) ? Math.Log(p.Value, LogBase) : double.NaN);
             }
         }
 

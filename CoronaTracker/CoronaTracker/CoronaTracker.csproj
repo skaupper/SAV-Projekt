@@ -123,10 +123,11 @@
     <Compile Include="Charts\Types\DataElement.cs" />
     <Compile Include="Charts\Types\DataSet.cs" />
     <Compile Include="Charts\Types\HeatMapElement.cs" />
-    <Compile Include="Infrastructure\AxisScaleConverter.cs" />
+    <Compile Include="Infrastructure\ValueConverters\AxisScaleConverter.cs" />
+    <Compile Include="Infrastructure\ValueConverters\BoolToVisibilityConverter.cs" />
     <Compile Include="Infrastructure\CustomDataGrid.cs" />
-    <Compile Include="Infrastructure\EnumConverter.cs" />
-    <Compile Include="Infrastructure\EnumDescriptionConverter.cs" />
+    <Compile Include="Infrastructure\ValueConverters\EnumConverter.cs" />
+    <Compile Include="Infrastructure\ValueConverters\EnumDescriptionConverter.cs" />
     <Compile Include="Infrastructure\IPageViewModel.cs" />
     <Compile Include="Infrastructure\SliderMouseWheelBehaviour.cs" />
     <Compile Include="Maps.Designer.cs">
@@ -135,9 +136,12 @@
       <DependentUpon>Maps.resx</DependentUpon>
     </Compile>
     <Compile Include="Models\DataLoader.cs" />
-    <Compile Include="Models\DetailedWorldMapStatistics.cs" />
+    <Compile Include="Models\ExtensionMethods\EnumMethods.cs" />
+    <Compile Include="Models\Types\DetailedWorldMapStatistics.cs" />
     <Compile Include="Models\GraphSelection.cs" />
     <Compile Include="Models\Helper\APIHandler.cs" />
+    <Compile Include="Models\ExtensionMethods\SelectableStatisticsMethods.cs" />
+    <Compile Include="Models\Types\SelectableStatistics.cs" />
     <Compile Include="Models\Types\DataStore.cs" />
     <Compile Include="Models\Helper\FileHandler.cs" />
     <Compile Include="Models\Types\AccumData.cs" />
@@ -254,5 +258,6 @@
   <ItemGroup>
     <None Include="Resources\World.xml" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

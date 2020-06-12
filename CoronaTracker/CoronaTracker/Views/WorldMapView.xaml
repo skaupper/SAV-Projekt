@@ -6,7 +6,8 @@
              xmlns:local="clr-namespace:CoronaTracker.Views"
              xmlns:charts="clr-namespace:CoronaTracker.Charts"
              xmlns:infrastructure="clr-namespace:CoronaTracker.Infrastructure"
-             xmlns:models="clr-namespace:CoronaTracker.Models"
+             xmlns:converters="clr-namespace:CoronaTracker.Infrastructure.ValueConverters"
+             xmlns:modelTypes="clr-namespace:CoronaTracker.Models.Types"
              xmlns:system="clr-namespace:System;assembly=System.Runtime"
              xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
              mc:Ignorable="d" 
@@ -15,11 +16,11 @@
 	    <ObjectDataProvider x:Key="comparisonAttributeFromEnum"
 	                        MethodName="GetValues" ObjectType="{x:Type system:Enum}">
 		    <ObjectDataProvider.MethodParameters>
-			    <x:Type TypeName="models:SelectableStatistics"/>
+                <x:Type TypeName="modelTypes:SelectableStatistics"/>
 		    </ObjectDataProvider.MethodParameters>
 	    </ObjectDataProvider>
 
-	    <infrastructure:EnumDescriptionConverter x:Key="EnumDescriptionConverter"/>
+        <converters:EnumDescriptionConverter x:Key="EnumDescriptionConverter"/>
     </UserControl.Resources>
 	<DockPanel>
         <DockPanel DockPanel.Dock="Top" Margin="15, 0, 15, 5">

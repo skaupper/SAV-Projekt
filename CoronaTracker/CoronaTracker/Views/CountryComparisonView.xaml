@@ -5,6 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:CoronaTracker.Views"
 			 xmlns:infrastructure="clr-namespace:CoronaTracker.Infrastructure"
+			 xmlns:converters="clr-namespace:CoronaTracker.Infrastructure.ValueConverters"
              xmlns:models="clr-namespace:CoronaTracker.ViewModels"
              xmlns:charts="clr-namespace:CoronaTracker.Charts"
              xmlns:chartTypes="clr-namespace:CoronaTracker.Charts.Types"
@@ -12,7 +13,7 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
 	<UserControl.Resources>
-		<infrastructure:AxisScaleConverter x:Key="AxisScaleConverter" />
+        <converters:AxisScaleConverter x:Key="AxisScaleConverter" />
         <CollectionViewSource x:Key="SelectableCountries" Source="{Binding cbAvailableCountries}" />
     </UserControl.Resources>
     <DockPanel>
@@ -186,11 +187,12 @@
         </Grid>
 
 	    <charts:TimelineChart 
+            IsChartEnabled="{Binding IsChartEnabled}"
 			Margin="15, 5, 15, 15"
-			DataSets="{Binding DataSetsCCVM}" 
-		    ScaleY="{Binding rbAxisScaleCCVM}" 
+			DataSets="{Binding DataSets}" 
+		    ScaleY="{Binding AxisScale}" 
 		    UsedChartType="{Binding UsedChartType}" 
 		    TitleX="Date" 
-			TitleY="{Binding YTitleCCVM}"/>
+			TitleY="{Binding TitleY}"/>
     </DockPanel>
 </UserControl>

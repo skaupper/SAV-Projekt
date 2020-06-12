@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Data;
 
-namespace CoronaTracker.Infrastructure
+namespace CoronaTracker.Infrastructure.ValueConverters
 {
     class AxisScaleConverter : IValueConverter
     {

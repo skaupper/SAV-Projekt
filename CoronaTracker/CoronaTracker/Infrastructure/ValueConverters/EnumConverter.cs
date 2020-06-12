@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Data;
 
-namespace CoronaTracker.Infrastructure
+namespace CoronaTracker.Infrastructure.ValueConverters
 {
     class EnumConverter : IValueConverter
     {
