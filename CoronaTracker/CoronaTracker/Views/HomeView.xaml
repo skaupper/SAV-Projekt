@@ -70,7 +70,18 @@
 					Typography.Capitals="AllSmallCaps"
 					FontSize="14"
 					FontWeight="DemiBold"
-		            Content="Enable Animations" IsChecked="{Binding DataContext.DisableAnimations, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type local:MainView}}}"/>
+		            IsChecked="{Binding DataContext.DisableAnimations, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type local:MainView}}}">
+	                <ToggleButton.Style>
+		                <Style TargetType="{x:Type ToggleButton}" BasedOn="{StaticResource MahApps.Styles.ToggleButton}">
+                            <Setter Property="Content" Value="Animations Enabled"/>
+			                <Style.Triggers>
+				                <Trigger Property="IsChecked" Value="True">
+					                <Setter Property="Content" Value="Animations Disabled"/>
+				                </Trigger>
+			                </Style.Triggers>
+		                </Style>
+	                </ToggleButton.Style>
+                </ToggleButton>
             </DockPanel>
 
             <Image 
