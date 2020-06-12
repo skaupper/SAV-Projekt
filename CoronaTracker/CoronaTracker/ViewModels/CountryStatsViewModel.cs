@@ -148,16 +148,30 @@ namespace CoronaTracker.ViewModels
             }
         }
 
-        private BindingList<DataSet> _dataSetsCSVM;
-        public BindingList<DataSet> DataSetsCSVM
+        private BindingList<DataSet> dataSets;
+        public BindingList<DataSet> DataSets
         {
-            get { return _dataSetsCSVM; }
+            get => dataSets;
             set
             {
-                if (value != _dataSetsCSVM)
+                if (value != dataSets)
                 {
-                    _dataSetsCSVM = value;
-                    NotifyPropertyChanged("DataSetsCSVM");
+                    dataSets = value;
+                    NotifyPropertyChanged("DataSets");
+                }
+            }
+        }
+
+        private bool isChartEnabled;
+        public bool IsChartEnabled
+        {
+            get => isChartEnabled;
+            set
+            {
+                if (value != isChartEnabled)
+                {
+                    isChartEnabled = value;
+                    NotifyPropertyChanged("IsChartEnabled");
                 }
             }
         }
@@ -170,30 +184,46 @@ namespace CoronaTracker.ViewModels
         private void SelectedCountryChanged(string countryName)
         {
             var dataSets = new BindingList<DataSet>();
-            var daylist = dataLoader.GetCountryTimeline(countryName).Days;
 
-            var transformed = from day in daylist select new DataElement { X = day.Date, Y = Math.Max(day.Active, double.Epsilon) };
-            dataSets.Add(new DataSet
+            try
             {
-                Name = "Active Cases",
-                Values = new ObservableCollection<DataElement>(transformed)
-            });
+                var daylist = dataLoader.GetCountryTimeline(countryName).Days;
 
-            transformed = from day in daylist select new DataElement { X = day.Date, Y = Math.Max(day.Recovered, double.Epsilon) };
-            dataSets.Add(new DataSet
+                var transformed = from day in daylist select new DataElement { Date = day.Date, Value = Math.Max(day.Active, double.Epsilon) };
+                dataSets.Add(new DataSet
+                {
+                    Name = "Active Cases",
+                    Values = new ObservableCollection<DataElement>(transformed)
+                });
+
+                transformed = from day in daylist select new DataElement { Date = day.Date, Value = Math.Max(day.Recovered, double.Epsilon) };
+                dataSets.Add(new DataSet
+                {
+                    Name = "Total Recoveries",
+                    Values = new ObservableCollection<DataElement>(transformed)
+                });
+
+                transformed = from day in daylist select new DataElement { Date = day.Date, Value = Math.Max(day.Deaths, double.Epsilon) };
+                dataSets.Add(new DataSet
+                {
+                    Name = "Total Deaths",
+                    Values = new ObservableCollection<DataElement>(transformed)
+                });
+
+                IsChartEnabled = true;
+            }
+            catch(FieldAccessException ex)
             {
-                Name = "Total Recoveries",
-                Values = new ObservableCollection<DataElement>(transformed)
-            });
-
-            transformed = from day in daylist select new DataElement { X = day.Date, Y = Math.Max(day.Deaths, double.Epsilon) };
-            dataSets.Add(new DataSet
+                MessageBox.Show(ex.Message);
+                IsChartEnabled = false;
+            }
+            catch(ArgumentException ex)
             {
-                Name = "Total Deaths",
-                Values = new ObservableCollection<DataElement>(transformed)
-            });
+                MessageBox.Show(ex.Message);
+                IsChartEnabled = false;
+            }
 
-            DataSetsCSVM = dataSets;
+            DataSets = dataSets;
         }
 
         private void SelectedChartTypeChanged(ChartType chartType)

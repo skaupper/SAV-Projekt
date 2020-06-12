@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:infrastructure="clr-namespace:CoronaTracker.Infrastructure"
+             xmlns:converters="clr-namespace:CoronaTracker.Infrastructure.ValueConverters"
              xmlns:charts="clr-namespace:CoronaTracker.Charts"
              xmlns:chartTypes="clr-namespace:CoronaTracker.Charts.Types"
              xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
@@ -25,8 +26,8 @@
             </ObjectDataProvider.MethodParameters>
         </ObjectDataProvider>
 
-        <infrastructure:EnumDescriptionConverter x:Key="EnumDescriptionConverter" />
-        <infrastructure:EnumConverter x:Key="EnumConverter" />
+        <converters:EnumDescriptionConverter x:Key="EnumDescriptionConverter" />
+        <converters:EnumConverter x:Key="EnumConverter" />
     </UserControl.Resources>
     <DockPanel>
         <Grid DockPanel.Dock="Top" Margin="15, 5, 15, 0">
@@ -65,32 +66,10 @@
                 </ComboBox.ItemsPanel>
             </ComboBox>
 
-            <TextBlock Grid.Row="0" Grid.Column="1" Text="Select Axis Scale:" Margin="0, 5, 5, 0"/>
+            <TextBlock Grid.Row="0" Grid.Column="1" Text="Select Chart Type:" Margin="0, 5, 5, 0"/>
             <ComboBox
                 Grid.Row="1"
                 Grid.Column="1"
-                Margin="0,5,5,5"
-                Name="CbAxisScale"
-                SelectedItem="{Binding DefaultAxisScale, Mode=OneTime}"
-                ItemsSource="{Binding Source={StaticResource AxisScaleDescriptions}}"
-                >
-                <i:Interaction.Triggers>
-                    <i:EventTrigger EventName="SelectionChanged">
-                        <i:InvokeCommandAction Command="{Binding Command_CbAxisScaleSelectionChanged}" CommandParameter="{Binding SelectedItem, ElementName=CbAxisScale}"/>
-                    </i:EventTrigger>
-                </i:Interaction.Triggers>
-
-                <ComboBox.ItemTemplate>
-                    <DataTemplate>
-                        <TextBlock Text="{Binding Converter={StaticResource EnumDescriptionConverter}}"/>
-                    </DataTemplate>
-                </ComboBox.ItemTemplate>
-            </ComboBox>
-
-            <TextBlock Grid.Row="0" Grid.Column="2" Text="Select Chart Type:" Margin="0, 5, 5, 0"/>
-            <ComboBox
-                Grid.Row="1"
-                Grid.Column="2"
                 Margin="0,5,5,5"
                 Name="CbChartType"
                 SelectedItem="{Binding DefaultChartType, Mode=OneTime}"
@@ -108,6 +87,28 @@
                     </DataTemplate>
                 </ComboBox.ItemTemplate>
             </ComboBox>
+
+            <TextBlock Grid.Row="0" Grid.Column="2" Text="Select Axis Scale:" Margin="0, 5, 5, 0"/>
+            <ComboBox
+                Grid.Row="1"
+                Grid.Column="2"
+                Margin="0,5,5,5"
+                Name="CbAxisScale"
+                SelectedItem="{Binding DefaultAxisScale, Mode=OneTime}"
+                ItemsSource="{Binding Source={StaticResource AxisScaleDescriptions}}"
+                >
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="SelectionChanged">
+                        <i:InvokeCommandAction Command="{Binding Command_CbAxisScaleSelectionChanged}" CommandParameter="{Binding SelectedItem, ElementName=CbAxisScale}"/>
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding Converter={StaticResource EnumDescriptionConverter}}"/>
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+            </ComboBox>
         </Grid>
         
         
@@ -115,7 +116,8 @@
         <TextBlock DockPanel.Dock="Top" Margin="15, 10, 15, 0" Text="Most recent distribution:"/>
         <charts:RatioBar DockPanel.Dock="Top" Margin="15, 5, 15, 5" Height="70" 
                          LegendLocation="Top"
-                         DataSets="{Binding DataSetsCSVM}" 
+                         IsChartEnabled="{Binding IsChartEnabled}"
+                         DataSets="{Binding DataSets}" 
                          TitleX="Percent of total cases" 
                          TitleY=""/>
 
@@ -123,8 +125,9 @@
         <charts:TimelineChart 
             Margin="15, 5, 15, 15"
             x:Name="Chart" 
+            IsChartEnabled="{Binding IsChartEnabled}"
             DisableAnimations="False"
-            DataSets="{Binding DataSetsCSVM}" 
+            DataSets="{Binding DataSets}" 
             ScaleY="{Binding SelectedItem, ElementName=CbAxisScale, Converter={StaticResource EnumConverter}}" 
             UsedChartType="{Binding SelectedItem, ElementName=CbChartType, Converter={StaticResource EnumConverter}}" 
             TitleX="Date" 

@@ -1,6 +1,9 @@
 ﻿using CoronaTracker.Charts.Types;
 using CoronaTracker.Infrastructure;
 using CoronaTracker.Models;
+using CoronaTracker.Models.ExtensionMethods;
+using CoronaTracker.Models.Types;
+using LiveCharts.Wpf;
 using System;
 using System.Collections;
 using System.Collections.ObjectModel;
@@ -24,31 +27,6 @@ namespace CoronaTracker.ViewModels
         public CountryComparisonViewModel()
         {
             InitButtons();
-
-            DataSetsCCVM = new BindingList<DataSet>{
-                new DataSet
-                {
-                    Name = "Test",
-                    Values = new ObservableCollection<DataElement>
-                    {
-                        new DataElement
-                        {
-                            X=DateTime.Now,
-                            Y=2
-                        },
-                        new DataElement
-                        {
-                            X=DateTime.Now.AddDays(1),
-                            Y=400
-                        },
-                        new DataElement
-                        {
-                            X=DateTime.Now.AddDays(2),
-                            Y=40
-                        }
-                    }
-                }
-            };
         }
         #endregion CTOR
 
@@ -201,29 +179,75 @@ namespace CoronaTracker.ViewModels
                 }
             }
         }
-        BindingList<DataSet> _dataSetsCCVM;
-        public BindingList<DataSet> DataSetsCCVM
+
+        private AxisScale axisScale = AxisScale.Linear;
+        public AxisScale AxisScale
         {
-            get { return _dataSetsCCVM; }
+            get => axisScale;
             set
             {
-                if (value != _dataSetsCCVM)
+                if (value != axisScale)
                 {
-                    _dataSetsCCVM = value;
-                    NotifyPropertyChanged("DataSetsCCVM");
+                    axisScale = value;
+                    NotifyPropertyChanged("AxisScale");
                 }
             }
         }
-        private string _yTitleCCVM = null;
-        public string YTitleCCVM
+
+
+        private ChartType usedChartType = ChartType.Lines;
+        public ChartType UsedChartType
         {
-            get { return _yTitleCCVM; }
+            get => usedChartType;
             set
             {
-                if (value != _yTitleCCVM)
+                if (value != usedChartType)
                 {
-                    _yTitleCCVM = value;
-                    NotifyPropertyChanged("YTitleCCVM");
+                    usedChartType = value;
+                    NotifyPropertyChanged("UsedChartType");
+                }
+            }
+        }
+
+
+        private bool isChartEnabled;
+        public bool IsChartEnabled
+        {
+            get => isChartEnabled;
+            set
+            {
+                if (value != isChartEnabled)
+                {
+                    isChartEnabled = value;
+                    NotifyPropertyChanged("IsChartEnabled");
+                }
+            }
+        }
+
+        private BindingList<DataSet> dataSets;
+        public BindingList<DataSet> DataSets
+        {
+            get => dataSets;
+            set
+            {
+                if (value != dataSets)
+                {
+                    dataSets = value;
+                    NotifyPropertyChanged("DataSets");
+                }
+            }
+        }
+
+        private string titleY;
+        public string TitleY
+        {
+            get => titleY;
+            set
+            {
+                if (value != titleY)
+                {
+                    titleY = value;
+                    NotifyPropertyChanged("TitleY");
                 }
             }
         }
@@ -232,12 +256,65 @@ namespace CoronaTracker.ViewModels
         #region Internal Methods
         private void UpdateChartTitle()
         {
-            YTitleCCVM = "";
-            foreach (GraphSelection item in CdgCountryList)
+            string title = "";
+            foreach (GraphSelection item in cdgCountryList)
             {
-                YTitleCCVM += item.Name + "\n";
+                title += item.Name + "\n";
             }
+            TitleY = title;
         }
+
+
+        private void UpdateDataSets()
+        {
+            // TODO: get the following properties from the GUI
+            string[] countryNames = new string[]
+            {
+                "Austria",
+                "Germany",
+                "Switzerland"
+            };
+
+            AxisScale axisScale = AxisScale.Linear;
+            ChartType chartType = ChartType.Lines;
+            SelectableStatistics statistics = SelectableStatistics.ActiveCases;
+            DateTime from = DateTime.Parse("22.1.2020");
+            DateTime to = DateTime.Parse("10.6.2020");
+
+
+            var dataSets = new BindingList<DataSet>();
+            try
+            {
+                foreach (var country in countryNames)
+                {
+                    var timeline = dataLoader.GetCountryTimeline(country, from, to);
+
+                    dataSets.Add(new DataSet
+                    {
+                        Name = country,
+                        Values = new ObservableCollection<DataElement>(statistics.GetStatisticOfTimeline(timeline))
+                    });
+                }
+
+                IsChartEnabled = true;
+            }
+            catch (FieldAccessException ex)
+            {
+                MessageBox.Show(ex.Message);
+                IsChartEnabled = false;
+            }
+            catch (ArgumentException ex)
+            {
+                MessageBox.Show(ex.Message);
+                IsChartEnabled = false;
+            }
+
+            TitleY = statistics.GetEnumDescription();
+            AxisScale = axisScale;
+            UsedChartType = chartType;
+            DataSets = dataSets;
+        }
+
         #endregion Internal Methods
 
         #region External Methods
@@ -245,7 +322,8 @@ namespace CoronaTracker.ViewModels
         {
             try
             {
-                CbAvailableCountries = new BindingList<string>(dataLoader.GetListOfProperty(DataLoader.CountryProperty.NAME));
+                cbAvailableCountries = new BindingList<string>(dataLoader.GetListOfProperty(DataLoader.CountryProperty.NAME));
+                UpdateDataSets();
                 IsEnabled = true;
             }
             catch (FieldAccessException)

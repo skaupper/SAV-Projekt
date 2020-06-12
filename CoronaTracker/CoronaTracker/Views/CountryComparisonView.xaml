@@ -243,11 +243,12 @@
         </Grid>
 
 	    <charts:TimelineChart 
+            IsChartEnabled="{Binding IsChartEnabled}"
 			Margin="15, 5, 15, 15"
-			DataSets="{Binding DataSetsCCVM}" 
-		    ScaleY="{Binding rbAxisScaleCCVM}" 
+			DataSets="{Binding DataSets}" 
+		    ScaleY="{Binding AxisScale}" 
 		    UsedChartType="{Binding UsedChartType}" 
 		    TitleX="Date" 
-			TitleY="{Binding YTitleCCVM}"/>
+			TitleY="{Binding TitleY}"/>
     </DockPanel>
 </UserControl>
