@@ -6,29 +6,65 @@
              xmlns:local="clr-namespace:CoronaTracker.Views"
              xmlns:charts="clr-namespace:CoronaTracker.Charts"
              xmlns:infrastructure="clr-namespace:CoronaTracker.Infrastructure"
+             xmlns:models="clr-namespace:CoronaTracker.Models"
+             xmlns:system="clr-namespace:System;assembly=System.Runtime"
+             xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
              mc:Ignorable="d" 
              d:DesignHeight="650" d:DesignWidth="850">
-    <DockPanel>
-        <TextBlock DockPanel.Dock="Top" Margin="15, 5, 15, 5" Text="Detailed Statistics:"/>
-        <ListView 
-            DockPanel.Dock="Top"
-            Margin="15, 0, 15, 5"
-	        ItemsSource="{Binding ListOfCustomers}" 
-	        SelectedItem="{Binding Path=SelectedCustomer}"
-	        ScrollViewer.HorizontalScrollBarVisibility="Auto"
-	        ScrollViewer.VerticalScrollBarVisibility="Hidden"
-            Height="80">
-            <ListView.View>
-                <GridView>
-                    <GridViewColumn Width="138" Header="Selection" DisplayMemberBinding="{Binding Selection}"/>
-                    <GridViewColumn Width="138" Header="Infected" DisplayMemberBinding="{Binding Infected}"/>
-                    <GridViewColumn Width="138" Header="Deaths" DisplayMemberBinding="{Binding Deaths}"/>
-                    <GridViewColumn Width="138" Header="Recovered" DisplayMemberBinding="{Binding Recovered}"/>
-                    <GridViewColumn Width="138" Header="New Cases" DisplayMemberBinding="{Binding NewCases}"/>
-                    <GridViewColumn Width="138" Header="New Deaths" DisplayMemberBinding="{Binding NewDeaths}"/>
-                </GridView>
-            </ListView.View>
-        </ListView>
+    <UserControl.Resources>
+	    <ObjectDataProvider x:Key="comparisonAttributeFromEnum"
+	                        MethodName="GetValues" ObjectType="{x:Type system:Enum}">
+		    <ObjectDataProvider.MethodParameters>
+			    <x:Type TypeName="models:SelectableStatistics"/>
+		    </ObjectDataProvider.MethodParameters>
+	    </ObjectDataProvider>
+
+	    <infrastructure:EnumDescriptionConverter x:Key="EnumDescriptionConverter"/>
+    </UserControl.Resources>
+	<DockPanel>
+        <DockPanel DockPanel.Dock="Top" Margin="15, 0, 15, 5">
+            <StackPanel DockPanel.Dock="Left">
+	            <TextBlock 
+		            Margin="0, 5, 40, 5" 
+		            Text="Comparison Attribute:"/>
+                <ComboBox 
+		            DockPanel.Dock="Top" 
+		            ItemsSource="{Binding Source={StaticResource comparisonAttributeFromEnum}}"
+		            SelectedItem="{Binding CbWorldMapSelectedCompAttribute}"
+		            Margin="0, 5, 5, 5">
+	                <ComboBox.ItemTemplate>
+		                <DataTemplate>
+			                <TextBlock Text="{Binding Converter={StaticResource EnumDescriptionConverter}}"/>
+		                </DataTemplate>
+	                </ComboBox.ItemTemplate>
+                </ComboBox>
+            </StackPanel>
+
+            <StackPanel>
+	            <TextBlock 
+		            Margin="15, 5, 5, 5" 
+		            Text="Detailed Statistics:"/>
+
+	            <ListView 
+		            DockPanel.Dock="Top"
+		            Margin="15, 5, 0, 15"
+		            ItemsSource="{Binding LvDetailedStatistics}" 
+		            ScrollViewer.HorizontalScrollBarVisibility="Hidden"
+		            ScrollViewer.VerticalScrollBarVisibility="Hidden"
+		            Height="45">
+		            <ListView.View>
+			            <GridView>
+				            <GridViewColumn Width="129" Header="Selection" DisplayMemberBinding="{Binding Selection}"/>
+                            <GridViewColumn Width="129" Header="Confirmed Cases" DisplayMemberBinding="{Binding Confirmed}"/>
+                            <GridViewColumn Width="129" Header="Active Cases" DisplayMemberBinding="{Binding Active}"/>
+                            <GridViewColumn Width="129" Header="Recovered" DisplayMemberBinding="{Binding Recovered}"/>
+                            <GridViewColumn Width="129" Header="Deaths" DisplayMemberBinding="{Binding Deaths}"/>
+			            </GridView>
+		            </ListView.View>
+	            </ListView>
+            </StackPanel>
+        </DockPanel>
+	    
 
         <DockPanel DockPanel.Dock="Bottom">
             <TextBlock
@@ -46,8 +82,12 @@
 		        Value="{Binding SSelectedDate}"
 		        infrastructure:SliderMouseWheelBehaviour.Value="{Binding SMouseWheelIncrement}"/>
         </DockPanel>
-        
 
-        <charts:BasicGeoMap Margin="15, 5, 15, 15" HeatMap="{Binding HeatMap}" LandClicked="BasicGeoMap_LandClicked"/>
+        <charts:BasicGeoMap 
+			Margin="15, 5, 15, 15"
+			HeatMap="{Binding HeatMap}"
+			Command="{Binding BgmLandClicked}"/>
     </DockPanel>
 </UserControl>
+
+

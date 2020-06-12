@@ -135,6 +135,7 @@
       <DependentUpon>Maps.resx</DependentUpon>
     </Compile>
     <Compile Include="Models\DataLoader.cs" />
+    <Compile Include="Models\DetailedWorldMapStatistics.cs" />
     <Compile Include="Models\GraphSelection.cs" />
     <Compile Include="Models\Helper\APIHandler.cs" />
     <Compile Include="Models\Types\DataStore.cs" />

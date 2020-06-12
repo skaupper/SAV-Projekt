@@ -52,15 +52,18 @@ namespace CoronaTracker.Charts
             );
 
 
-
-
         public HeatMapValueType HeatMap
         {
             get => (HeatMapValueType)GetValue(HeatMapProperty);
             set => SetValue(HeatMapProperty, value);
         }
 
-
+        public static readonly DependencyProperty CommandProperty =
+        DependencyProperty.Register(
+        "Command",
+        typeof(ICommand),
+        typeof(BasicGeoMap),
+        new PropertyMetadata(null, OnCommandPropertyChanged));
         #region Internal Properties
 
         public bool Hoverable
@@ -199,7 +202,59 @@ namespace CoronaTracker.Charts
         {
             LandClicked?.Invoke(this, e);
         }
-
         #endregion
+
+        #region Command
+        // Source: https://stackoverflow.com/questions/47849666/add-command-property-to-any-custom-controls
+
+        public ICommand Command
+        {
+            get { return (ICommand)GetValue(CommandProperty); }
+            set { SetValue(CommandProperty, value); }
+        }
+
+        private static void OnCommandPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            BasicGeoMap control = d as BasicGeoMap;
+            if (control == null) return;
+
+            control.MouseLeftButtonDown -= OnControlLeftClick;
+            control.MouseLeftButtonDown += OnControlLeftClick;
+
+            control.LandClicked -= Chart_LandClickCommand;
+            control.LandClicked += Chart_LandClickCommand;  
+        }
+
+        private static bool CountryEventFired = false;
+        private static void Chart_LandClickCommand(object sender, LiveCharts.Maps.MapData e)
+        {
+            BasicGeoMap control = sender as BasicGeoMap;
+            if (control == null || control.Command == null) return;
+
+            CountryEventFired = true;
+
+            ICommand command = control.Command;
+
+            if (command.CanExecute(null))
+                command.Execute(e);
+        }
+
+        private static void OnControlLeftClick(object sender, MouseButtonEventArgs e)
+        {
+            BasicGeoMap control = sender as BasicGeoMap;
+            if (control == null || control.Command == null) return;
+
+            if (CountryEventFired)
+            {
+                CountryEventFired = false;
+                return;
+            }
+
+            ICommand command = control.Command;
+
+            if (command.CanExecute(null))
+                command.Execute(null);
+        }
+        #endregion Command
     }
 }

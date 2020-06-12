@@ -38,6 +38,9 @@ namespace CoronaTracker.Infrastructure
 
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
+            if (value.GetType() == typeof(String) &&  (value as string) == String.Empty)
+                return null;
+
             Enum myEnum = (Enum)value;
             string description = GetEnumDescription(myEnum);
             return description;

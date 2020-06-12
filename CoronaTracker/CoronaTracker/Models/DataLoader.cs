@@ -66,6 +66,10 @@ namespace CoronaTracker.Models
             var results = await Task.WhenAll(taskList);
 
             // Add the results to the DataStore
+            CountryTimeline tmpGlobalSum = new CountryTimeline
+            {
+                Days = new List<Day>()
+            };
             dataStore.Timeline = new TimelineData
             {
                 Countries = new Dictionary<string, CountryTimeline>()
@@ -82,8 +86,23 @@ namespace CoronaTracker.Models
                 {
                     // Add the current CountryTimeline to the DataStore
                     dataStore.Timeline.Countries.Add(countryName, result);
+
+                    foreach (Day day in result.Days)
+                    {
+                        var tmpDate = tmpGlobalSum.Days.Where(i => i.Date == day.Date).FirstOrDefault();
+                        if (tmpDate == null)
+                            tmpGlobalSum.Days.Add(new Day() { Country="Global", Date=day.Date, Confirmed=day.Confirmed, Active=day.Active, Recovered=day.Recovered, Deaths=day.Deaths });
+                        else
+                        {
+                            tmpDate.Confirmed += day.Confirmed;
+                            tmpDate.Active += day.Active;
+                            tmpDate.Recovered += day.Recovered;
+                            tmpDate.Deaths += day.Deaths;
+                        }
+                    }
                 }
             }
+            dataStore.Timeline.Countries.Add("Global", tmpGlobalSum);
         }
 
         public void SaveAllData(string filename)
@@ -131,7 +150,7 @@ namespace CoronaTracker.Models
             return dataStore.Accumulated;
         }
 
-        public CountryTimeline GetCountryTimeline(string countryCode,
+        public CountryTimeline GetCountryTimeline(string countryName,
             DateTime? from = null, DateTime? to = null)
         {
             if (dataStore == null || dataStore.Timeline == null)
@@ -139,10 +158,12 @@ namespace CoronaTracker.Models
                     "Data cannot be accessed, since it was not loaded yet.\n" +
                     "Please call DataLoader.LoadAllData() first.");
 
-            bool exists = dataStore.Timeline.Countries.TryGetValue(countryCode, out CountryTimeline timeline);
+            bool exists = dataStore.Timeline.Countries.TryGetValue(countryName, out CountryTimeline timeline);
             if (!exists)
                 throw new ArgumentException(
-                    $"Countrycode {countryCode} was not found in the currently loaded dataset!");
+                    $"Countrycode {countryName} was not found in the currently loaded dataset!");
+
+            CountryTimeline retTimeline = new CountryTimeline();
 
             // Pick given range within the available timeline
             if (from != null && to != null)
@@ -160,21 +181,21 @@ namespace CoronaTracker.Models
                     throw new ArgumentException("Date 'to' is greater than the datasets' most recent date.");
 
                 // Find index closest to 'from' date (linear search up to that index)
-                int idx_from = timeline.Days.FindIndex(e => e.Date > from) - 1;
+                int idx_from = timeline.Days.FindIndex(e => e.Date >= from);
                 if (idx_from < 0)
                     throw new ArgumentException("Could not find a 'from' index.");
 
                 // Find index closest to 'to' date (linar search up to that index)
-                int idx_to = timeline.Days.FindIndex(e => e.Date > to);
+                int idx_to = timeline.Days.FindIndex(e => e.Date >= to);
                 if (idx_to < 0)
                     throw new ArgumentException("Could not find a 'to' index.");
 
                 // Select the chosen range
-                int num_elems = idx_to - idx_from;
-                var range = timeline.Days.GetRange(idx_from, num_elems);
-                timeline.Days = range;
-            }
+                int num_elems = idx_to - idx_from + 1;
+                retTimeline.Days = timeline.Days.GetRange(idx_from, num_elems);
 
+                return retTimeline;
+            }
             return timeline;
         }
 
