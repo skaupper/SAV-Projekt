@@ -14,33 +14,25 @@ namespace CoronaTracker.ViewModels
 {
     class CountryStatsViewModel : NotifyBase, IPageViewModel
     {
-        #region Fields
-
-        public string Name { get => "Country Statistics"; }
-
-
-        public ICommand Command_CbCountrySelectionChanged { get; }
-        public ICommand Command_CbAxisScaleSelectionChanged { get; }
-        public ICommand Command_CbChartTypeSelectionChanged { get; }
-
-        #endregion Fields
-
-
         #region CTOR
 
         public CountryStatsViewModel()
         {
-            InitDataBindings();
-
             Command_CbCountrySelectionChanged = new RelayCommand(CbCountrySelectionChanged, CanCbCountrySelectionChanged);
             Command_CbAxisScaleSelectionChanged = new RelayCommand(CbAxisScaleSelectionChanged, CanCbAxisScaleSelectionChanged);
             Command_CbChartTypeSelectionChanged = new RelayCommand(CbChartTypeSelectionChanged, CanCbChartTypeSelectionChanged);
         }
 
-        #endregion CTOR
+        #endregion
 
 
         #region Commands
+
+        public ICommand Command_CbCountrySelectionChanged { get; }
+        public ICommand Command_CbAxisScaleSelectionChanged { get; }
+        public ICommand Command_CbChartTypeSelectionChanged { get; }
+
+
 
         public bool CanCbCountrySelectionChanged(object state)
         {
@@ -87,15 +79,18 @@ namespace CoronaTracker.ViewModels
         #endregion
 
 
-        #region Init
-        private void InitDataBindings()
-        {
+        #region Read only Properties
 
-        }
-        #endregion Init
+        public string Name { get => "Country Statistics"; }
+
+        public ChartType DefaultChartType { get => ChartType.StackedBars; }
+        public AxisScale DefaultAxisScale { get => AxisScale.Linear; }
+        public string DefaultCountry { get => "Austria"; }
+
+        #endregion
 
 
-        #region Data Bindings
+        #region Properties
 
         private bool _pageIsEnabled = false;
         public bool IsEnabled
@@ -110,6 +105,7 @@ namespace CoronaTracker.ViewModels
                 }
             }
         }
+
         private bool _pageIsSelected = false;
         public bool IsSelected
         {
@@ -123,16 +119,31 @@ namespace CoronaTracker.ViewModels
                 }
             }
         }
-        private BindingList<string> _cbCountryNames = null;
-        public BindingList<string> cbCountryNames
+
+        private BindingList<string> cbCountryNames = null;
+        public BindingList<string> CbCountryNames
         {
-            get { return _cbCountryNames; }
+            get => cbCountryNames;
             set
             {
-                if (value != _cbCountryNames)
+                if (value != cbCountryNames)
                 {
-                    _cbCountryNames = value;
-                    NotifyPropertyChanged("cbCountryNames");
+                    cbCountryNames = value;
+                    NotifyPropertyChanged("CbCountryNames");
+                }
+            }
+        }
+
+        public string cbSelectedCountry;
+        public string CbSelectedCountry
+        {
+            get => cbSelectedCountry;
+            set
+            {
+                if (value != cbSelectedCountry)
+                {
+                    cbSelectedCountry = value;
+                    NotifyPropertyChanged("CbSelectedCountry");
                 }
             }
         }
@@ -151,7 +162,7 @@ namespace CoronaTracker.ViewModels
             }
         }
 
-        #endregion Data Bindings
+        #endregion
 
 
         #region internal Methods
@@ -202,15 +213,22 @@ namespace CoronaTracker.ViewModels
         {
             try
             {
-                cbCountryNames = new BindingList<string>(dataLoader.GetListOfProperty(Models.DataLoader.CountryProperty.NAME));
-                SelectedCountryChanged(cbCountryNames.FirstOrDefault());
-
+                CbCountryNames = new BindingList<string>(dataLoader.GetListOfProperty(Models.DataLoader.CountryProperty.NAME));
+                CbSelectedCountry = DefaultCountry;
+                SelectedCountryChanged(CbSelectedCountry);
                 IsEnabled = true;
             }
-            catch (FieldAccessException)
+            catch (FieldAccessException ex)
             {
-                IsEnabled = false;
                 // Data not loaded yet
+                IsEnabled = false;
+                MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            catch(ArgumentException ex)
+            {
+                // Default country was not found in dataset.
+                IsEnabled = false;
+                MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 

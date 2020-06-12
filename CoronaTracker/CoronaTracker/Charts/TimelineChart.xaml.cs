@@ -63,6 +63,7 @@ namespace CoronaTracker.Charts
         private SeriesCollection seriesCollection;
         private bool disableAnimations;
         private Func<double, string> formatterX;
+        private Func<double, string> formatterY;
         private Func<double, string> formatterYLog;
 
 
@@ -186,6 +187,16 @@ namespace CoronaTracker.Charts
             }
         }
 
+        public Func<double, string> FormatterY
+        {
+            get => formatterY;
+            set
+            {
+                formatterY = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("FormatterY"));
+            }
+        }
+
         #endregion
 
         #endregion
@@ -265,6 +276,7 @@ namespace CoronaTracker.Charts
             // Internal properties
             SeriesCollection = new SeriesCollection(mapper);
             FormatterX = val => dateHelper.FromDouble(val).ToString("d");
+            FormatterY = val => val.ToString("N0");
             FormatterYLog = val => Math.Pow(LogBase, val).ToString("N0");
 
             UpdateYAxis();
@@ -324,6 +336,7 @@ namespace CoronaTracker.Charts
             if (ScaleY == AxisScale.Linear)
             {
                 Axis ax = new Axis();
+                ax.SetBinding(Axis.LabelFormatterProperty, "FormatterY");
                 ax.SetBinding(Axis.TitleProperty, "TitleY");
                 Chart.AxisY.Add(ax);
 

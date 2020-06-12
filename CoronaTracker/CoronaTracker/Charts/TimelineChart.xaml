@@ -13,7 +13,7 @@
                             DisableAnimations="{Binding DisableAnimations, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type local:TimelineChart}}}" 
                             LegendLocation="{Binding LegendLocation, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type local:TimelineChart}}}">
             <lvc:CartesianChart.AxisX>
-                <lvc:Axis LabelFormatter="{Binding FormatterX}" Title="{Binding TitleX}"/>
+                <lvc:Axis LabelFormatter="{Binding FormatterX}" Title="{Binding TitleX}" MinRange="0"/>
             </lvc:CartesianChart.AxisX>
         </lvc:CartesianChart>
     </DockPanel>

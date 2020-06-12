@@ -15,9 +15,9 @@ namespace CoronaTracker.ViewModels
         #region Fields
         public string Name { get { return "Country Comparision"; } }
 
-        public ICommand btnAddElement { get; protected set; }
-        public ICommand btnRemoveElements { get; protected set; }
-        public ICommand dgCellEditEndingCommand { get; protected set; }
+        public ICommand BtnAddElement { get; protected set; }
+        public ICommand BtnRemoveElements { get; protected set; }
+        public ICommand CbSelectionChanged { get; protected set; }
         #endregion Fields
 
         #region CTOR
@@ -58,9 +58,9 @@ namespace CoronaTracker.ViewModels
         /// </summary>
         private void InitButtons()
         {
-            btnAddElement = new RelayCommand(param => AddElementToList());
-            btnRemoveElements = new RelayCommand(param => RemoveElementsFromList());
-            dgCellEditEndingCommand = new RelayCommand(param => DataGridCellWasEdited());
+            BtnAddElement = new RelayCommand(param => AddElementToList());
+            BtnRemoveElements = new RelayCommand(param => RemoveElementsFromList());
+            CbSelectionChanged = new RelayCommand(param => DataGridCountryChanged(param));
         }
         #endregion Init
 
@@ -91,21 +91,8 @@ namespace CoronaTracker.ViewModels
                 }
             }
         }
-        private AxisScale _rbAxisScaleCCVM = AxisScale.Linear;
-        public AxisScale rbAxisScaleCCVM
-        {
-            get { return _rbAxisScaleCCVM; }
-            set
-            {
-                if (value != _rbAxisScaleCCVM)
-                {
-                    _rbAxisScaleCCVM = value;
-                    NotifyPropertyChanged("rbAxisScaleCCVM");
-                }
-            }
-        }
         private DateTime _dpFromDate = DateTime.Now.Date;
-        public DateTime dpFromDate
+        public DateTime DpFromDate
         {
             get { return _dpFromDate; }
             set
@@ -113,22 +100,22 @@ namespace CoronaTracker.ViewModels
                 if (value != _dpFromDate)
                 {
                     _dpFromDate = value;
-                    NotifyPropertyChanged("dpFromDate");
+                    NotifyPropertyChanged("DpFromDate");
                 }
             }
         }
         private DateTime _dpToDate = DateTime.Now.Date;
-        public DateTime dpToDate
+        public DateTime DpToDate
         {
             get { return _dpToDate; }
             set
             {
                 if (value != _dpToDate)
                 {
-                    if (value.Date >= dpFromDate.Date)
+                    if (value.Date >= DpFromDate.Date)
                     {
                         _dpToDate = value;
-                        NotifyPropertyChanged("dpToDate");
+                        NotifyPropertyChanged("DpToDate");
                     }
                     else
                     {
@@ -137,8 +124,47 @@ namespace CoronaTracker.ViewModels
                 }
             }
         }
+        private AxisScale _cbSelectedAxisScale = AxisScale.Linear;
+        public AxisScale CbSelectedAxisScale
+        {
+            get { return _cbSelectedAxisScale; }
+            set
+            {
+                if (value != _cbSelectedAxisScale)
+                {
+                    _cbSelectedAxisScale = value;
+                    NotifyPropertyChanged("CbSelectedAxisScale");
+                }
+            }
+        }
+        private ChartType _cbSelectedChartType = ChartType.Lines;
+        public ChartType CbSelectedChartType
+        {
+            get { return _cbSelectedChartType; }
+            set
+            {
+                if (value != _cbSelectedChartType)
+                {
+                    _cbSelectedChartType = value;
+                    NotifyPropertyChanged("CbSelectedChartType");
+                }
+            }
+        }
+        private SelectableStatistics _cbSelectedComparisonAttribute = SelectableStatistics.ActiveCases;
+        public SelectableStatistics CbSelectedComparisonAttribute
+        {
+            get { return _cbSelectedComparisonAttribute; }
+            set
+            {
+                if (value != _cbSelectedComparisonAttribute)
+                {
+                    _cbSelectedComparisonAttribute = value;
+                    NotifyPropertyChanged("CbSelectedComparisonAttribute");
+                }
+            }
+        }
         private BindingList<GraphSelection> _cdgCountryList = new BindingList<GraphSelection>();
-        public BindingList<GraphSelection> cdgCountryList
+        public BindingList<GraphSelection> CdgCountryList
         {
             get { return _cdgCountryList; }
             set
@@ -146,12 +172,12 @@ namespace CoronaTracker.ViewModels
                 if (value != _cdgCountryList)
                 {
                     _cdgCountryList = value;
-                    NotifyPropertyChanged("cdgCountryList");
+                    NotifyPropertyChanged("CdgCountryList");
                 }
             }
         }
         private IList _cdgSelectedCountry = null;
-        public IList cdgSelectedCountry
+        public IList CdgSelectedCountry
         {
             get { return _cdgSelectedCountry; }
             set
@@ -159,12 +185,12 @@ namespace CoronaTracker.ViewModels
                 if (value != _cdgSelectedCountry)
                 {
                     _cdgSelectedCountry = value;
-                    NotifyPropertyChanged("cdgSelectedCountry");
+                    NotifyPropertyChanged("CdgSelectedCountry");
                 }
             }
         }
         private static BindingList<string> _cbAvailableCountries = new BindingList<string>();
-        public static BindingList<string> cbAvailableCountries
+        public static BindingList<string> CbAvailableCountries
         {
             get { return _cbAvailableCountries; }
             set
@@ -207,7 +233,7 @@ namespace CoronaTracker.ViewModels
         private void UpdateChartTitle()
         {
             YTitleCCVM = "";
-            foreach (GraphSelection item in cdgCountryList)
+            foreach (GraphSelection item in CdgCountryList)
             {
                 YTitleCCVM += item.Name + "\n";
             }
@@ -219,7 +245,7 @@ namespace CoronaTracker.ViewModels
         {
             try
             {
-                cbAvailableCountries = new BindingList<string>(dataLoader.GetListOfProperty(DataLoader.CountryProperty.NAME));
+                CbAvailableCountries = new BindingList<string>(dataLoader.GetListOfProperty(DataLoader.CountryProperty.NAME));
                 IsEnabled = true;
             }
             catch (FieldAccessException)
@@ -234,11 +260,11 @@ namespace CoronaTracker.ViewModels
         private void AddElementToList()
         {
             GraphSelection tmp = new GraphSelection();
-            if (cbAvailableCountries.Count > 0)
+            if (CbAvailableCountries.Count > 0)
             {
-                tmp.Name = cbAvailableCountries[0];
+                tmp.Name = CbAvailableCountries[0];
             }
-            cdgCountryList.Add(tmp);
+            CdgCountryList.Add(tmp);
 
             UpdateChartTitle();
         }
@@ -248,22 +274,22 @@ namespace CoronaTracker.ViewModels
         /// </summary>
         private void RemoveElementsFromList()
         {
-            if (cdgSelectedCountry == null || cdgSelectedCountry.Count == 0)
+            if (CdgSelectedCountry == null || CdgSelectedCountry.Count == 0)
             {
                 MessageBox.Show("At least one Country must be selected.");
                 return;
             }
             /*** use other iteration list since selected and original list are bound with references***/
             BindingList<GraphSelection> tmp = new BindingList<GraphSelection>();
-            foreach (GraphSelection item in cdgSelectedCountry)
+            foreach (GraphSelection item in CdgSelectedCountry)
                 tmp.Add(item);
             /*** - ***/
             foreach (GraphSelection item in tmp)
             {
-                cdgCountryList.Remove(item);
+                CdgCountryList.Remove(item);
             }
         }
-        private void DataGridCellWasEdited()
+        private void DataGridCountryChanged(object country)
         {
             UpdateChartTitle();
         }
