@@ -17,7 +17,7 @@
         <Grid Visibility="{Binding IsChartEnabled, Converter={StaticResource BoolToVisibleConverter}, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type local:RatioBar}}}">
             <lvc:CartesianChart x:Name="Chart"
                             Series="{Binding SeriesCollection, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type local:RatioBar}}}" 
-                            DisableAnimations="{Binding DisableAnimations, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type local:RatioBar}}}" 
+                            DisableAnimations="{Binding DisableAnimations, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type local:RatioBar}}}"
                             LegendLocation="{Binding LegendLocation, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type local:RatioBar}}}">
                 <!-- The charts data context is set to the user control itself. -->
                 <lvc:CartesianChart.AxisY>

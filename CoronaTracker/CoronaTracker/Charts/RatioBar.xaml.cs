@@ -54,7 +54,6 @@ namespace CoronaTracker.Charts
         #region Properties
 
         private SeriesCollection seriesCollection;
-        private bool disableAnimations;
         private Func<double, string> formatterX;
         private Func<double, string> formatterY;
 
@@ -95,6 +94,13 @@ namespace CoronaTracker.Charts
                 new PropertyMetadata(true)
             );
 
+        public static readonly DependencyProperty DisableAnimationsProperty =
+            DependencyProperty.Register(
+                "DisableAnimations", typeof(bool),
+                typeof(RatioBar),
+                new PropertyMetadata(true, Static_DisableAnimations_Changed)
+            );
+
 
 
 
@@ -123,6 +129,11 @@ namespace CoronaTracker.Charts
             get => (bool)GetValue(IsChartEnabledProperty);
             set => SetValue(IsChartEnabledProperty, value);
         }
+        public bool DisableAnimations
+        {
+            get => (bool)GetValue(DisableAnimationsProperty);
+            set => SetValue(DisableAnimationsProperty, value);
+        }
 
 
 
@@ -135,15 +146,6 @@ namespace CoronaTracker.Charts
             {
                 seriesCollection = value;
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("SeriesCollection"));
-            }
-        }
-        public bool DisableAnimations
-        {
-            get => disableAnimations;
-            set
-            {
-                disableAnimations = value;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("DisableAnimations"));
             }
         }
         public Func<double, string> FormatterX
@@ -171,6 +173,12 @@ namespace CoronaTracker.Charts
 
 
         #region Static Callbacks
+
+        private static void Static_DisableAnimations_Changed(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            var chartArea = d as RatioBar;
+            chartArea.Chart.Update(true);
+        }
 
         private static void Static_DataSets_Changed(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {

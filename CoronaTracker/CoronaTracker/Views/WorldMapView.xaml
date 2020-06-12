@@ -46,23 +46,26 @@
 		            Margin="15, 5, 5, 5" 
 		            Text="Detailed Statistics:"/>
 
-	            <ListView 
-		            DockPanel.Dock="Top"
+	            <infrastructure:CustomDataGrid
+		            Style="{StaticResource MahApps.Styles.DataGrid}"
+		            ColumnHeaderStyle="{StaticResource MyColumnHeader}"
 		            Margin="15, 5, 0, 15"
-		            ItemsSource="{Binding LvDetailedStatistics}" 
-		            ScrollViewer.HorizontalScrollBarVisibility="Hidden"
-		            ScrollViewer.VerticalScrollBarVisibility="Hidden"
-		            Height="45">
-		            <ListView.View>
-			            <GridView>
-				            <GridViewColumn Width="129" Header="Selection" DisplayMemberBinding="{Binding Selection}"/>
-                            <GridViewColumn Width="129" Header="Confirmed Cases" DisplayMemberBinding="{Binding Confirmed}"/>
-                            <GridViewColumn Width="129" Header="Active Cases" DisplayMemberBinding="{Binding Active}"/>
-                            <GridViewColumn Width="129" Header="Recovered" DisplayMemberBinding="{Binding Recovered}"/>
-                            <GridViewColumn Width="129" Header="Deaths" DisplayMemberBinding="{Binding Deaths}"/>
-			            </GridView>
-		            </ListView.View>
-	            </ListView>
+		            AutoGenerateColumns="False"
+		            IsReadOnly="True"
+		            CanUserAddRows="False"
+		            ItemsSource="{Binding LvDetailedStatistics, UpdateSourceTrigger=PropertyChanged, NotifyOnSourceUpdated=True, NotifyOnTargetUpdated=True}" 
+		            SelectionMode="Extended"
+					Height="65"
+		            ColumnWidth="*"
+		            CanUserSortColumns="False">
+		            <DataGrid.Columns>
+                        <DataGridTextColumn Header="Selection" Binding="{Binding Selection}" Width="129"/>
+                        <DataGridTextColumn Header="Confirmed Cases" Binding="{Binding Confirmed}" Width="129"/>
+                        <DataGridTextColumn Header="Active Cases" Binding="{Binding Active}" Width="129"/>
+                        <DataGridTextColumn Header="Recovered" Binding="{Binding Recovered}" Width="129"/>
+                        <DataGridTextColumn Header="Deaths" Binding="{Binding Deaths}"/>
+		            </DataGrid.Columns>
+	            </infrastructure:CustomDataGrid>
             </StackPanel>
         </DockPanel>
 	    

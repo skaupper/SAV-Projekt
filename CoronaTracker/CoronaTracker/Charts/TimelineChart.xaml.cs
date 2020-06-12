@@ -4,6 +4,7 @@ using LiveCharts;
 using LiveCharts.Configurations;
 using LiveCharts.Defaults;
 using LiveCharts.Wpf;
+using LiveCharts.Wpf.Charts.Base;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -61,7 +62,6 @@ namespace CoronaTracker.Charts
         #region Properties
 
         private SeriesCollection seriesCollection;
-        private bool disableAnimations;
         private Func<double, string> formatterX;
         private Func<double, string> formatterY;
         private Func<double, string> formatterYLog;
@@ -117,6 +117,13 @@ namespace CoronaTracker.Charts
                 new PropertyMetadata(true)
             );
 
+        public static readonly DependencyProperty DisableAnimationsProperty =
+            DependencyProperty.Register(
+                "DisableAnimations", typeof(bool),
+                typeof(TimelineChart),
+                new PropertyMetadata(true, Static_DisableAnimations_Changed)
+            );
+
 
 
         public DataSetsType DataSets
@@ -154,6 +161,11 @@ namespace CoronaTracker.Charts
             get => (bool)GetValue(IsChartEnabledProperty);
             set => SetValue(IsChartEnabledProperty, value);
         }
+        public bool DisableAnimations
+        {
+            get => (bool)GetValue(DisableAnimationsProperty);
+            set => SetValue(DisableAnimationsProperty, value);
+        }
 
 
 
@@ -170,15 +182,7 @@ namespace CoronaTracker.Charts
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("SeriesCollection"));
             }
         }
-        public bool DisableAnimations
-        {
-            get => disableAnimations;
-            set
-            {
-                disableAnimations = value;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("DisableAnimations"));
-            }
-        }
+
         public Func<double, string> FormatterX
         {
             get => formatterX;
@@ -216,12 +220,18 @@ namespace CoronaTracker.Charts
 
         #region Static Callbacks
 
+        private static void Static_DisableAnimations_Changed(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            var chartArea = d as TimelineChart;
+            chartArea.Chart.Update(true);
+        }
+
+
         private static void Static_ChartType_Changed(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             var chartArea = d as TimelineChart;
             chartArea.ChartType_Changed(d, e);
         }
-
 
         private static void Static_DataSets_Changed(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {

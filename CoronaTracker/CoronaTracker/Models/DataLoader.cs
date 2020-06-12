@@ -30,22 +30,16 @@ namespace CoronaTracker.Models
             switch (source)
             {
                 case Source.API:
-                    try
-                    {
-                        dataStore.Accumulated = await apiHandler.LoadCurrentCountryDataAsync();
+                    dataStore.Accumulated = await apiHandler.LoadCurrentCountryDataAsync();
 
-                        // Load timeline for each country, that was loaded with above command
-                        await DownloadTimelineHelperAsync();
-                    }
-                    catch (Exception e)
-                    { throw e; }
+                    // Load timeline for each country, that was loaded with above command
+                    await DownloadTimelineHelperAsync();
                     break;
+
                 case Source.LOCALFILE:
-                    try
-                    { dataStore = fileHandler.LoadData(filename); }
-                    catch (Exception e)
-                    { throw e; }
+                    dataStore = fileHandler.LoadData(filename);
                     break;
+
                 default:
                     throw new NotImplementedException(
                         "Source specified in APIHandler.LoadCurentCountryData()" +
@@ -66,21 +60,16 @@ namespace CoronaTracker.Models
             var results = await Task.WhenAll(taskList);
 
             // Add the results to the DataStore
-            CountryTimeline tmpGlobalSum = new CountryTimeline
-            {
-                Days = new List<Day>()
-            };
-            dataStore.Timeline = new TimelineData
-            {
-                Countries = new Dictionary<string, CountryTimeline>()
-            };
+            CountryTimeline tmpGlobalSum = new CountryTimeline();
+            dataStore.Timeline = new TimelineData();
+
             foreach (var result in results)
             {
                 // Take first element, just to get the CountryName
                 string countryName = result.Days.First().Country;
                 if (dataStore.Timeline.Countries.ContainsKey(countryName))
                 {
-                    throw new Exception($"{countryName} already exists in Dict!!");
+                    throw new Exception($"{countryName} already exists in Dict!");
                 }
                 else
                 {
@@ -91,7 +80,7 @@ namespace CoronaTracker.Models
                     {
                         var tmpDate = tmpGlobalSum.Days.Where(i => i.Date == day.Date).FirstOrDefault();
                         if (tmpDate == null)
-                            tmpGlobalSum.Days.Add(new Day() { Country="Global", Date=day.Date, Confirmed=day.Confirmed, Active=day.Active, Recovered=day.Recovered, Deaths=day.Deaths });
+                            tmpGlobalSum.Days.Add(new Day() { Country = "Global", Date = day.Date, Confirmed = day.Confirmed, Active = day.Active, Recovered = day.Recovered, Deaths = day.Deaths });
                         else
                         {
                             tmpDate.Confirmed += day.Confirmed;
@@ -163,7 +152,6 @@ namespace CoronaTracker.Models
                 throw new ArgumentException(
                     $"Countrycode {countryName} was not found in the currently loaded dataset!");
 
-            CountryTimeline retTimeline = new CountryTimeline();
 
             // Pick given range within the available timeline
             if (from != null && to != null)
@@ -171,31 +159,14 @@ namespace CoronaTracker.Models
                 // Sanity checks
                 if (from > to)
                     throw new ArgumentException("Date 'from' cannot be greater than 'to'!");
-                if (from > DateTime.Now)
-                    throw new ArgumentException("Date 'from' cannot be greater than today!");
-                if (to > DateTime.Now)
-                    throw new ArgumentException("Date 'to' cannot be greater than today!");
-                if (from < timeline.Days[0].Date) // DayList is already sorted by date
-                    throw new ArgumentException("Date 'from' is smaller than the datasets' earliest date.");
-                if (to > timeline.Days[timeline.Days.Count - 1].Date)
-                    throw new ArgumentException("Date 'to' is greater than the datasets' most recent date.");
 
-                // Find index closest to 'from' date (linear search up to that index)
-                int idx_from = timeline.Days.FindIndex(e => e.Date >= from);
-                if (idx_from < 0)
-                    throw new ArgumentException("Could not find a 'from' index.");
-
-                // Find index closest to 'to' date (linar search up to that index)
-                int idx_to = timeline.Days.FindIndex(e => e.Date >= to);
-                if (idx_to < 0)
-                    throw new ArgumentException("Could not find a 'to' index.");
-
-                // Select the chosen range
-                int num_elems = idx_to - idx_from + 1;
-                retTimeline.Days = timeline.Days.GetRange(idx_from, num_elems);
-
-                return retTimeline;
+                return new CountryTimeline
+                {
+                    // Find all entries between the given dates
+                    Days = timeline.Days.FindAll(e => e.Date >= from && e.Date <= to)
+                };
             }
+
             return timeline;
         }
 
@@ -253,12 +224,18 @@ namespace CoronaTracker.Models
             if (dataStore.Timeline.Countries.Count == 0)
                 throw new IndexOutOfRangeException("Date cannot be retrieved. Timeline is empty.");
 
+            var timeline = dataStore.Timeline.Countries.Values.First();
+
+            if (timeline.Days.Count == 0)
+                throw new IndexOutOfRangeException("Date cannot be retrieved. Country has no data.");
+
+
             // return oldest date in dataset
             if (oldest)
-                return dataStore.Timeline.Countries.Values.First().Days.First().Date;
+                return timeline.Days.First().Date;
 
             // return newest date in dataset
-            return dataStore.Timeline.Countries.Values.First().Days.Last().Date;
+            return timeline.Days.Last().Date;
         }
 
         public bool CheckIfDataIsLoaded()

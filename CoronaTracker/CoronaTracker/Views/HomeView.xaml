@@ -62,6 +62,14 @@
 		            Margin="0, 25, 0, 5"
 		            Content="Save Dataset"
 		            Command="{Binding BtnSaveDataset}"/>
+
+                <ToggleButton 
+	                Margin="0, 25, 0, 5"
+                    DockPanel.Dock="Top" 
+					Typography.Capitals="AllSmallCaps"
+					FontSize="14"
+					FontWeight="DemiBold"
+		            Content="Enable Animations" IsChecked="{Binding DataContext.DisableAnimations, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type local:MainView}}}"/>
             </DockPanel>
 
             <Image 

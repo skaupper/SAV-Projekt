@@ -51,19 +51,33 @@ namespace CoronaTracker.Charts
                 new PropertyMetadata(new HeatMapValueType(), Static_HeatMap_Changed)
             );
 
+        public static readonly DependencyProperty IsChartEnabledProperty =
+            DependencyProperty.Register(
+                "IsChartEnabled", typeof(bool),
+                typeof(BasicGeoMap),
+                new PropertyMetadata(true)
+            );
+
+        public static readonly DependencyProperty CommandProperty =
+            DependencyProperty.Register(
+                "Command", typeof(ICommand),
+                typeof(BasicGeoMap),
+                new PropertyMetadata(null, OnCommandPropertyChanged)
+            );
+
 
         public HeatMapValueType HeatMap
         {
             get => (HeatMapValueType)GetValue(HeatMapProperty);
             set => SetValue(HeatMapProperty, value);
         }
+        public bool IsChartEnabled
+        {
+            get => (bool)GetValue(IsChartEnabledProperty);
+            set => SetValue(IsChartEnabledProperty, value);
+        }
 
-        public static readonly DependencyProperty CommandProperty =
-        DependencyProperty.Register(
-        "Command",
-        typeof(ICommand),
-        typeof(BasicGeoMap),
-        new PropertyMetadata(null, OnCommandPropertyChanged));
+
         #region Internal Properties
 
         public bool Hoverable
@@ -154,10 +168,11 @@ namespace CoronaTracker.Charts
 
         public BasicGeoMap()
         {
+            InitializeComponent();
+
             InternalHeatMap = new Dictionary<string, double>();
             LanguagePack = new Dictionary<string, string>();
             Hoverable = true;
-
 
             try
             {
@@ -171,10 +186,10 @@ namespace CoronaTracker.Charts
                 ErrorTextBlock.Visibility = Visibility.Visible;
             }
 
-            InitializeComponent();
 
             Loaded += (s, e) => ChartWrapper.Visibility = Visibility.Visible;
         }
+
 
         #endregion
 
@@ -193,6 +208,13 @@ namespace CoronaTracker.Charts
             InternalHeatMap = tmp;
         }
 
+        private void NotifyVisibilityPropertiesChanged()
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("ShowChart"));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("ShowLoadFailure"));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("ShowChartDisabled"));
+        }
+
         #endregion
 
 
@@ -202,7 +224,9 @@ namespace CoronaTracker.Charts
         {
             LandClicked?.Invoke(this, e);
         }
+
         #endregion
+
 
         #region Command
         // Source: https://stackoverflow.com/questions/47849666/add-command-property-to-any-custom-controls
@@ -221,7 +245,7 @@ namespace CoronaTracker.Charts
             control.MouseLeftButtonDown += OnControlLeftClick;
 
             control.LandClicked -= Chart_LandClickCommand;
-            control.LandClicked += Chart_LandClickCommand;  
+            control.LandClicked += Chart_LandClickCommand;
         }
 
         private static bool CountryEventFired = false;

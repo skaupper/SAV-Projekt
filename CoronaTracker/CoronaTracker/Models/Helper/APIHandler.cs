@@ -46,6 +46,8 @@ namespace CoronaTracker.Models.Helper
                     $"Error Message: '{response.ErrorMessage}'");
             }
 
+            // Be sure that the return array is sorted
+            response.Data.Sort((day1, day2) => day1.Date.CompareTo(day2.Date));
             return new CountryTimeline { Days = response.Data };
         }
     }

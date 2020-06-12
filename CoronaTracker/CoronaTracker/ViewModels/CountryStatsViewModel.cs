@@ -188,38 +188,45 @@ namespace CoronaTracker.ViewModels
             try
             {
                 var daylist = dataLoader.GetCountryTimeline(countryName).Days;
-
-                var transformed = from day in daylist select new DataElement { Date = day.Date, Value = Math.Max(day.Active, double.Epsilon) };
-                dataSets.Add(new DataSet
+                if (daylist.Count > 0)
                 {
-                    Name = "Active Cases",
-                    Values = new ObservableCollection<DataElement>(transformed)
-                });
+                    var transformed = from day in daylist select new DataElement { Date = day.Date, Value = Math.Max(day.Active, double.Epsilon) };
+                    dataSets.Add(new DataSet
+                    {
+                        Name = "Active Cases",
+                        Values = new ObservableCollection<DataElement>(transformed)
+                    });
 
-                transformed = from day in daylist select new DataElement { Date = day.Date, Value = Math.Max(day.Recovered, double.Epsilon) };
-                dataSets.Add(new DataSet
+                    transformed = from day in daylist select new DataElement { Date = day.Date, Value = Math.Max(day.Recovered, double.Epsilon) };
+                    dataSets.Add(new DataSet
+                    {
+                        Name = "Total Recoveries",
+                        Values = new ObservableCollection<DataElement>(transformed)
+                    });
+
+                    transformed = from day in daylist select new DataElement { Date = day.Date, Value = Math.Max(day.Deaths, double.Epsilon) };
+                    dataSets.Add(new DataSet
+                    {
+                        Name = "Total Deaths",
+                        Values = new ObservableCollection<DataElement>(transformed)
+                    });
+
+                    IsChartEnabled = true;
+                } 
+                else
                 {
-                    Name = "Total Recoveries",
-                    Values = new ObservableCollection<DataElement>(transformed)
-                });
-
-                transformed = from day in daylist select new DataElement { Date = day.Date, Value = Math.Max(day.Deaths, double.Epsilon) };
-                dataSets.Add(new DataSet
-                {
-                    Name = "Total Deaths",
-                    Values = new ObservableCollection<DataElement>(transformed)
-                });
-
-                IsChartEnabled = true;
+                    MessageBox.Show($"No data found for country {countryName}.");
+                    IsChartEnabled = false;
+                }
             }
             catch(FieldAccessException ex)
             {
-                MessageBox.Show(ex.Message);
+                MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 IsChartEnabled = false;
             }
             catch(ArgumentException ex)
             {
-                MessageBox.Show(ex.Message);
+                MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 IsChartEnabled = false;
             }
 
