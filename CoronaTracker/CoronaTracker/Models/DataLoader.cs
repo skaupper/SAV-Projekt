@@ -189,27 +189,24 @@ namespace CoronaTracker.Models
             List<string> available = new List<string>();
             foreach (var item in dataStore.Accumulated.Countries)
             {
-                if (item != null)
+                switch (prop)
                 {
-                    switch (prop)
-                    {
-                        case CountryProperty.CODE:
-                            if(item.CountryCode != null)
-                                available.Add(item.CountryCode);
-                            break;
-                        case CountryProperty.SLUG:
-                            if(item.Slug != null)
-                                available.Add(item.Slug);
-                            break;
-                        case CountryProperty.NAME:
-                            if(item.Country != null)
-                                available.Add(item.Country);
-                            break;
-                        default:
-                            throw new NotImplementedException(
-                                "Property specified in APIHandler.GetListOfProperty()" +
-                                "is not implemented yet.");
-                    }
+                    case CountryProperty.CODE:
+                        if(item.CountryCode != null)
+                            available.Add(item.CountryCode);
+                        break;
+                    case CountryProperty.SLUG:
+                        if(item.Slug != null)
+                            available.Add(item.Slug);
+                        break;
+                    case CountryProperty.NAME:
+                        if(item.Country != null)
+                            available.Add(item.Country);
+                        break;
+                    default:
+                        throw new NotImplementedException(
+                            "Property specified in APIHandler.GetListOfProperty()" +
+                            "is not implemented yet.");
                 }
             }
 

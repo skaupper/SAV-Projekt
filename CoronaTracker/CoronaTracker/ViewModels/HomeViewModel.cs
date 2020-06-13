@@ -1,4 +1,4 @@
-﻿using CoronaTracker.Infrastructure;
+using CoronaTracker.Infrastructure;
 using CoronaTracker.Models;
 using Microsoft.Win32;
 using System;
@@ -157,6 +157,16 @@ namespace CoronaTracker.ViewModels
         #endregion Data Bindings
 
         #region Internal Methods
+        private void DisableNeededUIOnDataLoading()
+        {
+            CanRefreshWebBtn = false;
+            CanRefreshLoadLocalBtn = false;
+            CanRefreshSaveDatasetBtn = false;
+            foreach (IPageViewModel item in ListOfAvailablePages)
+            {
+                item.IsEnabled = false;
+            }
+        }
         private void TriggerPageSetups()
         {
             SetupPage();
@@ -184,7 +194,7 @@ namespace CoronaTracker.ViewModels
         #region Button Methods
         private async Task LoadWebDataAsync()
         {
-            CanRefreshWebBtn = false;
+            DisableNeededUIOnDataLoading();
 
             try
             {
@@ -209,12 +219,14 @@ namespace CoronaTracker.ViewModels
             {
                 TriggerPageSetups();
                 CanRefreshWebBtn = true;
+                CanRefreshLoadLocalBtn = true;
+                CanRefreshSaveDatasetBtn = true;
             }
         }
 
         private async Task LoadLocalDataAsync()
         {
-            CanRefreshLoadLocalBtn = false;
+            DisableNeededUIOnDataLoading();
 
             try
             {
@@ -254,6 +266,8 @@ namespace CoronaTracker.ViewModels
             {
                 TriggerPageSetups();
                 CanRefreshLoadLocalBtn = true;
+                CanRefreshWebBtn = true;
+                CanRefreshSaveDatasetBtn = true;
             }
         }
 
