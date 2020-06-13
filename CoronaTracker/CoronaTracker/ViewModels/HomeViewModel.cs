@@ -78,7 +78,7 @@ namespace CoronaTracker.ViewModels
         {
             BtnLoadFromWeb = new RelayCommand(param => { var result = LoadWebDataAsync(); }, param => CanRefreshWebBtn);
             BtnLoadLocal = new RelayCommand(param => { var result = LoadLocalDataAsync(); }, param => CanRefreshLoadLocalBtn);
-            BtnSaveDataset = new RelayCommand(param => { var result = SaveDatasetAsync(); }, param => CanRefreshSaveDatasetBtn);
+            BtnSaveDataset = new RelayCommand(param => { SaveDataset(); }, param => CanRefreshSaveDatasetBtn);
         }
         private void InitStates()
         {
