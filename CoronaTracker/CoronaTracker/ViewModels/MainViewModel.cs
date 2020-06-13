@@ -41,6 +41,9 @@ namespace CoronaTracker.ViewModels
             PageViewModels.Add(worldMapViewModel);
             PageViewModels.Add(dataListViewModel);
 
+            // Register for event
+            homeViewModel.DataLoaded += DataLoadedCallback;
+
             // Set starting page
             CurrentPageViewModel = PageViewModels[0];
         }
@@ -89,8 +92,8 @@ namespace CoronaTracker.ViewModels
             }
         }
 
-
-        public bool DisableAnimations {
+        public bool DisableAnimations 
+        {
             get => disableAnimations;
             set
             {
@@ -98,6 +101,38 @@ namespace CoronaTracker.ViewModels
                 {
                     disableAnimations = value;
                     OnPropertyChanged("DisableAnimations");
+                }
+            }
+        }
+        private string _tbCountriesLoaded = "0";
+        public string TbCountriesLoaded
+        {
+            get
+            {
+                return _tbCountriesLoaded;
+            }
+            set
+            {
+                if (_tbCountriesLoaded != value)
+                {
+                    _tbCountriesLoaded = value;
+                    OnPropertyChanged("TbCountriesLoaded");
+                }
+            }
+        }
+        private string _tbEarliestDate = "-";
+        public string TbEarliestDate
+        {
+            get
+            {
+                return _tbEarliestDate;
+            }
+            set
+            {
+                if (_tbEarliestDate != value)
+                {
+                    _tbEarliestDate = value;
+                    OnPropertyChanged("TbEarliestDate");
                 }
             }
         }
@@ -119,6 +154,21 @@ namespace CoronaTracker.ViewModels
                 else
                     item.IsSelected = false;
             }
+        }
+
+        private void DataLoadedCallback(object sender, DataLoadedEventArgs args)
+        {
+            try
+            {
+                TbCountriesLoaded = dataLoader.GetListOfProperty(Models.DataLoader.CountryProperty.NAME).Count.ToString();
+                TbEarliestDate = dataLoader.GetOldestDate().Date.ToString("dd.MM.yyyy");
+            }
+            catch (System.Exception)
+            {
+                TbCountriesLoaded = "0";
+                TbEarliestDate = "-";
+            }
+            
         }
         #endregion Methods
     }

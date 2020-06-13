@@ -12,19 +12,19 @@
         Title="Corona Tracker" Height="650" Width="1050"
         Name="MainViewUiElement">
 	<Window.Resources>
-		<DataTemplate DataType="{x:Type models:HomeViewModel}">
+        <DataTemplate DataType="{x:Type models:HomeViewModel}">
 			<views:HomeView />
 		</DataTemplate>
-		<DataTemplate DataType="{x:Type models:CountryStatsViewModel}">
+        <DataTemplate DataType="{x:Type models:CountryStatsViewModel}">
 			<views:CountryStatsView />
 		</DataTemplate>
-		<DataTemplate DataType="{x:Type models:CountryComparisonViewModel}">
+        <DataTemplate DataType="{x:Type models:CountryComparisonViewModel}">
 			<views:CountryComparisonView />
 		</DataTemplate>
-		<DataTemplate DataType="{x:Type models:WorldMapViewModel}">
+        <DataTemplate DataType="{x:Type models:WorldMapViewModel}">
 			<views:WorldMapView />
 		</DataTemplate>
-		<DataTemplate DataType="{x:Type models:DataListViewModel}">
+        <DataTemplate DataType="{x:Type models:DataListViewModel}">
 			<views:DataListView />
 		</DataTemplate>
 
@@ -61,7 +61,18 @@
 	</Controls:MetroWindow.RightWindowCommands>
 
     <DockPanel>
-		<Border DockPanel.Dock="Left" BorderBrush="Black" BorderThickness="0,0,1,0">
+	    <StatusBar DockPanel.Dock="Bottom">
+            <TextBlock Text="Copyright © ESD-2020" Margin="12, 5, 11, 5"/>
+            <Separator Background="White"/>
+            <TextBlock Text="Countries loaded: " Margin="10, 5, 0, 5"/>
+            <TextBlock Margin="0, 5, 5, 5" Text="{Binding TbCountriesLoaded}" />
+		    <TextBlock Text="Earliest Date of available data: " Margin="10, 5, 0, 5"/>
+            <TextBlock Margin="0, 5, 5, 5" Text="{Binding TbEarliestDate}" />
+            <Separator Background="White"/>
+			<TextBlock/>
+        </StatusBar>
+
+        <Border DockPanel.Dock="Left" BorderBrush="Black" BorderThickness="0,0,1,0">
 			<ItemsControl ItemsSource="{Binding PageViewModels}">
 				<ItemsControl.ItemTemplate>
 					<DataTemplate>

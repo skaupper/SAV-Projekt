@@ -1,4 +1,4 @@
-﻿using CoronaTracker.Models.Helper;
+using CoronaTracker.Models.Helper;
 using CoronaTracker.Models.Types;
 using System;
 using System.Collections.Generic;
@@ -45,6 +45,15 @@ namespace CoronaTracker.Models
                         "Source specified in APIHandler.LoadCurentCountryData()" +
                         "is not implemented yet.");
             }
+
+
+            dataStore.Accumulated.Countries.RemoveAll(item => item == null);
+            dataStore.Timeline.Countries.Remove(String.Empty);
+            foreach (var country in dataStore.Timeline.Countries)
+            {
+                country.Value.Days.RemoveAll(item => item == null);
+            }
+
         }
 
         private async Task DownloadTimelineHelperAsync()
@@ -183,13 +192,16 @@ namespace CoronaTracker.Models
                 switch (prop)
                 {
                     case CountryProperty.CODE:
-                        available.Add(item.CountryCode);
+                        if(item.CountryCode != null)
+                            available.Add(item.CountryCode);
                         break;
                     case CountryProperty.SLUG:
-                        available.Add(item.Slug);
+                        if(item.Slug != null)
+                            available.Add(item.Slug);
                         break;
                     case CountryProperty.NAME:
-                        available.Add(item.Country);
+                        if(item.Country != null)
+                            available.Add(item.Country);
                         break;
                     default:
                         throw new NotImplementedException(
