@@ -216,7 +216,6 @@ namespace CoronaTracker.ViewModels
                 TriggerPageSetups();
                 CanRefreshWebBtn = true;
                 CanRefreshLoadLocalBtn = true;
-                CanRefreshSaveDatasetBtn = true;
             }
         }
 
@@ -265,7 +264,6 @@ namespace CoronaTracker.ViewModels
                 TriggerPageSetups();
                 CanRefreshLoadLocalBtn = true;
                 CanRefreshWebBtn = true;
-                CanRefreshSaveDatasetBtn = true;
             }
         }
 
