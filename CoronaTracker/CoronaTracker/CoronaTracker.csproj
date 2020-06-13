@@ -135,6 +135,9 @@
     <Compile Include="Charts\Types\DataElement.cs" />
     <Compile Include="Charts\Types\DataSet.cs" />
     <Compile Include="Charts\Types\HeatMapElement.cs" />
+    <Compile Include="CircularProgressBar\CircularProgressBar.xaml.cs">
+      <DependentUpon>CircularProgressBar.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Infrastructure\ValueConverters\AxisScaleConverter.cs" />
     <Compile Include="Infrastructure\ValueConverters\BoolToVisibilityConverter.cs" />
     <Compile Include="Infrastructure\CustomDataGrid.cs" />
@@ -183,6 +186,10 @@
     <Page Include="Charts\BasicGeoMap.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="CircularProgressBar\CircularProgressBar.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\CountryComparisonView.xaml">
       <SubType>Designer</SubType>

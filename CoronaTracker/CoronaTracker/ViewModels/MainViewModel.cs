@@ -1,4 +1,5 @@
 ﻿using CoronaTracker.Infrastructure;
+using CoronaTracker.Models;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Input;
@@ -42,7 +43,7 @@ namespace CoronaTracker.ViewModels
             PageViewModels.Add(dataListViewModel);
 
             // Register for event
-            homeViewModel.DataLoaded += DataLoadedCallback;
+            dataLoader.DataPercentlyLoaded += DataLoadedCallback;
 
             // Set starting page
             CurrentPageViewModel = PageViewModels[0];
@@ -156,19 +157,21 @@ namespace CoronaTracker.ViewModels
             }
         }
 
-        private void DataLoadedCallback(object sender, DataLoadedEventArgs args)
+        private void DataLoadedCallback(object sender, DataPercentlyLoadedEventArgs args)
         {
-            try
+            if (args.Percentage >= 100)
             {
-                TbCountriesLoaded = dataLoader.GetListOfProperty(Models.DataLoader.CountryProperty.NAME).Count.ToString();
-                TbEarliestDate = dataLoader.GetOldestDate().Date.ToString("dd.MM.yyyy");
+                try
+                {
+                    TbCountriesLoaded = dataLoader.GetListOfProperty(Models.DataLoader.CountryProperty.NAME).Count.ToString();
+                    TbEarliestDate = dataLoader.GetOldestDate().Date.ToString("dd.MM.yyyy");
+                }
+                catch (System.Exception)
+                {
+                    TbCountriesLoaded = "0";
+                    TbEarliestDate = "-";
+                }
             }
-            catch (System.Exception)
-            {
-                TbCountriesLoaded = "0";
-                TbEarliestDate = "-";
-            }
-            
         }
         #endregion Methods
     }

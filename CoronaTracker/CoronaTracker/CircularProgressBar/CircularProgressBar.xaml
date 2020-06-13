@@ -1,0 +1,38 @@
+﻿<UserControl 
+	x:Class="CoronaTracker.CircularProgressBar.CircularProgressBar"
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	x:Name="userControl">
+    <Grid>
+	    <TextBlock
+		    x:Name="NumberValue"
+		    HorizontalAlignment="Center"
+		    VerticalAlignment="Center"
+		    FontFamily="Calibri"
+		    FontSize="16"
+		    Foreground="{Binding SegmentColor, ElementName=userControl}"
+		    TextAlignment="Center" />
+	    <Path
+		    x:Name="pathRoot"
+		    HorizontalAlignment="Left"
+		    VerticalAlignment="Top"
+		    Stroke="{Binding SegmentColor, ElementName=userControl}"
+		    StrokeThickness="{Binding StrokeThickness, ElementName=userControl}">
+		    <Path.Data>
+			    <PathGeometry>
+				    <PathGeometry.Figures>
+					    <PathFigureCollection>
+						    <PathFigure x:Name="pathFigure">
+							    <PathFigure.Segments>
+								    <PathSegmentCollection>
+									    <ArcSegment x:Name="arcSegment" SweepDirection="Clockwise" />
+								    </PathSegmentCollection>
+							    </PathFigure.Segments>
+						    </PathFigure>
+					    </PathFigureCollection>
+				    </PathGeometry.Figures>
+			    </PathGeometry>
+		    </Path.Data>
+	    </Path>
+    </Grid>
+</UserControl>
