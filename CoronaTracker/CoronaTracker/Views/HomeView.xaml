@@ -4,6 +4,8 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:CoronaTracker.Views"
+             xmlns:infrastructure="clr-namespace:CoronaTracker.Infrastructure"
+			 xmlns:CircProg="clr-namespace:CoronaTracker.CircularProgressBar"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <UserControl.Resources>
@@ -48,20 +50,46 @@
             </Grid.RowDefinitions>
 
             <DockPanel Grid.Column="0" Grid.Row="0">
-                <Button 
-		            DockPanel.Dock="Top"
-					Margin="0, 5, 0, 5"
-		            Content="Load Dataset from Web"
-		            Command="{Binding BtnLoadFromWeb}"/>
-                <Button 
-		            DockPanel.Dock="Top"
-		            Margin="0, 25, 0, 5"
-		            Content="Load Dataset local"
-		            Command="{Binding BtnLoadLocal}"/>
+                <DockPanel DockPanel.Dock="Top">
+	                <Grid
+		                DockPanel.Dock="Right"
+		                Margin="10, 0, 0, 0"
+		                HorizontalAlignment="Center"
+		                VerticalAlignment="Center">
+                        <CircProg:CircularProgressBar
+			                HorizontalAlignment="Center"
+			                VerticalAlignment="Center"
+			                Angle="360"
+			                Radius="25"
+			                SegmentColor="#FF878889"
+			                StrokeThickness="2" />
+                        <CircProg:CircularProgressBar
+			                HorizontalAlignment="Center"
+			                VerticalAlignment="Center"
+			                Percentage="{Binding CircPercentage, UpdateSourceTrigger=PropertyChanged}"
+			                Radius="25"
+			                SegmentColor="#2c84ff"
+			                StrokeThickness="7" />
+	                </Grid>
+                    <StackPanel>
+	                    <Button 
+		                    Margin="0, 5, 0, 5"
+		                    Content="Load Dataset from Web"
+		                    Height="33"
+		                    Command="{Binding BtnLoadFromWeb}"/>
+	                    <Button 
+		                    Margin="0, 25, 0, 5"
+		                    Content="Load Dataset local"
+		                    Height="33"
+		                    Command="{Binding BtnLoadLocal}"/>
+                    </StackPanel>
+                </DockPanel>
+
                 <Button 
 		            DockPanel.Dock="Top"
 		            Margin="0, 25, 0, 5"
 		            Content="Save Dataset"
+					Height="33"
 		            Command="{Binding BtnSaveDataset}"/>
 
                 <ToggleButton 
@@ -69,8 +97,8 @@
                     DockPanel.Dock="Top" 
 					Typography.Capitals="AllSmallCaps"
 					FontSize="14"
-					FontWeight="DemiBold"
-		            IsChecked="{Binding DataContext.DisableAnimations, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type local:MainView}}}">
+	                FontWeight="DemiBold"
+	                IsChecked="{Binding DataContext.DisableAnimations, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type local:MainView}}}">
 	                <ToggleButton.Style>
 		                <Style TargetType="{x:Type ToggleButton}" BasedOn="{StaticResource MahApps.Styles.ToggleButton}">
                             <Setter Property="Content" Value="Animations Enabled"/>

@@ -1,4 +1,4 @@
-using CoronaTracker.Infrastructure;
+﻿using CoronaTracker.Infrastructure;
 using CoronaTracker.Models;
 using Microsoft.Win32;
 using System;
@@ -10,25 +10,8 @@ using System.Windows.Input;
 
 namespace CoronaTracker.ViewModels
 {
-    public delegate void DataLoadedEventHandler(object sender, DataLoadedEventArgs e);
-
-    public class DataLoadedEventArgs : EventArgs
-    { 
-        public DataLoadedEventArgs()
-        {
-        }
-    }
     class HomeViewModel : NotifyBase, IPageViewModel
     {
-        #region Events
-        public event DataLoadedEventHandler DataLoaded;
-
-        private void OnDataLoaded(DataLoadedEventArgs args)
-        {
-            DataLoaded?.Invoke(this, args);
-        }
-        #endregion Events
-
         #region Fields
         private readonly List<IPageViewModel> ListOfAvailablePages = null;
 
@@ -72,11 +55,15 @@ namespace CoronaTracker.ViewModels
         #region CTOR
         public HomeViewModel(CountryStatsViewModel csvm, CountryComparisonViewModel ccvm, WorldMapViewModel wmvm, DataListViewModel dlvm)
         {
-            ListOfAvailablePages = new List<IPageViewModel>();
-            ListOfAvailablePages.Add(csvm);
-            ListOfAvailablePages.Add(ccvm);
-            ListOfAvailablePages.Add(wmvm);
-            ListOfAvailablePages.Add(dlvm);
+            ListOfAvailablePages = new List<IPageViewModel>
+            {
+                csvm,
+                ccvm,
+                wmvm,
+                dlvm
+            };
+
+            dataLoader.DataPercentlyLoaded += DataPercentlyLoaded;
 
             InitButtons();
             InitStates();
@@ -91,7 +78,7 @@ namespace CoronaTracker.ViewModels
         {
             BtnLoadFromWeb = new RelayCommand(param => { var result = LoadWebDataAsync(); }, param => CanRefreshWebBtn);
             BtnLoadLocal = new RelayCommand(param => { var result = LoadLocalDataAsync(); }, param => CanRefreshLoadLocalBtn);
-            BtnSaveDataset = new RelayCommand(param => { var result = SaveDatasetAsync(); }, param => CanRefreshSaveDatasetBtn);
+            BtnSaveDataset = new RelayCommand(param => { SaveDataset(); }, param => CanRefreshSaveDatasetBtn);
         }
         private void InitStates()
         {
@@ -154,6 +141,16 @@ namespace CoronaTracker.ViewModels
                 }
             }
         }
+        private double _circPercentage = 0;
+        public double CircPercentage
+        {
+            get { return _circPercentage; }
+            set
+            {
+                _circPercentage = value;
+                NotifyPropertyChanged("CircPercentage");
+            }
+        }
         #endregion Data Bindings
 
         #region Internal Methods
@@ -183,7 +180,6 @@ namespace CoronaTracker.ViewModels
         {
             if (dataLoader.CheckIfDataIsLoaded())
             {
-                OnDataLoaded(new DataLoadedEventArgs());
                 ConnectionState = true;
                 CanRefreshSaveDatasetBtn = true;
                 IsEnabled = true;
@@ -230,10 +226,12 @@ namespace CoronaTracker.ViewModels
 
             try
             {
-                OpenFileDialog openFileDialog = new OpenFileDialog();
-                openFileDialog.Title = "Select a datasource";
-                openFileDialog.Filter = "All supported dataformats|*.json|" +
-                  "JSON (*.json)|*.json";
+                OpenFileDialog openFileDialog = new OpenFileDialog
+                {
+                    Title = "Select a datasource",
+                    Filter = "All supported dataformats|*.json|" +
+                  "JSON (*.json)|*.json"
+                };
                 if (openFileDialog.ShowDialog() == true)
                 {
                     await dataLoader.LoadAllDataAsync(DataLoader.Source.LOCALFILE, openFileDialog.FileName);
@@ -271,16 +269,18 @@ namespace CoronaTracker.ViewModels
             }
         }
 
-        private async Task SaveDatasetAsync()
+        private void SaveDataset()
         {
             CanRefreshSaveDatasetBtn = false;
 
             try
             {
-                SaveFileDialog saveFileDialog = new SaveFileDialog();
-                saveFileDialog.Title = "Select a datasource";
-                saveFileDialog.Filter = "All supported dataformats|*.json|" +
-                  "JSON (*.json)|*.json";
+                SaveFileDialog saveFileDialog = new SaveFileDialog
+                {
+                    Title = "Select a datasource",
+                    Filter = "All supported dataformats|*.json|" +
+                  "JSON (*.json)|*.json"
+                };
                 if (saveFileDialog.ShowDialog() == true)
                 {
                     dataLoader.SaveAllData(saveFileDialog.FileName);
@@ -309,5 +309,12 @@ namespace CoronaTracker.ViewModels
             }
         }
         #endregion Button Methods
+
+        #region Event
+        private void DataPercentlyLoaded(object sender, DataPercentlyLoadedEventArgs args)
+        {
+            CircPercentage = args.Percentage;
+        }
+        #endregion Event
     }
 }

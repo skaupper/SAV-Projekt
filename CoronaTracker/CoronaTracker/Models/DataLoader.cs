@@ -1,4 +1,4 @@
-using CoronaTracker.Models.Helper;
+﻿using CoronaTracker.Models.Helper;
 using CoronaTracker.Models.Types;
 using System;
 using System.Collections.Generic;
@@ -7,8 +7,27 @@ using System.Threading.Tasks;
 
 namespace CoronaTracker.Models
 {
+    public delegate void DataPercentlyLoadedEventHandler(object sender, DataPercentlyLoadedEventArgs e);
+
+    public class DataPercentlyLoadedEventArgs : EventArgs
+    {
+        public double Percentage = 0;
+        public DataPercentlyLoadedEventArgs(double percentage)
+        {
+            Percentage = percentage;
+        }
+    }
+
     public class DataLoader
     {
+        #region Events
+        public event DataPercentlyLoadedEventHandler DataPercentlyLoaded;
+
+        private void OnDataLoaded(DataPercentlyLoadedEventArgs args)
+        {
+            DataPercentlyLoaded?.Invoke(this, args);
+        }
+        #endregion Events
         public enum Source { API, LOCALFILE }
         public enum CountryProperty { CODE, NAME, SLUG }
 
@@ -25,6 +44,7 @@ namespace CoronaTracker.Models
         #region Load_Functions
         public async Task LoadAllDataAsync(Source source, string filename = "")
         {
+            OnDataLoaded(new DataPercentlyLoadedEventArgs(0));
             dataStore = new DataStore();
 
             switch (source)
@@ -32,12 +52,15 @@ namespace CoronaTracker.Models
                 case Source.API:
                     dataStore.Accumulated = await apiHandler.LoadCurrentCountryDataAsync();
 
+                    OnDataLoaded(new DataPercentlyLoadedEventArgs(25));
+
                     // Load timeline for each country, that was loaded with above command
                     await DownloadTimelineHelperAsync();
                     break;
 
                 case Source.LOCALFILE:
                     dataStore = fileHandler.LoadData(filename);
+                    OnDataLoaded(new DataPercentlyLoadedEventArgs(90));
                     break;
 
                 default:
@@ -54,6 +77,7 @@ namespace CoronaTracker.Models
                 country.Value.Days.RemoveAll(item => item == null);
             }
 
+            OnDataLoaded(new DataPercentlyLoadedEventArgs(100));
         }
 
         private async Task DownloadTimelineHelperAsync()
@@ -67,6 +91,7 @@ namespace CoronaTracker.Models
 
             // Await all in parallel
             var results = await Task.WhenAll(taskList);
+            OnDataLoaded(new DataPercentlyLoadedEventArgs(80));
 
             // Add the results to the DataStore
             CountryTimeline tmpGlobalSum = new CountryTimeline();
@@ -101,6 +126,7 @@ namespace CoronaTracker.Models
                 }
             }
             dataStore.Timeline.Countries.Add("Global", tmpGlobalSum);
+            OnDataLoaded(new DataPercentlyLoadedEventArgs(90));
         }
 
         public void SaveAllData(string filename)
