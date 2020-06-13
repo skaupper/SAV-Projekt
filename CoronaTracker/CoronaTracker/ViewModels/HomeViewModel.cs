@@ -269,7 +269,7 @@ namespace CoronaTracker.ViewModels
             }
         }
 
-        private async Task SaveDatasetAsync()
+        private void SaveDataset()
         {
             CanRefreshSaveDatasetBtn = false;
 
