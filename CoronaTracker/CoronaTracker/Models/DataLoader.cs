@@ -1,4 +1,4 @@
-﻿using CoronaTracker.Models.Helper;
+using CoronaTracker.Models.Helper;
 using CoronaTracker.Models.Types;
 using System;
 using System.Collections.Generic;
@@ -45,6 +45,15 @@ namespace CoronaTracker.Models
                         "Source specified in APIHandler.LoadCurentCountryData()" +
                         "is not implemented yet.");
             }
+
+
+            dataStore.Accumulated.Countries.RemoveAll(item => item == null);
+            dataStore.Timeline.Countries.Remove(String.Empty);
+            foreach (var country in dataStore.Timeline.Countries)
+            {
+                country.Value.Days.RemoveAll(item => item == null);
+            }
+
         }
 
         private async Task DownloadTimelineHelperAsync()
@@ -180,21 +189,27 @@ namespace CoronaTracker.Models
             List<string> available = new List<string>();
             foreach (var item in dataStore.Accumulated.Countries)
             {
-                switch (prop)
+                if (item != null)
                 {
-                    case CountryProperty.CODE:
-                        available.Add(item.CountryCode);
-                        break;
-                    case CountryProperty.SLUG:
-                        available.Add(item.Slug);
-                        break;
-                    case CountryProperty.NAME:
-                        available.Add(item.Country);
-                        break;
-                    default:
-                        throw new NotImplementedException(
-                            "Property specified in APIHandler.GetListOfProperty()" +
-                            "is not implemented yet.");
+                    switch (prop)
+                    {
+                        case CountryProperty.CODE:
+                            if(item.CountryCode != null)
+                                available.Add(item.CountryCode);
+                            break;
+                        case CountryProperty.SLUG:
+                            if(item.Slug != null)
+                                available.Add(item.Slug);
+                            break;
+                        case CountryProperty.NAME:
+                            if(item.Country != null)
+                                available.Add(item.Country);
+                            break;
+                        default:
+                            throw new NotImplementedException(
+                                "Property specified in APIHandler.GetListOfProperty()" +
+                                "is not implemented yet.");
+                    }
                 }
             }
 
