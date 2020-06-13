@@ -164,15 +164,6 @@ namespace CoronaTracker.ViewModels
                 item.IsEnabled = false;
             }
         }
-        private void TriggerPageSetups()
-        {
-            SetupPage();
-
-            foreach (IPageViewModel item in ListOfAvailablePages)
-            {
-                item.SetupPage();
-            }
-        }
         #endregion Internal Methods
 
         #region external Methods
@@ -183,6 +174,11 @@ namespace CoronaTracker.ViewModels
                 ConnectionState = true;
                 CanRefreshSaveDatasetBtn = true;
                 IsEnabled = true;
+
+                foreach (IPageViewModel item in ListOfAvailablePages)
+                {
+                    item.SetupPage();
+                }
             }
         }
         #endregion external Methods
@@ -213,7 +209,7 @@ namespace CoronaTracker.ViewModels
             }
             finally
             {
-                TriggerPageSetups();
+                SetupPage();
                 CanRefreshWebBtn = true;
                 CanRefreshLoadLocalBtn = true;
             }
@@ -261,7 +257,7 @@ namespace CoronaTracker.ViewModels
             }
             finally
             {
-                TriggerPageSetups();
+                SetupPage();
                 CanRefreshLoadLocalBtn = true;
                 CanRefreshWebBtn = true;
             }
@@ -302,7 +298,6 @@ namespace CoronaTracker.ViewModels
             }
             finally
             {
-                TriggerPageSetups();
                 CanRefreshSaveDatasetBtn = true;
             }
         }
