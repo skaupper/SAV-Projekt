@@ -55,11 +55,13 @@ namespace CoronaTracker.ViewModels
         #region CTOR
         public HomeViewModel(CountryStatsViewModel csvm, CountryComparisonViewModel ccvm, WorldMapViewModel wmvm, DataListViewModel dlvm)
         {
-            ListOfAvailablePages = new List<IPageViewModel>();
-            ListOfAvailablePages.Add(csvm);
-            ListOfAvailablePages.Add(ccvm);
-            ListOfAvailablePages.Add(wmvm);
-            ListOfAvailablePages.Add(dlvm);
+            ListOfAvailablePages = new List<IPageViewModel>
+            {
+                csvm,
+                ccvm,
+                wmvm,
+                dlvm
+            };
 
             dataLoader.DataPercentlyLoaded += DataPercentlyLoaded;
 
@@ -224,10 +226,12 @@ namespace CoronaTracker.ViewModels
 
             try
             {
-                OpenFileDialog openFileDialog = new OpenFileDialog();
-                openFileDialog.Title = "Select a datasource";
-                openFileDialog.Filter = "All supported dataformats|*.json|" +
-                  "JSON (*.json)|*.json";
+                OpenFileDialog openFileDialog = new OpenFileDialog
+                {
+                    Title = "Select a datasource",
+                    Filter = "All supported dataformats|*.json|" +
+                  "JSON (*.json)|*.json"
+                };
                 if (openFileDialog.ShowDialog() == true)
                 {
                     await dataLoader.LoadAllDataAsync(DataLoader.Source.LOCALFILE, openFileDialog.FileName);
@@ -271,10 +275,12 @@ namespace CoronaTracker.ViewModels
 
             try
             {
-                SaveFileDialog saveFileDialog = new SaveFileDialog();
-                saveFileDialog.Title = "Select a datasource";
-                saveFileDialog.Filter = "All supported dataformats|*.json|" +
-                  "JSON (*.json)|*.json";
+                SaveFileDialog saveFileDialog = new SaveFileDialog
+                {
+                    Title = "Select a datasource",
+                    Filter = "All supported dataformats|*.json|" +
+                  "JSON (*.json)|*.json"
+                };
                 if (saveFileDialog.ShowDialog() == true)
                 {
                     dataLoader.SaveAllData(saveFileDialog.FileName);
