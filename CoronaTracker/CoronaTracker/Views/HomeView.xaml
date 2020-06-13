@@ -75,10 +75,12 @@
 	                    <Button 
 		                    Margin="0, 5, 0, 5"
 		                    Content="Load Dataset from Web"
+		                    Height="33"
 		                    Command="{Binding BtnLoadFromWeb}"/>
 	                    <Button 
 		                    Margin="0, 25, 0, 5"
 		                    Content="Load Dataset local"
+		                    Height="33"
 		                    Command="{Binding BtnLoadLocal}"/>
                     </StackPanel>
                 </DockPanel>
@@ -87,6 +89,7 @@
 		            DockPanel.Dock="Top"
 		            Margin="0, 25, 0, 5"
 		            Content="Save Dataset"
+					Height="33"
 		            Command="{Binding BtnSaveDataset}"/>
 
                 <ToggleButton 
@@ -94,8 +97,8 @@
                     DockPanel.Dock="Top" 
 					Typography.Capitals="AllSmallCaps"
 					FontSize="14"
-					FontWeight="DemiBold"
-		            IsChecked="{Binding DataContext.DisableAnimations, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type local:MainView}}}">
+	                FontWeight="DemiBold"
+	                IsChecked="{Binding DataContext.DisableAnimations, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type local:MainView}}}">
 	                <ToggleButton.Style>
 		                <Style TargetType="{x:Type ToggleButton}" BasedOn="{StaticResource MahApps.Styles.ToggleButton}">
                             <Setter Property="Content" Value="Animations Enabled"/>
