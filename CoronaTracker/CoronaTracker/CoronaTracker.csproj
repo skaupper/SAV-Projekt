@@ -269,9 +269,6 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <WCFMetadata Include="Connected Services\" />
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="Images\logo.png" />
   </ItemGroup>
   <ItemGroup>
