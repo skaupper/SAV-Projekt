@@ -349,7 +349,8 @@ namespace CoronaTracker.ViewModels
         }
         private void DataGridCountryChanged()
         {
-            UpdateDataSets();
+            if (IsSelected)
+                UpdateDataSets();
         }
         #endregion Button Commands
     }

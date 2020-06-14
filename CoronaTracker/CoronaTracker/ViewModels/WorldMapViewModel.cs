@@ -187,7 +187,11 @@ namespace CoronaTracker.ViewModels
                 {
                     var daylist = dataLoader.GetCountryTimeline(entry.Key, TbWorldMapDate, TbWorldMapDate).Days;
 
-                    tmp.Add(GetTransFormedHeatMapElements(daylist, CbWorldMapSelectedCompAttribute).FirstOrDefault());
+                    var heatMapElement = GetTransFormedHeatMapElements(daylist, CbWorldMapSelectedCompAttribute);
+                    if (heatMapElement.Count() == 0)
+                        continue;
+
+                    tmp.Add(heatMapElement.First());
                 }
                 HeatMap = new BindingList<HeatMapElement>(tmp);
 
@@ -203,38 +207,48 @@ namespace CoronaTracker.ViewModels
         }
         private void SetUpDetailedData(string CountryName = null)
         {
+            DetailedWorldMapStatistics newStats = new DetailedWorldMapStatistics();
+
             try
             {
                 if (CountryName == null)
-                    SetUpDetailedCountryData("Global");
+                    newStats = SetUpDetailedCountryData("Global");
                 else
-                    SetUpDetailedCountryData(CountryName);
+                    newStats = SetUpDetailedCountryData(CountryName);
+            }
+            catch(ArgumentOutOfRangeException)
+            {
+                MessageBox.Show("There are no data for the selected country available.");
             }
             catch (Exception ex)
             {
                 MessageBox.Show("The detailed country data for the selected country are not available: " + ex.Message);
             }
-        }
-        private void SetUpDetailedCountryData(string CountryName)
-        {
-            try
+            finally
             {
-                var dayList = dataLoader.GetCountryTimeline(CountryName, TbWorldMapDate, TbWorldMapDate).Days;
-                var tmpDetailedDataCountry = new DetailedWorldMapStatistics()
+                if (newStats != null)
                 {
-                    Selection = CountryName=="Global" ? CountryName : SelectedDetailedCountry,
-                    Active = dayList.FirstOrDefault().Active,
-                    Confirmed = dayList.FirstOrDefault().Confirmed,
-                    Deaths = dayList.FirstOrDefault().Deaths,
-                    Recovered = dayList.FirstOrDefault().Recovered
-                };
-                LvDetailedStatistics.Clear();
-                LvDetailedStatistics.Add(tmpDetailedDataCountry);
+                    LvDetailedStatistics.Clear();
+                    LvDetailedStatistics.Add(newStats);
+                }
             }
-            catch (Exception ex)
+        }
+        private DetailedWorldMapStatistics SetUpDetailedCountryData(string CountryName)
+        {
+            var dayList = dataLoader.GetCountryTimeline(CountryName, TbWorldMapDate, TbWorldMapDate).Days;
+
+            DetailedWorldMapStatistics statistics = new DetailedWorldMapStatistics();
+            statistics.Selection = CountryName == "Global" ? CountryName : SelectedDetailedCountry;
+
+            if (dayList.Count != 0)
             {
-                throw ex;
+                statistics.Active = dayList[0].Active;
+                statistics.Confirmed = dayList[0].Confirmed;
+                statistics.Deaths = dayList[0].Deaths;
+                statistics.Recovered = dayList[0].Recovered;
             }
+
+            return statistics;
         }
         #endregion Internal Methods
 
@@ -276,7 +290,7 @@ namespace CoronaTracker.ViewModels
                 SetUpDetailedData();
             }
 
-            //Click ahppened on country
+            //Click happened on country
             MapData countryInformation = e as MapData;
             if (countryInformation == null)
                 return;

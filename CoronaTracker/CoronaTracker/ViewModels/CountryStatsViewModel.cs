@@ -9,6 +9,7 @@ using System.Globalization;
 using System.Linq;
 using System.Windows;
 using System.Windows.Input;
+using System.Windows.Threading;
 
 namespace CoronaTracker.ViewModels
 {
@@ -36,7 +37,7 @@ namespace CoronaTracker.ViewModels
 
         public bool CanCbCountrySelectionChanged(object state)
         {
-            return true;
+            return IsSelected;
         }
 
         public void CbCountrySelectionChanged(object state)
@@ -50,7 +51,7 @@ namespace CoronaTracker.ViewModels
 
         public bool CanCbAxisScaleSelectionChanged(object state)
         {
-            return true;
+            return IsSelected;
         }
 
         public void CbAxisScaleSelectionChanged(object state)
@@ -64,7 +65,7 @@ namespace CoronaTracker.ViewModels
 
         public bool CanCbChartTypeSelectionChanged(object state)
         {
-            return true;
+            return IsSelected;
         }
 
         public void CbChartTypeSelectionChanged(object state)
