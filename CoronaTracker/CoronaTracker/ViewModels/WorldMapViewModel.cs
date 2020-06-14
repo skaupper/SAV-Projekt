@@ -202,7 +202,7 @@ namespace CoronaTracker.ViewModels
             }
             catch (Exception e)
             {
-                MessageBox.Show("An unhandeled exception occured: " + e.Message);
+                MessageBox.Show(e.Message);
             }
         }
         private void SetUpDetailedData(string CountryName = null)

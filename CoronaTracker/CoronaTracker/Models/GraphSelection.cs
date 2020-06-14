@@ -1,10 +1,18 @@
 ﻿using CoronaTracker.Infrastructure;
+using System.ComponentModel;
 
 namespace CoronaTracker.Models
 {
-    class GraphSelection : NotifyBase
+    class GraphSelection : INotifyPropertyChanged
     {
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+
+
+
         private string _name = null;
+
         public string Name
         {
             get { return _name; }
@@ -13,7 +21,7 @@ namespace CoronaTracker.Models
                 if (value != _name)
                 {
                     _name = value;
-                    OnPropertyChanged("Name");
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Name"));
                 }
             }
         }

@@ -1,0 +1,380 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="CoronaTracker.App" Collapsed="true">
+    <Position X="31" Y="5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>App.xaml.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CoronaTracker.Maps" Collapsed="true">
+    <Position X="31" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAABAAAAAAAAABEAAAAQAAAAAAAAAAAAAAAIA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CoronaTracker.Charts.BasicGeoMap" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="17.5" Y="8.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AIAKAAAAAgAAABAAAgIAB4AGhgABgAQAAAEICAAASAg=</HashCode>
+      <FileName>Charts\BasicGeoMap.xaml.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="CoronaTracker.Charts.RatioBar" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="15.75" Y="8.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AQAAAAAAAAAMAMAAAACEAcACgIEAACAAAJGAARAAACA=</HashCode>
+      <FileName>Charts\RatioBar.xaml.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="CoronaTracker.Charts.TimelineChart" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="14" Y="8.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AQAAAACAAAAMANAEAAKEAcBCgIOEACAAAJHgARBAACg=</HashCode>
+      <FileName>Charts\TimelineChart.xaml.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="CoronaTracker.Charts.Helper.DateHelper" Collapsed="true">
+    <Position X="17.5" Y="10.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ACAAAAAAAAAAAAAAAAAAAAAAACAAAAAAABAAAAAAAAA=</HashCode>
+      <FileName>Charts\Helper\DateHelper.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CoronaTracker.Charts.Types.DataElement" Collapsed="true">
+    <Position X="14" Y="11" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAgAAAAAAA=</HashCode>
+      <FileName>Charts\Types\DataElement.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CoronaTracker.Charts.Types.DataSet" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="14" Y="10.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAQAgAAEACAAAAAgAAAAAAA=</HashCode>
+      <FileName>Charts\Types\DataSet.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="CoronaTracker.Charts.Types.HeatMapElement" Collapsed="true">
+    <Position X="15.75" Y="10.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAgAAAAAAA=</HashCode>
+      <FileName>Charts\Types\HeatMapElement.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CoronaTracker.CircularProgressBar.CircularProgressBar" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="30.75" Y="7.75" Width="2" />
+    <TypeIdentifier>
+      <HashCode>CAYIAAAAACAAAAAIIAAQAAAgAAgAAAEAAEggCAAAAQw=</HashCode>
+      <FileName>CircularProgressBar\CircularProgressBar.xaml.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="CoronaTracker.Infrastructure.CustomDataGrid" Collapsed="true">
+    <Position X="30.75" Y="6.75" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAQAAAAAAAAAACAAgAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Infrastructure\CustomDataGrid.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CoronaTracker.Infrastructure.NotifyBase" Collapsed="true">
+    <Position X="7.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAIAAIAAAAQAQgAAAAAAAAAAAAAAAAgA=</HashCode>
+      <FileName>Infrastructure\NotifyBase.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="CoronaTracker.Infrastructure.RelayCommand" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="25.5" Y="4.25" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAEACAAQAAECAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Infrastructure\RelayCommand.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="CoronaTracker.Infrastructure.SliderMouseWheelBehaviour" Collapsed="true">
+    <Position X="30.75" Y="8.75" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAACAIUAAAgQAAAAQAAAAAAAAAAEAAAAAAAAAAAA=</HashCode>
+      <FileName>Infrastructure\SliderMouseWheelBehaviour.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CoronaTracker.Infrastructure.ValueConverters.BoolToVisibilityConverter" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="23.5" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAIAgAAAAAAgAAAAAAAAAAAAAACA=</HashCode>
+      <FileName>Infrastructure\ValueConverters\BoolToVisibilityConverter.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="CoronaTracker.Infrastructure.ValueConverters.EnumConverter" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="23.5" Y="5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAIAAAAAAAAgAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Infrastructure\ValueConverters\EnumConverter.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="CoronaTracker.Infrastructure.ValueConverters.EnumDescriptionConverter" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="23.5" Y="4.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAIAAAAAAAAgAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Infrastructure\ValueConverters\EnumDescriptionConverter.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="CoronaTracker.Models.DataPercentlyLoadedEventArgs" Collapsed="true">
+    <Position X="24.25" Y="1.25" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\DataLoader.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CoronaTracker.Models.DataLoader" Collapsed="true">
+    <Position X="4.75" Y="6.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAEAQAIEAAEAAAAAAADUCAAAAAGAAAAAQAAgAQAAAAA=</HashCode>
+      <FileName>Models\DataLoader.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CoronaTracker.Models.GraphSelection" Collapsed="true">
+    <Position X="23.5" Y="8.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAIAAAAAAAAAAAAAAAAAQAgAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\GraphSelection.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="CoronaTracker.Models.ExtensionMethods.EnumMethods" Collapsed="true">
+    <Position X="23.5" Y="6.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAA=</HashCode>
+      <FileName>Models\ExtensionMethods\EnumMethods.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CoronaTracker.Models.ExtensionMethods.SelectableStatisticsMethods" Collapsed="true">
+    <Position X="23.5" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\ExtensionMethods\SelectableStatisticsMethods.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CoronaTracker.Models.Helper.APIHandler" Collapsed="true">
+    <Position X="4.25" Y="7.5" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>EAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\Helper\APIHandler.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CoronaTracker.Models.Helper.FileHandler" Collapsed="true">
+    <Position X="7" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAQAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\Helper\FileHandler.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CoronaTracker.Models.Types.Global" Collapsed="true">
+    <Position X="0.5" Y="11.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AgIAAAAABAAAAAAQAAAEAAAAAAAAAAAAQAAAAAAAAAA=</HashCode>
+      <FileName>Models\Types\AccumData.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CoronaTracker.Models.Types.CountryDetail" Collapsed="true">
+    <Position X="2.25" Y="11.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AiIAAAAABAAAAAAQAAAEAAAAAAIAAAABQAAAAAQAAAA=</HashCode>
+      <FileName>Models\Types\AccumData.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CoronaTracker.Models.Types.AccumData" Collapsed="true">
+    <Position X="1.5" Y="10.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAQAAAAAAAAABAAAAAAABAAA=</HashCode>
+      <FileName>Models\Types\AccumData.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CoronaTracker.Models.Types.DataStore" Collapsed="true">
+    <Position X="2.5" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAgAAAAAAAAAAAAAAAAACBAAAAAAAAAAAQAAAA=</HashCode>
+      <FileName>Models\Types\DataStore.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CoronaTracker.Models.Types.DetailedWorldMapStatistics" Collapsed="true">
+    <Position X="7.5" Y="10.5" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAgAAAgAAAAQAA=</HashCode>
+      <FileName>Models\Types\DetailedWorldMapStatistics.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CoronaTracker.Models.Types.TimelineData" Collapsed="true">
+    <Position X="4.75" Y="10.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\Types\TimelineData.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CoronaTracker.Models.Types.CountryTimeline" Collapsed="true">
+    <Position X="4.75" Y="11.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAA=</HashCode>
+      <FileName>Models\Types\TimelineData.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CoronaTracker.Models.Types.Day" Collapsed="true">
+    <Position X="4.75" Y="12.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ACAAAAAAACAAAgAIAAAAAAAAAAoAAAghAAAgAgAAAAA=</HashCode>
+      <FileName>Models\Types\TimelineData.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CoronaTracker.Properties.Resources" Collapsed="true">
+    <Position X="31" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAABEAAAAQAAAAAAAAAAAAAAAIA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CoronaTracker.Properties.Settings" Collapsed="true">
+    <Position X="31" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAIAAAAAABAAAAAAAAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CoronaTracker.ViewModels.CountryComparisonViewModel" Collapsed="true">
+    <Position X="9" Y="1.75" Width="2" />
+    <TypeIdentifier>
+      <HashCode>CQIgGgQAQARFGkABQAEAAQQAAACgAAAAA4oAAYECAAE=</HashCode>
+      <FileName>ViewModels\CountryComparisonViewModel.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="CoronaTracker.ViewModels.CountryStatsViewModel" Collapsed="true">
+    <Position X="1" Y="1.75" Width="2" />
+    <TypeIdentifier>
+      <HashCode>QAAhBEAAAQAAGiABAAEAhQQCEgGgAAAICAgAAQACAAk=</HashCode>
+      <FileName>ViewModels\CountryStatsViewModel.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="CoronaTracker.ViewModels.DataListViewModel" Collapsed="true">
+    <Position X="3.25" Y="1.75" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAgAQAAAAAAEAAAAAEAAAQAAAAgAAAAAAABAAACAAA=</HashCode>
+      <FileName>ViewModels\DataListViewModel.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="CoronaTracker.ViewModels.HomeViewModel" Collapsed="true">
+    <Position X="5.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAghKhAAAASEAABIAGAAAQAgABgAAEEAgAgCAAKAAE=</HashCode>
+      <FileName>ViewModels\HomeViewModel.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="CoronaTracker.ViewModels.MainViewModel" Collapsed="true">
+    <Position X="11.25" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAQAAAAAUAAIAAAAEBEEAAAQgMIQAAAAQAAEBAgCAA=</HashCode>
+      <FileName>ViewModels\MainViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CoronaTracker.ViewModels.WorldMapViewModel" Collapsed="true">
+    <Position X="7.25" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QABgAgIAIAABFAKABgEAAAQgAAAgAAgIBAgAAEAGwQI=</HashCode>
+      <FileName>ViewModels\WorldMapViewModel.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="CoronaTracker.Views.CountryComparisonView" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="9" Y="2.75" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Views\CountryComparisonView.xaml.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="CoronaTracker.Views.CountryStatsView" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="1" Y="2.75" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Views\CountryStatsView.xaml.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="CoronaTracker.Views.DataListView" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="3.25" Y="2.75" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Views\DataListView.xaml.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="CoronaTracker.Views.HomeView" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="5.5" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Views\HomeView.xaml.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="CoronaTracker.Views.MainView" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="11.25" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Views\MainView.xaml.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="CoronaTracker.Views.WorldMapView" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="7.25" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Views\WorldMapView.xaml.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Interface Name="CoronaTracker.Infrastructure.IPageViewModel" Collapsed="true">
+    <Position X="9" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAgAAAAAAAAEAAAAAEAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Infrastructure\IPageViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Enum Name="CoronaTracker.Charts.Types.AxisScale" Collapsed="true">
+    <Position X="25.5" Y="5.5" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAgAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Charts\Types\AxisScale.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="CoronaTracker.Charts.Types.ChartType" Collapsed="true">
+    <Position X="25.5" Y="6.25" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAEAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAQ=</HashCode>
+      <FileName>Charts\Types\ChartType.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="CoronaTracker.Models.Types.SelectableStatistics" Collapsed="true">
+    <Position X="25.5" Y="7" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAgAAAAAAAAAAAAAACAAgAAAAAAAAAgA=</HashCode>
+      <FileName>Models\Types\SelectableStatistics.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Delegate Name="CoronaTracker.Models.DataPercentlyLoadedEventHandler" Collapsed="true">
+    <Position X="24.25" Y="2.25" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAEAAAAQAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\DataLoader.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

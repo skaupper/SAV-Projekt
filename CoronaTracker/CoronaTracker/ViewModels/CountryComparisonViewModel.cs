@@ -11,6 +11,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Input;
+using System.Windows.Media.Animation;
 
 namespace CoronaTracker.ViewModels
 {
@@ -37,9 +38,9 @@ namespace CoronaTracker.ViewModels
         /// </summary>
         private void InitButtons()
         {
-            BtnAddElement = new RelayCommand(param => AddElementToList());
-            BtnRemoveElements = new RelayCommand(param => RemoveElementsFromList());
-            CbSelectionChanged = new RelayCommand(param => DataGridCountryChanged());
+            BtnAddElement = new RelayCommand(param => AddElementToList(), param => IsSelected);
+            BtnRemoveElements = new RelayCommand(param => RemoveElementsFromList(), param => IsSelected);
+            CbSelectionChanged = new RelayCommand(param => DataGridCountryChanged(), param => IsSelected);
         }
         #endregion Init
 

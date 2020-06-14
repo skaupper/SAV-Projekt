@@ -231,7 +231,6 @@ namespace CoronaTracker.Charts
         }
 
 
-        // TODO: How can this method be dispatched from the UI thread?
         public void CallUpdateDataSets()
         {
             UpdateDataSets();

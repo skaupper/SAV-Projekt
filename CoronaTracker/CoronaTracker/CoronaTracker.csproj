@@ -138,7 +138,6 @@
     <Compile Include="CircularProgressBar\CircularProgressBar.xaml.cs">
       <DependentUpon>CircularProgressBar.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Infrastructure\ValueConverters\AxisScaleConverter.cs" />
     <Compile Include="Infrastructure\ValueConverters\BoolToVisibilityConverter.cs" />
     <Compile Include="Infrastructure\CustomDataGrid.cs" />
     <Compile Include="Infrastructure\ValueConverters\EnumConverter.cs" />
@@ -259,6 +258,7 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Maps.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <None Include="ClassDiagram1.cd" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

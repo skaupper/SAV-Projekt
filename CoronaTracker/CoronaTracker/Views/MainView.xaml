@@ -9,7 +9,7 @@
         xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
         xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
         mc:Ignorable="d"
-        Title="Corona Tracker" Height="650" Width="1050"
+        Title="Corona Tracker" Height="650" Width="1100"
         Name="MainViewUiElement">
 	<Window.Resources>
         <DataTemplate DataType="{x:Type models:HomeViewModel}">

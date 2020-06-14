@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace CoronaTracker.Models
 {
@@ -69,6 +70,11 @@ namespace CoronaTracker.Models
                         "is not implemented yet.");
             }
 
+            if (dataStore.Accumulated == null && dataStore.Timeline == null)
+            {
+                OnDataLoaded(new DataPercentlyLoadedEventArgs(0));
+                return;
+            }
 
             dataStore.Accumulated.Countries.RemoveAll(item => item == null);
             dataStore.Timeline.Countries.Remove(String.Empty);
@@ -131,19 +137,11 @@ namespace CoronaTracker.Models
 
         public void SaveAllData(string filename)
         {
-            // TODO: not sure if I need to re-throw an Exception here..
-            try
-            {
-                if (dataStore == null)
-                    throw new FieldAccessException(
-                        "Data cannot be saved, since it was not loaded yet.\n" +
-                        "Please call DataLoader.LoadAllData() first.");
-                fileHandler.SaveData(dataStore, filename);
-            }
-            catch (Exception e)
-            {
-                throw e;
-            }
+            if (dataStore == null)
+                throw new FieldAccessException(
+                    "Data cannot be saved, since it was not loaded yet.\n" +
+                    "Please call DataLoader.LoadAllData() first.");
+            fileHandler.SaveData(dataStore, filename);
         }
         #endregion
 
@@ -278,7 +276,7 @@ namespace CoronaTracker.Models
 
         public bool CheckIfDataIsLoaded()
         {
-            if (dataStore == null || dataStore.Accumulated == null)
+            if (dataStore == null || dataStore.Accumulated == null || dataStore.Timeline == null)
                 return false;
             else
                 return true;

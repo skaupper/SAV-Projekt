@@ -180,6 +180,10 @@ namespace CoronaTracker.ViewModels
                     item.SetupPage();
                 }
             }
+            else
+            {
+                CircPercentage = 0;
+            }
         }
         #endregion external Methods
 
@@ -192,20 +196,9 @@ namespace CoronaTracker.ViewModels
             {
                 await dataLoader.LoadAllDataAsync(DataLoader.Source.API);
             }
-            catch (FieldAccessException faex)
-            {
-                // TODO: Handle exception (need to load data first)
-                MessageBox.Show("FieldAccessException: \n" + faex.Message);
-            }
-            catch (ArgumentException argex)
-            {
-                // TODO: Handle exception (maybe an implementation error?)
-                MessageBox.Show("ArgumentException: \n" + argex.Message);
-            }
             catch (Exception ex)
             {
-                // TODO: Handle exception (need to load data first)
-                MessageBox.Show("Unhandled exception: \n" + ex.Message);
+                MessageBox.Show("Failed to load data: \n" + ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
             finally
             {
@@ -232,28 +225,9 @@ namespace CoronaTracker.ViewModels
                     await dataLoader.LoadAllDataAsync(DataLoader.Source.LOCALFILE, openFileDialog.FileName);
                 }
             }
-            catch (ArgumentNullException e)
-            {
-                MessageBox.Show("No file was selected: " + e);
-            }
-            catch (FileNotFoundException e)
-            {
-                MessageBox.Show("File could not be found: " + e);
-            }
-            catch (FieldAccessException faex)
-            {
-                // TODO: Handle exception (need to load data first)
-                MessageBox.Show("FieldAccessException: \n" + faex.Message);
-            }
-            catch (ArgumentException argex)
-            {
-                // TODO: Handle exception (maybe an implementation error?)
-                MessageBox.Show("ArgumentException: \n" + argex.Message);
-            }
             catch (Exception ex)
             {
-                // TODO: Handle exception (need to load data first)
-                MessageBox.Show("Unhandled exception: \n" + ex.Message);
+                MessageBox.Show("Failed to load data: \n" + ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
             finally
             {
@@ -278,23 +252,11 @@ namespace CoronaTracker.ViewModels
                 if (saveFileDialog.ShowDialog() == true)
                 {
                     dataLoader.SaveAllData(saveFileDialog.FileName);
-                    //await dataLoader.LoadAllDataAsync(DataLoader.Source.LOCALFILE, openFileDialog.FileName);
                 }
-            }
-            catch (FieldAccessException faex)
-            {
-                // TODO: Handle exception (need to load data first)
-                MessageBox.Show("FieldAccessException: \n" + faex.Message);
-            }
-            catch (ArgumentException argex)
-            {
-                // TODO: Handle exception (maybe an implementation error?)
-                MessageBox.Show("ArgumentException: \n" + argex.Message);
             }
             catch (Exception ex)
             {
-                // TODO: Handle exception (need to load data first)
-                MessageBox.Show("Unhandled exception: \n" + ex.Message);
+                MessageBox.Show(ex.Message);
             }
             finally
             {

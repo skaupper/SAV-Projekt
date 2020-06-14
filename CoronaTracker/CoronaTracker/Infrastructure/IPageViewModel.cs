@@ -1,4 +1,6 @@
 ﻿
+using System.Windows;
+
 namespace CoronaTracker.Infrastructure
 {
     interface IPageViewModel

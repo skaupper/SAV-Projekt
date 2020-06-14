@@ -20,7 +20,6 @@
 	        CanUserAddRows="False"
 	        ItemsSource="{Binding CdgDataList, UpdateSourceTrigger=PropertyChanged, NotifyOnSourceUpdated=True, NotifyOnTargetUpdated=True}" 
 	        SelectionMode="Extended"
-	        SelectedItemsList="{Binding CdgSelectedDataEntries, UpdateSourceTrigger=PropertyChanged}"
 	        ColumnWidth="*"
 	        CanUserSortColumns="True">
 	        <DataGrid.Columns>
