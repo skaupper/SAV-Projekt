@@ -60,4 +60,14 @@ All diese Funktionen wurden per Dependency-Properties implementiert, damit diese
 
 ## Model
 
+Die Klasse DataLoader übernimmt die Grundfunktionalität des Models. Hier werden die Daten geladen. Dann können diese über verschiedene Funktionen in unterschiedlichen Aufbereitungen abgefragt werden.
+
+Die Bibliothek RestSharp wird verwendet, um Daten von der REST Schnittstelle der API anzufordern. Die Bibliothek wird im Weiteren auch dazu verwendet, um die empfangene JSON Response in eine Objektstruktur zu parsen. Diese Objektstuktur wurde vorher als Klassenhierarchie aufgebaut.
+
+Sämtliche geladenen Datensätze werden in der Klasse DataStore gehalten. Über die Klasse FileHandler kann der gesamte DataStore in ein JSON Format serialisiert und in ein lokales File gespeichert werden. Der FileHandler kann dieses File natürlich auch wieder lesen, und in die Objektstruktur des DataStore geladen werden.
+
+Die Klassen EnumMethods und SelectableStatisticsMethods bereiten die Daten auf, damit diese in der GUI möglichst effizient dargestellt werden können.
+
+Folgendes Blockdiagramm bietet einen Überblick über die Klassen, die in Verbindung mit dem DataLoader verwendet werden.
+
 ![Model Struktur](ModelStructure.png)
