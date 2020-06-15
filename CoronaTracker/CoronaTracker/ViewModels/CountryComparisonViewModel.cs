@@ -306,6 +306,8 @@ namespace CoronaTracker.ViewModels
             try
             {
                 CbAvailableCountries = new BindingList<string>(dataLoader.GetListOfProperty(DataLoader.CountryProperty.NAME));
+                DpFromDate = dataLoader.GetOldestDate();
+                DpToDate = dataLoader.GetNewestDate();
                 UpdateDataSets();
                 IsEnabled = true;
             }
